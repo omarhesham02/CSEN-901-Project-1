@@ -13,8 +13,7 @@ public enum Color {
         this.value = value;
     }
 
-    // toString() ?
-    public String getDescription() {
+    public String getValue() {
         return value;
     }
 }
