@@ -1,20 +1,14 @@
-package org.aiteam.code;
+package org.aiteam.code.watersort;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Bottle {
-    private Color[] layers;
+    // TODO: Maybe convert to Stack? Then implement the needed convenience methods
+    private final Color[] layers;
     private int currentCapacity = 0;
 
-    public Bottle(ArrayList<Color> layers, int capacity) {
-        this.layers = layers.toArray(new Color[0]);
-    }
-
-    public Bottle() {
-
+    public Bottle(Color[] layers) {
+        this.layers = layers;
     }
 
     public Color getTopLayer() {
@@ -25,13 +19,12 @@ public class Bottle {
         return currentCapacity;
     }
 
-
     int getMaximumCapacity() {
-        return Utils.BOTTLE_CAPACITY;
+        return layers.length;
     }
 
     public void removeTopLayer() {
-        layers[currentCapacity] = Color.EMPTY;
+        layers[currentCapacity] = Color.e;
     }
 
     public void addTopLayer(Color sourceTopLayer) {

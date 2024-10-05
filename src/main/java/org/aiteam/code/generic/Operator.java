@@ -1,4 +1,4 @@
-package org.aiteam.code;
+package org.aiteam.code.generic;
 
 @FunctionalInterface
 public interface Operator<T> {
