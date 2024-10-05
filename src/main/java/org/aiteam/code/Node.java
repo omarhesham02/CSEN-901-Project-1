@@ -15,4 +15,48 @@ public class Node {
 
     /** The path cost from the root to this state. */
     private int pathCost;
+
+    /** The cost of the operator applied to reach this state. */
+    private int operatorCost;
+
+    public Node(State state, Node parent, Operator operator, int depth, int pathCost) {
+        this.state = state;
+        this.parent = parent;
+        this.operator = operator;
+        this.depth = depth;
+        this.pathCost = pathCost;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public Operator getOperator() {
+        return operator;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public int getPathCost() {
+        return pathCost;
+    }
+
+    public int getOperatorCost() {
+        return operatorCost;
+    }
+
+    public void setPathCost(int pathCost) {
+        this.pathCost = pathCost;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+
 }

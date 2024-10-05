@@ -7,17 +7,15 @@ public class WaterSortSearch extends GenericSearch {
 
 
     public static String solve(String initialState, String strategy, boolean visualize) {
-        InitialState parsedInitialState = Utils.parseInitialState(initialState);
-        int numberOfBottles = parsedInitialState.getNumberOfBottles();
-        int bottleCapacity = parsedInitialState.getBottleCapacity();
-        State initState = parsedInitialState.getState();
-
+        WaterSortSearchState parsedInitialState = Utils.parseInitialState(initialState);
+        int numberOfBottles = Utils.NUMBER_OF_BOTTLES;
+        int bottleCapacity = Utils.BOTTLE_CAPACITY;
         List<Operator<?>> operators = new ArrayList<>();
-        Pour pourOperator = new Pour(new Bottle(), new Bottle());
-        operators.add(pourOperator);
+        Pour pour = new Pour(new Bottle(), new Bottle());
+        operators.add(pour);
 
         Problem problem = new Problem(
-            parsedInitialState.getState(),
+            parsedInitialState,
             operators,
         );
 

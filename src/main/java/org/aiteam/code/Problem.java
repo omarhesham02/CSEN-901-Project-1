@@ -2,23 +2,37 @@ package org.aiteam.code;
 
 import java.util.List;
 
-public class Problem {
-    private State initialState;
-    private List<Operator> operators;
-    private TransitionFunction transitionFunction;
-    private GoalTestFunction goalTestFunction;
-    private PathCostFunction pathCostFunction;
+public abstract class Problem {
 
-    public Problem(State initialState,
-                   List<Operator> operators,
-                   TransitionFunction transitionFunction,
-                   GoalTestFunction goalTestFunction,
-                   PathCostFunction pathCostFunction)
-    {
+    private final State initialState;
+    private final List<Operator> operators;
+    private final TransitionFunction transitionFunction;
+    private final GoalTestFunction goalTestFunction;
+    private final PathCostFunction pathCostFunction;
+
+    public abstract int PathCostFunction(State state);
+
+    @FunctionalInterface
+    public interface GoalTestFunction {
+        boolean isGoalState(State state);
+    }
+
+    @FunctionalInterface
+    public interface PathCostFunction {
+        int PathCostFunction(Node node);
+    }
+
+    @FunctionalInterface
+    public interface TransitionFunction {
+        State TransitionFunction(State state, Operator operator);
+    }
+
+    public Problem(State initialState, List<Operator> operators, TransitionFunction transitionFunction, GoalTestFunction goalTestFunction, PathCostFunction pathCostFunction) {
         this.initialState = initialState;
         this.operators = operators;
         this.transitionFunction = transitionFunction;
         this.goalTestFunction = goalTestFunction;
         this.pathCostFunction = pathCostFunction;
     }
+
 }
