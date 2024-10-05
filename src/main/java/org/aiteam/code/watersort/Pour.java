@@ -1,4 +1,6 @@
-package org.aiteam.code;
+package org.aiteam.code.watersort;
+
+import org.aiteam.code.generic.Operator;
 
 public class Pour implements Operator<Integer> {
 
