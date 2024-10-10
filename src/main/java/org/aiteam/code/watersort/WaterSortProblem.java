@@ -1,7 +1,6 @@
 package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.Node;
-import org.aiteam.code.generic.Operator;
 import org.aiteam.code.generic.Problem;
 import org.aiteam.code.generic.State;
 
@@ -15,12 +14,12 @@ public class WaterSortProblem extends Problem<Integer, Bottle[]> {
         // TODO: Pass the actual operators in a list here somehow
         this.operators = new ArrayList<>();
     }
-
     /**
      * Check if the current state is the goal state
      * @return true if the current state is the goal state, false otherwise
      * A state is a goal state if all the layers in every bottle is the same color
      */
+
     @Override
     public boolean isGoalNode(Node<Integer, Bottle[]> node) {
         Bottle[] bottles = node.state().getValue();
@@ -48,10 +47,5 @@ public class WaterSortProblem extends Problem<Integer, Bottle[]> {
     public int pathCost(Node<Integer, Bottle[]> node) {
         return node.parent().pathCost() + node.operatorCost();
 
-    }
-
-    @Override
-    public State<Bottle[]> transition(State<Bottle[]> state, Operator<Integer> operator) {
-        return null;
     }
 }

@@ -15,20 +15,25 @@ public class Bottle {
         return layers[currentCapacity];
     }
 
-    int getCurrentCapacity() {
+    public int getCurrentCapacity() {
         return currentCapacity;
     }
 
-    int getMaximumCapacity() {
+    public int getMaximumCapacity() {
         return layers.length;
     }
 
-    public void removeTopLayer() {
-        layers[currentCapacity] = Color.e;
+    public Color removeTopLayer() {
+        // Remove the top layer and return it
+        Color topLayer = layers[currentCapacity];
+        layers[currentCapacity] = null;
+        currentCapacity--;
+        return topLayer;
     }
 
     public void addTopLayer(Color sourceTopLayer) {
         layers[currentCapacity] = sourceTopLayer;
+        currentCapacity++;
     }
 
     public String toString() {

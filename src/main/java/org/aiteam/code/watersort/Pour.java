@@ -1,49 +1,35 @@
 package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.Operator;
+import org.aiteam.code.generic.State;
 
-public class Pour implements Operator<Integer> {
-
-    private final Bottle source;
-    private final Bottle destination;
-
-    public Pour(Bottle source, Bottle destination) {
-        this.source = source;
-        this.destination = destination;
-    }
+public record Pour(int from, int to) implements Operator<Integer> {
 
     @Override
     public Integer apply(Object... args) {
-        int pouredAmount = 0;
+        Bottle[] bottles = (Bottle[]) args[0];
+        return pour(bottles, from, to);
+    }
 
-        // Check if the pour operation is valid
-        if (source.getCurrentCapacity() == 0 || destination.getCurrentCapacity() == destination.getMaximumCapacity()) {
-            return pouredAmount;
+    @Override
+    public <V> boolean isApplicable(State<V> state) {
+        if (state instanceof WaterSortState waterSortState) {
+            Bottle[] bottles = waterSortState.getBottles();
+            return bottles[from].getCurrentCapacity() > 0 && bottles[to].getCurrentCapacity() < bottles[to].getMaximumCapacity();
+        }
+        return false;
+    }
+
+    public static int pour(Bottle[] bottles, int from, int to) {
+        Bottle source = bottles[from];
+        Bottle destination = bottles[to];
+
+        int layersPoured = 0;
+        while (source.getCurrentCapacity() > 0 && destination.getCurrentCapacity() < destination.getMaximumCapacity() && (destination.getCurrentCapacity() == 0 || source.getTopLayer().equals(destination.getTopLayer()))) {
+            destination.addTopLayer(source.removeTopLayer());
+            layersPoured++;
         }
 
-        Color sourceTopLayer = source.getTopLayer();
-        Color destinationTopLayer = destination.getCurrentCapacity() > 0 ? destination.getTopLayer() : null;
-
-        if (destinationTopLayer != null && !sourceTopLayer.equals(destinationTopLayer)) {
-            return pouredAmount;
-        }
-
-        // Perform the pour operation
-        while (source.getCurrentCapacity() > 0 &&
-               destination.getCurrentCapacity() < destination.getMaximumCapacity() &&
-               (destinationTopLayer == null || sourceTopLayer.equals(destinationTopLayer))) {
-
-            // Remove the top layer from the source bottle
-            source.removeTopLayer();
-            // Add the top layer to the destination bottle
-            destination.addTopLayer(sourceTopLayer);
-            pouredAmount++;
-
-            // Update the top layers
-            sourceTopLayer = source.getCurrentCapacity() > 0 ? source.getTopLayer() : null;
-            destinationTopLayer = destination.getTopLayer();
-        }
-
-        return pouredAmount;
+        return layersPoured;
     }
 }

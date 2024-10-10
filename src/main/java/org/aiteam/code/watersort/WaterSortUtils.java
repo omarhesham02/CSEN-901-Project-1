@@ -1,7 +1,12 @@
 package org.aiteam.code.watersort;
 
 public class WaterSortUtils {
-
+    /**
+     * Parses the initial state of the Water Sort problem from a string
+     * @param initialState The string representation of the initial state
+     * @return The parsed initial state
+     * @throws IllegalArgumentException If the initial state is invalid
+     */
     public static WaterSortState parseInitialState(String initialState) throws IllegalArgumentException {
         String[] parts = initialState.split(";");
 

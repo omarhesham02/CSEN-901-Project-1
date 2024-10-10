@@ -2,6 +2,13 @@ package org.aiteam.code.generic;
 
 // TODO: Review if we need operatorCost field
 
+import org.aiteam.code.watersort.Bottle;
+import org.aiteam.code.watersort.Pour;
+import org.aiteam.code.watersort.WaterSortState;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a node in the search tree.
  *
@@ -13,6 +20,52 @@ package org.aiteam.code.generic;
  * @param pathCost     The path cost from the root to this state.
  * @param operatorCost The cost of the operator applied to reach this state.
  */
+
 public record Node<T, V>(State<V> state, Node<T, V> parent, Operator<T> operator, int depth,
                          int pathCost, int operatorCost) {
+
+
+
+    public Node(State<V> state, Node<T, V> parent, Operator<T> operator, int depth, int pathCost) {
+        this(state, parent, operator, depth, pathCost, 0);
+    }
+
+    public Node (State<V> initialState) {
+        this(initialState, null, null, 0, 0, 0);
+
+    }
+
+    public State<V> getState() {
+        return state;
+    }
+
+    public Node<T, V> getParent() {
+        return parent;
+    }
+
+    public Operator<T> getOperator() {
+        return operator;
+    }
+
+
+    public Node[] expand(Node node) {
+        // Apply every possible combination of pour operations to the current state and create a new node for each successful pour operation
+        WaterSortState state = (WaterSortState) node.getState();
+        List<Node> children = new ArrayList<>();
+        for (int i = 0; i < state.getBottles().length; i++) {
+            for (int j = 0; j < state.getBottles().length; j++) {
+                if (i != j) {
+                    Pour pour = new Pour(i, j);
+                    Bottle[] bottles = state.getBottles();
+                    int layersPoured = Pour.pour(bottles, i, j);
+                    if (layersPoured > 0) {
+                        WaterSortState newState = new WaterSortState(bottles);
+                        Node<T, V> child = new Node<>(newState, node, pour, node.depth() + 1, node.pathCost() + layersPoured);
+                        children.add(child);
+                    }
+                }
+            }
+        }
+        return children.toArray(new Node[0]);
+    }
 }
