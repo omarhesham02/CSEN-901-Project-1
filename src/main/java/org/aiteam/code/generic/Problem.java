@@ -23,7 +23,6 @@ public abstract class Problem<T, V> {
     /**
      * Transition function for a generic search problem.
      */
-    public abstract State<V> transition(State<V> state, Operator<T> operator);
 
     public State<V> getInitialState() {
         return initialState;
