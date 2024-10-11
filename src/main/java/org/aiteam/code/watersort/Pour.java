@@ -2,7 +2,7 @@ package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.SearchState;
 
-public record Pour(int from, int to) implements WaterSortOperator<WaterSortState> {
+public record Pour(int from, int to) implements WaterSortOperator {
 
     @Override
     public WaterSortState apply(WaterSortState state) {
