@@ -6,7 +6,7 @@ import org.aiteam.code.generic.SearchState;
 
 import java.util.ArrayList;
 
-public class WaterSortProblem extends Problem<Integer, Bottle[]> {
+public class WaterSortProblem extends Problem<WaterSortState, Pour> {
 
     public WaterSortProblem(SearchState<Bottle[]> initialState) {
         super(initialState);

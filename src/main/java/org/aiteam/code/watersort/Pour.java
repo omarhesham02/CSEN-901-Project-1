@@ -1,14 +1,13 @@
 package org.aiteam.code.watersort;
 
-import org.aiteam.code.generic.Operator;
 import org.aiteam.code.generic.SearchState;
 
-public record Pour(int from, int to) implements Operator<Integer> {
+public record Pour(int from, int to) implements WaterSortOperator<WaterSortState> {
 
     @Override
-    public Integer apply(Object... args) {
-        Bottle[] bottles = (Bottle[]) args[0];
-        return pour(bottles, from, to);
+    public WaterSortState apply(WaterSortState state) {
+        // return pour(bottles, from, to);
+        return null;
     }
 
     @Override
