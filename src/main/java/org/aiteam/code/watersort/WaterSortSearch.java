@@ -10,7 +10,7 @@ public class WaterSortSearch extends GenericSearch {
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState);
 
-        QueueingFunction<WaterSortState, Pour> queueingFunction = getQueueingFunction(strategy);
-        return GenericSearch.generalSearch(waterSortProblem, queueingFunction, visualize);
+        QueueingFunction<WaterSortState, WaterSortOperator> waterSortQueueingFunction = getQueueingFunction(strategy);
+        return GenericSearch.generalSearch(waterSortProblem, waterSortQueueingFunction, visualize);
     }
 }

@@ -1,12 +1,10 @@
 package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.Operator;
-import org.aiteam.code.generic.SearchState;
 
-public interface WaterSortOperator<T extends SearchState<?>> extends Operator<T> {
-    {
+public interface WaterSortOperator extends Operator<WaterSortState> {
 
-    T apply(T state);
+    WaterSortState apply(WaterSortState state);
 
-    <T> boolean isApplicable(SearchState<T> state);
+    boolean isApplicable(WaterSortState state);
 }
