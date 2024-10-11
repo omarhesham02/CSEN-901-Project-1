@@ -3,10 +3,10 @@ package org.aiteam.code.generic;
 import java.util.List;
 
 public abstract class Problem<T, V> {
-    private final State<V> initialState;
+    private final SearchState<V> initialState;
     protected List<Operator<T>> operators;
 
-    public Problem(State<V> initialState) {
+    public Problem(SearchState<V> initialState) {
         this.initialState = initialState;
     }
 
@@ -24,7 +24,7 @@ public abstract class Problem<T, V> {
      * Transition function for a generic search problem.
      */
 
-    public State<V> getInitialState() {
+    public SearchState<V> getInitialState() {
         return initialState;
     }
 
