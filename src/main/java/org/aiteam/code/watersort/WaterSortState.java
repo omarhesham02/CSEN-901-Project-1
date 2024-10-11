@@ -11,6 +11,10 @@ public class WaterSortState extends State<Bottle[]> {
         super(state.getValue());
     }
 
+    public Bottle[] getBottles() {
+        return getValue();
+    }
+
     @Override
     public boolean equals(Object obj) {
         // Two bottles are equal if they have the same layers
