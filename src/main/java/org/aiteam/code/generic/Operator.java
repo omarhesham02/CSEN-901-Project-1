@@ -1,7 +1,7 @@
 package org.aiteam.code.generic;
 
-public interface Operator<T> {
-    T apply(SearchState<T> state);
+public interface Operator<T extends SearchState<?>> {
+    T apply(T state);
 
-    <V> boolean isApplicable(SearchState<V> state);
+    <T> boolean isApplicable(SearchState<T> state);
 }
