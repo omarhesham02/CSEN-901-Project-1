@@ -2,7 +2,7 @@ package org.aiteam.code.generic;
 
 import java.util.Queue;
 
-public class GenericSearch {
+public abstract class GenericSearch {
     public static <T, V> String generalSearch(Problem<T, V> problem, QueueingFunction<T, V> queueingFunction) {
 
         Node node = new Node<>(problem.getInitialState());
@@ -22,6 +22,5 @@ public class GenericSearch {
             }
         }
         return "Failure";
-    }
 
 }
