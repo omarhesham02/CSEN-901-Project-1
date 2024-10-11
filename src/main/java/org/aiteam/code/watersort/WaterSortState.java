@@ -1,8 +1,8 @@
 package org.aiteam.code.watersort;
 
-import org.aiteam.code.generic.State;
+import org.aiteam.code.generic.SearchState;
 
-public class WaterSortState extends State<Bottle[]> {
+public class WaterSortState extends SearchState<Bottle[]> {
     public WaterSortState(Bottle[] value) {
         super(value);
     }

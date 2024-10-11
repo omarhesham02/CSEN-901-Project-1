@@ -1,7 +1,7 @@
 package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.Operator;
-import org.aiteam.code.generic.State;
+import org.aiteam.code.generic.SearchState;
 
 public record Pour(int from, int to) implements Operator<Integer> {
 
@@ -12,10 +12,11 @@ public record Pour(int from, int to) implements Operator<Integer> {
     }
 
     @Override
-    public <V> boolean isApplicable(State<V> state) {
+    public <V> boolean isApplicable(SearchState<V> state) {
         if (state instanceof WaterSortState waterSortState) {
             Bottle[] bottles = waterSortState.getBottles();
-            return bottles[from].getCurrentCapacity() > 0 && bottles[to].getCurrentCapacity() < bottles[to].getMaximumCapacity();
+            return bottles[from].getCurrentCapacity() > 0
+                    && bottles[to].getCurrentCapacity() < bottles[to].getMaximumCapacity();
         }
         return false;
     }
@@ -25,7 +26,8 @@ public record Pour(int from, int to) implements Operator<Integer> {
         Bottle destination = bottles[to];
 
         int layersPoured = 0;
-        while (source.getCurrentCapacity() > 0 && destination.getCurrentCapacity() < destination.getMaximumCapacity() && (destination.getCurrentCapacity() == 0 || source.getTopLayer().equals(destination.getTopLayer()))) {
+        while (source.getCurrentCapacity() > 0 && destination.getCurrentCapacity() < destination.getMaximumCapacity()
+                && (destination.getCurrentCapacity() == 0 || source.getTopLayer().equals(destination.getTopLayer()))) {
             destination.addTopLayer(source.removeTopLayer());
             layersPoured++;
         }

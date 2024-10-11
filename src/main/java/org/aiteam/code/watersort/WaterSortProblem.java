@@ -2,22 +2,25 @@ package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.Node;
 import org.aiteam.code.generic.Problem;
-import org.aiteam.code.generic.State;
+import org.aiteam.code.generic.SearchState;
 
 import java.util.ArrayList;
 
 public class WaterSortProblem extends Problem<Integer, Bottle[]> {
 
-    public WaterSortProblem(State<Bottle[]> initialState) {
+    public WaterSortProblem(SearchState<Bottle[]> initialState) {
         super(initialState);
 
         // TODO: Pass the actual operators in a list here somehow
         this.operators = new ArrayList<>();
     }
+
     /**
      * Check if the current state is the goal state
+     * 
      * @return true if the current state is the goal state, false otherwise
-     * A state is a goal state if all the layers in every bottle is the same color
+     *         A state is a goal state if all the layers in every bottle is the same
+     *         color
      */
 
     @Override
