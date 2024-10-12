@@ -52,4 +52,9 @@ public class Pour implements WaterSortOperator {
 
         return new OperatorResult(new WaterSortState(bottleClones), layersPoured);
     }
+
+    @Override
+    public String toString(){
+        return "pour_" + from + "_" + to;
+    }
 }
