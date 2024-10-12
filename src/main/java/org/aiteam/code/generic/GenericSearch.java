@@ -65,8 +65,8 @@ public abstract class GenericSearch {
                     operatorResult.getState(),
                     parentNode,
                     operator,
-                    parentNode.depth + 1,
-                    parentNode.pathCost + operatorResult.getOperatorCost()
+                    parentNode.getDepth() + 1,
+                    parentNode.getPathCost() + operatorResult.getOperatorCost()
                 );
             }
         }
