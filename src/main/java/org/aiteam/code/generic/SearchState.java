@@ -2,11 +2,8 @@ package org.aiteam.code.generic;
 
 /**
  * Represents a state in the search problem
- * 
- * @param value The value of the state in the specific problem (e.g. Array of
- *              bottles in the Water Sort problem)
  */
-public class SearchState {
+public class SearchState implements Cloneable {
     private final Object value;
 
     public SearchState(Object value) {
@@ -15,5 +12,14 @@ public class SearchState {
 
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public SearchState clone() {
+        try {
+            return (SearchState) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

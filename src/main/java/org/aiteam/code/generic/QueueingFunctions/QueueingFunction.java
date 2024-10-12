@@ -1,7 +1,6 @@
 package org.aiteam.code.generic.QueueingFunctions;
 
 import java.util.Queue;
-
 import org.aiteam.code.generic.Node;
 
 @FunctionalInterface
