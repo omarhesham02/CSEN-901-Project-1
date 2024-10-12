@@ -8,6 +8,7 @@ import java.util.Comparator;
 import org.aiteam.code.generic.Node;
 
 public class GREEDY2QueueingFunction implements QueueingFunction {
+
     @Override
     public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
         // Implement the GREEDY2 specific logic here

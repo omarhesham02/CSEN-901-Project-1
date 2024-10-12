@@ -6,6 +6,7 @@ import java.util.Queue;
 import org.aiteam.code.generic.Node;
 
 public class IDSQueueingFunction implements QueueingFunction {
+
     @Override
     public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
         // Implement the IDS specific logic here
