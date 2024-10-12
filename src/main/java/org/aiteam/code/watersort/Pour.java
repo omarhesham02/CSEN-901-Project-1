@@ -33,6 +33,7 @@ public class Pour implements WaterSortOperator {
         return null;
     }
 
+    // TODO: Review the clone behavior for bugs
     private static OperatorResult pour(Bottle[] bottles, int from, int to) {
         // Clone the bottles to avoid changing the original state
         Bottle [] bottleClones = bottles.clone();
