@@ -13,16 +13,17 @@ public abstract class Problem {
     /**
      * Goal test function for a generic search problem.
      */
-    public abstract boolean isGoalNode(Node node);
+    public abstract boolean goalTestFn(Node node);
 
     /**
      * Path cost function for a generic search problem.
      */
-    public abstract int pathCost(Node node);
+//    public abstract int pathCostFn(Node node);
 
     /**
      * Transition function for a generic search problem.
      */
+//    public abstract Node transitionFn(Node node, Operator operator);
 
     public SearchState getInitialState() {
         return initialState;

@@ -1,6 +1,7 @@
 package org.aiteam.code.generic;
 
-import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.aiteam.code.generic.QueueingFunctions.AStar1QueueingFunction;
@@ -14,52 +15,54 @@ import org.aiteam.code.generic.QueueingFunctions.QueueingFunction;
 import org.aiteam.code.generic.QueueingFunctions.UCSQueueingFunction;
 
 public abstract class GenericSearch {
-    public static String generalSearch(Problem problem, QueueingFunction queueingFunction,
-            boolean visualize) {
 
-        Node node = new Node(problem.getInitialState());
-        Queue<Node> frontier = queueingFunction.apply(node);
+    public static String generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
+        SearchState initialState = problem.getInitialState();
+        Node initialNode = new Node(initialState);
+        Queue<Node> nodes = new PriorityQueue<>();
+        nodes = queueingFunction.apply(nodes, initialNode);
 
-        while (!frontier.isEmpty()) {
-            Node currentNode = frontier.poll();
-            if (problem.isGoalNode(currentNode)) {
+        while (!nodes.isEmpty()) {
+            Node currentNode = nodes.poll();
+
+            if (problem.goalTestFn(currentNode)) {
                 return currentNode.toString();
             }
-            for (Operator operator : problem.getOperators()) {
-                if (operator.isApplicable(currentNode.getState())) {
-                    SearchState newState = (SearchState) operator.apply(currentNode.getState());
-                    Node newNode = new Node(newState, currentNode, operator,
-                            currentNode.depth() + 1,
-                            currentNode.pathCost() + 1);
-                    frontier.add(newNode);
-                }
-            }
-        }
-        return "Failure";
 
+            nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
+        }
+
+        return "Failure";
     }
 
-    public static QueueingFunction getQueueingFunction(String strategy) {
-        switch (strategy) {
-            case "BF":
-                return new BFSQueueingFunction();
-            case "DF":
-                return new DFSQueueingFunction();
-            case "ID":
-                return new IDSQueueingFunction();
-            case "UC":
-                return new UCSQueueingFunction();
-            case "GR1":
-                return new GREEDY1QueueingFunction();
-            case "GR2":
-                return new GREEDY2QueueingFunction();
-            case "AS1":
-                return new AStar1QueueingFunction();
-            case "AS2":
-                return new AStar2QueueingFunction();
-            default:
-                throw new IllegalArgumentException("Invalid strategy: " + strategy);
 
+    public static QueueingFunction getQueueingFunction(String strategy) {
+        return switch (strategy) {
+            case "BF" -> new BFSQueueingFunction();
+            case "DF" -> new DFSQueueingFunction();
+            case "ID" -> new IDSQueueingFunction();
+            case "UC" -> new UCSQueueingFunction();
+            case "GR1" -> new GREEDY1QueueingFunction();
+            case "GR2" -> new GREEDY2QueueingFunction();
+            case "AS1" -> new AStar1QueueingFunction();
+            case "AS2" -> new AStar2QueueingFunction();
+            default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
+        };
+    }
+
+    public static Node expand(Node parentNode, List<Operator> operators) {
+        for (Operator operator : operators) {
+            if (operator.isApplicable(parentNode.getState())) {
+                OperatorResult operatorResult = operator.apply(parentNode.getState());
+                Node childNode = new Node(
+                    operatorResult.getState(),
+                    parentNode,
+                    operator,
+                    parentNode.depth + 1,
+                    parentNode.pathCost + operatorResult.getOperatorCost()
+                );
+            }
         }
+        return null;
     }
 }

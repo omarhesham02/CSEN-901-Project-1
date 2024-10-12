@@ -1,4 +1,3 @@
-// src/main/java/org/aiteam/code/watersort/WaterSortSearch.java
 package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.GenericSearch;

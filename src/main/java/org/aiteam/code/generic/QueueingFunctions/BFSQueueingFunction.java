@@ -7,14 +7,6 @@ import java.util.Queue;
 import org.aiteam.code.generic.Node;
 
 public class BFSQueueingFunction implements QueueingFunction {
-    // @Override
-    // public Queue<Node<T, V>> apply(Queue<Node<T, V>> queue, Node<T,V>
-    // initialNode) {
-    // PriorityQueue<Node<T, V>> priorityQueue = new
-    // PriorityQueue<>(Comparator.comparingInt(Node::depth));
-    // priorityQueue.add(new Node<>(initialNode.getState()));
-    // return priorityQueue;
-    // }
 
     @Override
     public Queue<Node> apply(Queue<Node> queue, Node node) {
