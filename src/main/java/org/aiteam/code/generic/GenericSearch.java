@@ -14,6 +14,8 @@ import org.aiteam.code.generic.QueueingFunctions.UCSQueueingFunction;
 
 public abstract class GenericSearch {
 
+    public static int nodesExpanded = 0;
+
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
         Queue<Node> nodes = makeQ(makeNode(problem.getInitialState()));
 
@@ -73,6 +75,8 @@ public abstract class GenericSearch {
                 nodes.add(childNode);
             }
         }
+
+        nodesExpanded++;
 
         return nodes;
     }
