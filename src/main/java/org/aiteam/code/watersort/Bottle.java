@@ -2,10 +2,7 @@ package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.FixedSizeStack;
 
-import java.util.Stack;
-
 public class Bottle implements Cloneable {
-    // TODO: Maybe convert to Stack? Then implement the needed convenience methods
     private FixedSizeStack<Color> layers;
 
     public Bottle(FixedSizeStack<Color> layers) {
@@ -44,12 +41,20 @@ public class Bottle implements Cloneable {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < WaterSortSearch.bottleCapacity - layers.size(); i++) {
+            sb.append("e");
+            if (i != WaterSortSearch.bottleCapacity - 1)
+                sb.append(",");
+        }
+
         for (int i = layers.size() - 1; i >= 0; i--) {
-            sb.append(layers.get(i) == null ? "e" : layers.get(i));
+            sb.append(layers.get(i));
             if (i != 0) {
                 sb.append(",");
             }
         }
+
         return sb.toString();
     }
 
