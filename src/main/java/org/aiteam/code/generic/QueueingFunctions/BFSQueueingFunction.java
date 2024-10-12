@@ -6,7 +6,7 @@ import java.util.Queue;
 
 import org.aiteam.code.generic.Node;
 
-public class BFSQueueingFunction<T, V> implements QueueingFunction<T, V> {
+public class BFSQueueingFunction implements QueueingFunction {
     // @Override
     // public Queue<Node<T, V>> apply(Queue<Node<T, V>> queue, Node<T,V>
     // initialNode) {
@@ -17,7 +17,7 @@ public class BFSQueueingFunction<T, V> implements QueueingFunction<T, V> {
     // }
 
     @Override
-    public Queue<Node<T, V>> apply(Queue<Node<T, V>> queue, Node<T, V> node) {
+    public Queue<Node> apply(Queue<Node> queue, Node node) {
         // Add the node to the end of the queue (BFS behavior)
         queue.add(node);
         return queue;

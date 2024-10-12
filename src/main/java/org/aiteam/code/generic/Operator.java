@@ -1,7 +1,10 @@
 package org.aiteam.code.generic;
 
-public interface Operator<T extends SearchState<?>> {
-    T apply(T state);
+import org.aiteam.code.watersort.WaterSortState;
 
-    <T> boolean isApplicable(SearchState<T> state);
+public interface Operator {
+
+    SearchState apply(SearchState state);
+
+    boolean isApplicable(SearchState state);
 }
