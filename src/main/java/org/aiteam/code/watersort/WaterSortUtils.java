@@ -3,6 +3,7 @@ package org.aiteam.code.watersort;
 public class WaterSortUtils {
     /**
      * Parses the initial state of the Water Sort problem from a string
+     *
      * @param initialState The string representation of the initial state
      * @return The parsed initial state
      * @throws IllegalArgumentException If the initial state is invalid
@@ -21,13 +22,13 @@ public class WaterSortUtils {
         int bottleCapacity;
 
         try {
-            numberOfBottles = Integer.parseInt(parts[1]);
+            numberOfBottles = Integer.parseInt(parts[0]);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid number of bottles. Must be an integer.");
         }
 
         try {
-            bottleCapacity = Integer.parseInt(parts[0]);
+            bottleCapacity = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid bottle capacity. Must be an integer.");
         }

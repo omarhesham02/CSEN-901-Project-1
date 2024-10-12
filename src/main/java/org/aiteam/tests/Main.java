@@ -1,7 +1,11 @@
 package org.aiteam.tests;
 
+import org.aiteam.code.watersort.WaterSortSearch;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        String init = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
+                "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
+        WaterSortSearch.solve(init, "BF", true);
     }
 }
