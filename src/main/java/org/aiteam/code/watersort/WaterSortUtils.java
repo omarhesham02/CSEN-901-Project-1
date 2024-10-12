@@ -47,9 +47,9 @@ public class WaterSortUtils {
 
             for (int j = 0; j < strLayers.length; j++) {
                 // We don't consider 'e' as a color to save space
-                if (strLayers[j].equals("e"))
+                if (strLayers[bottleCapacity - 1 - j].equals("e"))
                     continue;
-                colorLayers.setAt(j,Color.valueOf(strLayers[j]));
+                colorLayers.push(Color.valueOf(strLayers[bottleCapacity - 1 - j]));
             }
 
             bottles[i - 2] = new Bottle(colorLayers);

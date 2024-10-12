@@ -57,7 +57,9 @@ public abstract class GenericSearch {
         };
     }
 
-    private static Node expand(Node parentNode, List<Operator> operators) {
+    private static List<Node> expand(Node parentNode, List<Operator> operators) {
+        List<Node> nodes = new ArrayList<>();
+
         for (Operator operator : operators) {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
@@ -68,9 +70,10 @@ public abstract class GenericSearch {
                     parentNode.getDepth() + 1,
                     parentNode.getPathCost() + operatorResult.getOperatorCost()
                 );
+                nodes.add(childNode);
             }
         }
 
-        return null;
+        return nodes;
     }
 }

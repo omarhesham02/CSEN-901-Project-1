@@ -26,6 +26,14 @@ public class Bottle implements Cloneable {
         return layers.size();
     }
 
+    public FixedSizeStack<Color> getLayers() {
+        return layers;
+    }
+
+    public boolean isEmpty() {
+        return layers.isEmpty();
+    }
+
     public void addTopLayer(Color sourceTopLayer) {
        if (layers.size() == WaterSortSearch.bottleCapacity)
            return;
@@ -36,9 +44,9 @@ public class Bottle implements Cloneable {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < layers.size(); i++) {
-            sb.append(layers.get(i));
-            if (i != layers.size() - 1) {
+        for (int i = layers.size() - 1; i >= 0; i--) {
+            sb.append(layers.get(i) == null ? "e" : layers.get(i));
+            if (i != 0) {
                 sb.append(",");
             }
         }

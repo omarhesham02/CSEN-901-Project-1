@@ -36,20 +36,15 @@ public class WaterSortProblem extends Problem {
         Bottle[] bottles = (Bottle[]) node.getState().getValue();
 
         for (Bottle bottle : bottles) {
-            // Check if the bottle is empty
-            if (bottle.getCurrentCapacity() == 0) {
+            if (bottle.isEmpty()) {
                 continue;
             }
 
-            // Check that all the layers in the bottle are the same color
             Color topLayer = bottle.getTopLayer();
-            int i = bottle.getCurrentCapacity();
 
-            while (i < WaterSortSearch.bottleCapacity) {
-                if (!topLayer.equals(bottle.getTopLayer())) {
+            for (int i = 0; i < bottle.getLayers().size(); i++)
+                if (!topLayer.equals(bottle.getLayers().get(i)))
                     return false;
-                }
-            }
         }
 
         return true;

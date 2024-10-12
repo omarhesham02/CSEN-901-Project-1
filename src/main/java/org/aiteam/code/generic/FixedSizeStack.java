@@ -1,13 +1,14 @@
 package org.aiteam.code.generic;
 
 /**
- * A generic fixed-size stack implementation, with some array operations for convenience.
+ * A generic fixed-size stack implementation.
  *
  * @param <T> the type of elements in the stack
  */
 public class FixedSizeStack<T> implements Cloneable {
     private T[] stackArray;
     private int top;
+    private int start;
     private final int capacity;
 
     @SuppressWarnings("unchecked")
@@ -22,13 +23,6 @@ public class FixedSizeStack<T> implements Cloneable {
             throw new IllegalStateException("Stack is full, cannot push.");
         }
         stackArray[++top] = element;
-    }
-
-    public void setAt(int index, T element) {
-        if (index < 0 || index >= capacity) {
-            throw new IndexOutOfBoundsException("Index out of bounds, can't set element.");
-        }
-        stackArray[index] = element;
     }
 
     public T get(int index) {
