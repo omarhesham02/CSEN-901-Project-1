@@ -3,17 +3,17 @@ package org.aiteam.code.generic;
 /**
  * Represents a state in the search problem
  * 
- * @param <V> The value of the state in the specific problem (e.g. Array of
- *            bottles in the Water Sort problem)
+ * @param value The value of the state in the specific problem (e.g. Array of
+ *              bottles in the Water Sort problem)
  */
-public abstract class SearchState<V> {
-    private final V value;
+public class SearchState {
+    private final Object value;
 
-    public SearchState(V value) {
+    public SearchState(Object value) {
         this.value = value;
     }
 
-    public V getValue() {
+    public Object getValue() {
         return value;
     }
 }

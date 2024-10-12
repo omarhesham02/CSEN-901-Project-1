@@ -6,9 +6,9 @@ import org.aiteam.code.generic.SearchState;
 
 import java.util.ArrayList;
 
-public class WaterSortProblem extends Problem<WaterSortState, WaterSortOperator> {
+public class WaterSortProblem extends Problem {
 
-    public WaterSortProblem(SearchState<Bottle[]> initialState) {
+    public WaterSortProblem(SearchState initialState) {
         super(initialState);
 
         // TODO: Pass the actual operators in a list here somehow
@@ -24,8 +24,8 @@ public class WaterSortProblem extends Problem<WaterSortState, WaterSortOperator>
      */
 
     @Override
-    public boolean isGoalNode(Node<Integer, Bottle[]> node) {
-        Bottle[] bottles = node.state().getValue();
+    public boolean isGoalNode(Node node) {
+        Bottle[] bottles = (Bottle[]) node.state().getValue();
 
         for (Bottle bottle : bottles) {
             // Check if the bottle is empty
@@ -47,7 +47,7 @@ public class WaterSortProblem extends Problem<WaterSortState, WaterSortOperator>
     }
 
     @Override
-    public int pathCost(Node<Integer, Bottle[]> node) {
+    public int pathCost(Node node) {
         return node.parent().pathCost() + node.operatorCost();
 
     }

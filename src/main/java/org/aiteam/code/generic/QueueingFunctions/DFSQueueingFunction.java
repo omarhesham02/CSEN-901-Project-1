@@ -6,7 +6,7 @@ import java.util.Queue;
 
 import org.aiteam.code.generic.Node;
 
-public class DFSQueueingFunction<T, V> implements QueueingFunction<T, V> {
+public class DFSQueueingFunction implements QueueingFunction {
     // @Override
     // public Queue<Node<T, V>> apply(Node<T, V> initialNode) {
     // PriorityQueue<Node<T, V>> priorityQueue = new PriorityQueue<>(
@@ -15,9 +15,9 @@ public class DFSQueueingFunction<T, V> implements QueueingFunction<T, V> {
     // return priorityQueue;
     // }
     @Override
-    public Queue<Node<T, V>> apply(Queue<Node<T, V>> queue, Node<T, V> node) {
+    public Queue<Node> apply(Queue<Node> queue, Node node) {
         // Add the node to the front of the queue (DFS behavior)
-        LinkedList<Node<T, V>> linkedList = (LinkedList<Node<T, V>>) queue;
+        LinkedList<Node> linkedList = (LinkedList<Node>) queue;
         linkedList.addFirst(node);
         return linkedList;
     }
