@@ -3,7 +3,7 @@ package org.aiteam.code.generic;
 /**
  * Represents a state in the search problem
  */
-public class SearchState implements Cloneable {
+public class SearchState {
     private final Object value;
 
     public SearchState(Object value) {
@@ -12,14 +12,5 @@ public class SearchState implements Cloneable {
 
     public Object getValue() {
         return value;
-    }
-
-    @Override
-    public SearchState clone() {
-        try {
-            return (SearchState) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 }

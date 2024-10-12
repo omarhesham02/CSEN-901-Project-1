@@ -1,5 +1,9 @@
 package org.aiteam.code.watersort;
 
+import org.aiteam.code.generic.FixedSizeStack;
+
+import java.util.Stack;
+
 public class WaterSortUtils {
     /**
      * Parses the initial state of the Water Sort problem from a string
@@ -23,12 +27,14 @@ public class WaterSortUtils {
 
         try {
             numberOfBottles = Integer.parseInt(parts[0]);
+            WaterSortSearch.numberOfBottles = numberOfBottles;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid number of bottles. Must be an integer.");
         }
 
         try {
             bottleCapacity = Integer.parseInt(parts[1]);
+            WaterSortSearch.bottleCapacity = bottleCapacity;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid bottle capacity. Must be an integer.");
         }
@@ -37,10 +43,15 @@ public class WaterSortUtils {
 
         for (int i = 2; i < parts.length; i++) {
             String[] strLayers = parts[i].split(",");
-            Color[] colorLayers = new Color[bottleCapacity];
+            FixedSizeStack<Color> colorLayers = new FixedSizeStack<>(bottleCapacity);
+
             for (int j = 0; j < strLayers.length; j++) {
-                colorLayers[j] = Color.valueOf(strLayers[j]);
+                // We don't consider 'e' as a color to save space
+                if (strLayers[j].equals("e"))
+                    continue;
+                colorLayers.setAt(j,Color.valueOf(strLayers[j]));
             }
+
             bottles[i - 2] = new Bottle(colorLayers);
         }
 

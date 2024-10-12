@@ -14,19 +14,19 @@ import org.aiteam.code.generic.QueueingFunctions.UCSQueueingFunction;
 
 public abstract class GenericSearch {
 
-    public static String generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
+    public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
         Queue<Node> nodes = makeQ(makeNode(problem.getInitialState()));
 
         while (!nodes.isEmpty()) {
             Node currentNode = removeFront(nodes);
 
             if (problem.goalTestFn(currentNode))
-                return currentNode.toString();
+                return currentNode;
 
             nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
         }
 
-        return "Failure";
+        return null;
     }
 
     private static ArrayDeque<Node> makeQ(Node node) {

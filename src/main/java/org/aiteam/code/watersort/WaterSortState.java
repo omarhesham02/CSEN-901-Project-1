@@ -34,4 +34,14 @@ public class WaterSortState extends SearchState {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Bottle[] bottles = (Bottle[]) getValue();
+        for (Bottle bottle : bottles) {
+            sb.append(bottle.toString()).append(";");
+        }
+        return sb.toString();
+    }
 }

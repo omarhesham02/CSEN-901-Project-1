@@ -1,7 +1,6 @@
 package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.Node;
-import org.aiteam.code.generic.Operator;
 import org.aiteam.code.generic.Problem;
 import org.aiteam.code.generic.SearchState;
 
@@ -46,12 +45,13 @@ public class WaterSortProblem extends Problem {
             Color topLayer = bottle.getTopLayer();
             int i = bottle.getCurrentCapacity();
 
-            while (i < bottle.getMaximumCapacity()) {
+            while (i < WaterSortSearch.bottleCapacity) {
                 if (!topLayer.equals(bottle.getTopLayer())) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 }
