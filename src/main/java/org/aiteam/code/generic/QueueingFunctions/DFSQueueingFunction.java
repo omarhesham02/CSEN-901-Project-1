@@ -6,6 +6,7 @@ import java.util.Queue;
 import org.aiteam.code.generic.Node;
 
 public class DFSQueueingFunction implements QueueingFunction {
+
     // @Override
     // public Queue<Node<T, V>> apply(Node<T, V> initialNode) {
     // PriorityQueue<Node<T, V>> priorityQueue = new PriorityQueue<>(

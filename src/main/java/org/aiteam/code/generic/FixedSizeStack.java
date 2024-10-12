@@ -8,7 +8,6 @@ package org.aiteam.code.generic;
 public class FixedSizeStack<T> implements Cloneable {
     private T[] stackArray;
     private int top;
-    private int start;
     private final int capacity;
 
     @SuppressWarnings("unchecked")

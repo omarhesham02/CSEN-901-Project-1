@@ -6,6 +6,7 @@ import java.util.Queue;
 import org.aiteam.code.generic.Node;
 
 public class GREEDY1QueueingFunction implements QueueingFunction {
+
     @Override
     public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
         // Implement the GREEDY1 specific logic here
