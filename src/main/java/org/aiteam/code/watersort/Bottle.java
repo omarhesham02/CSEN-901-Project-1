@@ -1,46 +1,58 @@
 package org.aiteam.code.watersort;
 
-import java.util.Arrays;
+import org.aiteam.code.generic.FixedSizeStack;
 
-public class Bottle {
+import java.util.Stack;
+
+public class Bottle implements Cloneable {
     // TODO: Maybe convert to Stack? Then implement the needed convenience methods
-    private final Color[] layers;
-    private int currentCapacity = 0;
+    private FixedSizeStack<Color> layers;
 
-    public Bottle(Color[] layers) {
+    public Bottle(FixedSizeStack<Color> layers) {
         this.layers = layers;
     }
 
     public Color getTopLayer() {
-        return layers[currentCapacity];
-    }
-
-    public int getCurrentCapacity() {
-        return currentCapacity;
-    }
-
-    public int getMaximumCapacity() {
-        return layers.length;
+        return layers.peek();
     }
 
     public Color removeTopLayer() {
-        // Remove the top layer and return it
-        Color topLayer = layers[currentCapacity];
-        layers[currentCapacity] = null;
-        currentCapacity--;
-        return topLayer;
+        if (!layers.isEmpty())
+            return layers.pop();
+        return null;
+    }
+
+    public int getCurrentCapacity() {
+        return layers.size();
     }
 
     public void addTopLayer(Color sourceTopLayer) {
-        layers[currentCapacity] = sourceTopLayer;
-        currentCapacity++;
+       if (layers.size() == WaterSortSearch.bottleCapacity)
+           return;
+
+       layers.push(sourceTopLayer);
     }
 
-    public String toString() {
-        return Arrays.toString(layers);
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < layers.size(); i++) {
+            sb.append(layers.get(i));
+            if (i != layers.size() - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
     }
 
-    public Color[] getLayers() {
-        return layers;
+    @Override
+    public Bottle clone() {
+        try {
+            Bottle clone = (Bottle) super.clone();
+            clone.layers = layers.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

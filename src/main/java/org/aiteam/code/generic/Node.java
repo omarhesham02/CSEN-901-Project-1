@@ -3,19 +3,19 @@ package org.aiteam.code.generic;
 public class Node {
 
     /** The state this node corresponds to. */
-    public SearchState state;
+    private final SearchState state;
 
     /** The parent node of this node. */
-    public Node parent;
+    private final Node parent;
 
     /** The operator applied from the parent state to reach this state. */
-    public Operator operator;
+    private final Operator operator;
 
     /** The depth of this node in the search tree. */
-    public int depth;
+    private final int depth;
 
     /** The cost of the path from the initial state to this node. */
-    public int pathCost;
+    private final int pathCost;
 
     public Node(SearchState state, Node parent, Operator operator, int depth, int pathCost) {
         this.state = state;
@@ -49,4 +49,8 @@ public class Node {
         return pathCost;
     }
 
+    @Override
+    public String toString() {
+        return state.toString();
+    }
 }
