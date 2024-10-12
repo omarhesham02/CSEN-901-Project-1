@@ -48,4 +48,5 @@ public class Node {
     public int getPathCost() {
         return pathCost;
     }
+
 }

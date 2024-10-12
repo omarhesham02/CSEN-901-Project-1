@@ -1,8 +1,6 @@
 package org.aiteam.code.generic;
 
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 import org.aiteam.code.generic.QueueingFunctions.AStar1QueueingFunction;
 import org.aiteam.code.generic.QueueingFunctions.AStar2QueueingFunction;
@@ -17,17 +15,13 @@ import org.aiteam.code.generic.QueueingFunctions.UCSQueueingFunction;
 public abstract class GenericSearch {
 
     public static String generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
-        SearchState initialState = problem.getInitialState();
-        Node initialNode = new Node(initialState);
-        Queue<Node> nodes = new PriorityQueue<>();
-        nodes = queueingFunction.apply(nodes, initialNode);
+        Queue<Node> nodes = makeQ(makeNode(problem.getInitialState()));
 
         while (!nodes.isEmpty()) {
-            Node currentNode = nodes.poll();
+            Node currentNode = removeFront(nodes);
 
-            if (problem.goalTestFn(currentNode)) {
+            if (problem.goalTestFn(currentNode))
                 return currentNode.toString();
-            }
 
             nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
         }
@@ -35,6 +29,19 @@ public abstract class GenericSearch {
         return "Failure";
     }
 
+    private static ArrayDeque<Node> makeQ(Node node) {
+        ArrayDeque<Node> q = new ArrayDeque<>();
+        q.add(node);
+        return q;
+    }
+
+    private static Node makeNode(SearchState state) {
+        return new Node(state);
+    }
+
+    private static Node removeFront(Queue<Node> nodes) {
+        return nodes.poll();
+    }
 
     public static QueueingFunction getQueueingFunction(String strategy) {
         return switch (strategy) {
@@ -50,7 +57,7 @@ public abstract class GenericSearch {
         };
     }
 
-    public static Node expand(Node parentNode, List<Operator> operators) {
+    private static Node expand(Node parentNode, List<Operator> operators) {
         for (Operator operator : operators) {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
@@ -63,6 +70,7 @@ public abstract class GenericSearch {
                 );
             }
         }
+
         return null;
     }
 }
