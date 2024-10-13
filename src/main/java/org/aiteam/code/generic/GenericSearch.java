@@ -47,10 +47,10 @@ public abstract class GenericSearch {
 
     public static QueueingFunction getQueueingFunction(String strategy) {
         return switch (strategy) {
-            case "BF" -> new BFSQueueingFunction();
-            case "DF" -> new DFSQueueingFunction();
-            case "ID" -> new IDSQueueingFunction();
-            case "UC" -> new UCSQueueingFunction();
+            case "BFS" -> new BFSQueueingFunction();
+            case "DFS" -> new DFSQueueingFunction();
+            case "IDS" -> new IDSQueueingFunction();
+            case "UCS" -> new UCSQueueingFunction();
             case "GR1" -> new GREEDY1QueueingFunction();
             case "GR2" -> new GREEDY2QueueingFunction();
             case "AS1" -> new AStar1QueueingFunction();
