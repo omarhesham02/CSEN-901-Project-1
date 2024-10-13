@@ -7,4 +7,5 @@ public enum Color {
     y,
     o;
     // We don't consider 'e' as a color to save space
+
 }
