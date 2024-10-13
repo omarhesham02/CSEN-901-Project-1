@@ -29,6 +29,10 @@ public class Bottle implements Cloneable {
         return layers;
     }
 
+    public void setLayers(FixedSizeStack<Color> layers) {
+        this.layers = layers;
+    }
+
     public boolean isEmpty() {
         return layers.isEmpty();
     }
