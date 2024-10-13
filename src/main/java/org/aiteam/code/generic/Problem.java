@@ -1,5 +1,6 @@
 package org.aiteam.code.generic;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Problem {
@@ -9,6 +10,11 @@ public abstract class Problem {
     public Problem(SearchState initialState, Set<Operator> operators) {
         this.initialState = initialState;
         this.operators = operators;
+    }
+
+    public Problem(SearchState initialState) {
+        this.initialState = initialState;
+        this.operators = new HashSet<>();
     }
 
     /**
