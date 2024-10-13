@@ -2,7 +2,7 @@ package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.FixedSizeStack;
 
-public class Bottle implements Cloneable {
+public class Bottle {
     private FixedSizeStack<Color> layers;
 
     public Bottle(FixedSizeStack<Color> layers) {
@@ -29,7 +29,7 @@ public class Bottle implements Cloneable {
     // -------------------------------------------------------- LayerGroup
     // operations
     public LayerGroup peekTopLayerGroup() {
-        FixedSizeStack<Color> layersCopy = layers.clone();
+        FixedSizeStack<Color> layersCopy = (FixedSizeStack<Color>) layers.copy();
         Color topColor = layersCopy.peek();
         int groupSize = 0;
         while (!layersCopy.isEmpty()) {
@@ -78,15 +78,9 @@ public class Bottle implements Cloneable {
         return layers.isEmpty();
     }
 
-    @Override
-    public Bottle clone() {
-        try {
-            Bottle clone = (Bottle) super.clone();
-            clone.layers = layers.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public Bottle copy() {
+        return new Bottle(layers.copy());
+
     }
 
     // equals
@@ -146,9 +140,9 @@ public class Bottle implements Cloneable {
 
         System.out.println("The two different Bottles with same colors are equal: " + bottle1.equals(bottle2));
 
-        // ----------------------------------test equality with clone
-        Bottle bottle3 = bottle1.clone();
-        System.out.println("The bottle and its clone are equal: " + bottle1.equals(bottle3));
+        // ----------------------------------test equality with copy
+        Bottle bottle3 = bottle1.copy();
+        System.out.println("The bottle and its copy are equal: " + bottle1.equals(bottle3));
 
         // --------------------------------- manipulate the clone and test equality
         bottle3.popTopLayer();

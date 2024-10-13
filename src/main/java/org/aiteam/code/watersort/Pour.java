@@ -8,6 +8,8 @@ public class Pour implements WaterSortOperator {
     private final int to;
 
     public Pour(int from, int to) {
+        if (from == to)
+            throw new IllegalArgumentException("cant create a pour operator with same src and dest index.");
         this.from = from;
         this.to = to;
     }
@@ -58,15 +60,22 @@ public class Pour implements WaterSortOperator {
     }
 
     private static OperatorResult pour(Bottle[] bottles, int from, int to) {
-        // Clone the bottles to avoid changing the original state
-        Bottle[] bottleClones = bottles.clone();
-        LayerGroup groupToPour = bottleClones[from].peekTopLayerGroup();
-        bottleClones[to].addLayerGroup(groupToPour);
-        return new OperatorResult(new WaterSortState(bottleClones), groupToPour.getSize());
+        // copy the bottles to avoid changing the original state
+        Bottle[] bottleCopies = new Bottle[bottles.length];
+        for (int i = 0; i < bottles.length; i++) {
+            bottleCopies[i] = (Bottle) bottles[i].copy();
+        }
+        LayerGroup groupToPour = bottleCopies[from].peekTopLayerGroup();
+        bottleCopies[to].addLayerGroup(groupToPour);
+        return new OperatorResult(new WaterSortState(bottleCopies), groupToPour.getSize());
     }
 
     @Override
     public String toString() {
         return "pour_" + from + "_" + to;
+    }
+
+    public static void main(String[] args) {
+        // Bottle b1 = new Bottle(
     }
 }
