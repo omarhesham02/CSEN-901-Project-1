@@ -90,6 +90,11 @@ public class Bottle {
         return layers.equals(other.layers);
     }
 
+    // hashcode
+    public int hashCode() {
+        return layers.hashCode();
+    }
+
     @Override
     public String toString() {
         /*
