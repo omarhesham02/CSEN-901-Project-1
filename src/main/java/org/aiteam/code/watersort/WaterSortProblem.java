@@ -43,10 +43,10 @@ public class WaterSortProblem extends Problem {
                 continue;
             }
 
-            Color topLayer = bottle.getTopLayer();
+            Color topColor = bottle.getTopLayer();
 
             for (int i = 0; i < bottle.getLayers().size(); i++)
-                if (!topLayer.equals(bottle.getLayers().get(i)))
+                if (!topColor.equals(bottle.getLayers().get(i)))
                     return false;
         }
 
