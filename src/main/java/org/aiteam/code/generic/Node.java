@@ -69,8 +69,8 @@ public class Node {
     @Override
     public String toString() {
         String result = "";
-        result += "Name: Node " + objectsCreated + "\n";
-        result += "State:  " + state.toString().replace(";", "     ") + "\n ";
+        result += "Name:  " + name + "\n";
+        result += "State:  " + state.toString().replace(";", "     ") + "\n";
         result += "Parent: " + (parent == null ? "null" : parent.getName()) + "\n";
         result += "Operator: " + (operator == null ? "null" : operator.toString()) + "\n";
         result += "Depth: " + depth + "\n";

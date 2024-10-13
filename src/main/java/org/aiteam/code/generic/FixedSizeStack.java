@@ -72,15 +72,22 @@ public class FixedSizeStack<T> implements Cloneable {
         return true;
     }
 
+    // hashCode
     @Override
-    public FixedSizeStack<T> clone() {
-        try {
-            FixedSizeStack<T> clone = (FixedSizeStack<T>) super.clone();
-            clone.stackArray = stackArray.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i <= top; i++) {
+            result = 31 * result + (stackArray[i] == null ? 0 : stackArray[i].hashCode());
         }
+        return result;
+    }
+
+    public FixedSizeStack<T> copy() {
+        FixedSizeStack<T> copy = new FixedSizeStack<>(capacity);
+        for (int i = 0; i < size(); i++) {
+            copy.push(stackArray[i]);
+        }
+        return copy;
     }
 
     // test equality of 2 FixedSizeStacks

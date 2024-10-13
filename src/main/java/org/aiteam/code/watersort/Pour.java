@@ -65,7 +65,7 @@ public class Pour implements WaterSortOperator {
         for (int i = 0; i < bottles.length; i++) {
             bottleCopies[i] = (Bottle) bottles[i].copy();
         }
-        LayerGroup groupToPour = bottleCopies[from].peekTopLayerGroup();
+        LayerGroup groupToPour = bottleCopies[from].popTopLayerGroup();
         bottleCopies[to].addLayerGroup(groupToPour);
         return new OperatorResult(new WaterSortState(bottleCopies), groupToPour.getSize());
     }
@@ -76,6 +76,5 @@ public class Pour implements WaterSortOperator {
     }
 
     public static void main(String[] args) {
-        // Bottle b1 = new Bottle(
     }
 }
