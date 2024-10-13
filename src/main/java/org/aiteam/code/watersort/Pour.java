@@ -18,11 +18,29 @@ public class Pour implements WaterSortOperator {
             return false;
 
         Bottle[] bottles = waterSortState.getBottles();
-        boolean src_not_empty = bottles[from].getCurrentSize() > 0;
-        int pouredAmount = bottles[from].peekTopLayerGroup().getSize();
+        // ---------------------------- src not empty
+        int pouredAmount = 0;
+        try {
+            pouredAmount = bottles[from].peekTopLayerGroup().getSize();
+        } catch (IllegalStateException e) {
+            // happens when peekTopLayerGroup() is called on an empty bottle
+            return false;
+        }
+
+        // ---------------------------- dest wont overflow
         boolean dest_wont_overflow = bottles[to].getCurrentSize() + pouredAmount <= WaterSortSearch.bottleCapacity;
-        boolean same_colour = bottles[from].getTopLayer().equals(bottles[to].getTopLayer());
-        return src_not_empty && dest_wont_overflow && (same_colour || bottles[to].isEmpty());
+
+        // ---------------------------- src top & dest top have same color
+        Color src_layer = bottles[from].getTopLayer();
+        Color dest_layer;
+        try {
+            dest_layer = bottles[to].getTopLayer();
+        } catch (IllegalStateException e) {
+            dest_layer = null;
+        }
+        boolean same_colour = src_layer == dest_layer;
+        // ----------------------------- final check
+        return dest_wont_overflow && (same_colour || bottles[to].isEmpty());
 
     }
 

@@ -1,20 +1,22 @@
 package org.aiteam.code.generic;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Problem {
     private final SearchState initialState;
-    private Set<Operator> operators;
+    private List<Operator> operators;
 
-    public Problem(SearchState initialState, Set<Operator> operators) {
+    public Problem(SearchState initialState, List<Operator> operators) {
         this.initialState = initialState;
         this.operators = operators;
     }
 
     public Problem(SearchState initialState) {
         this.initialState = initialState;
-        this.operators = new HashSet<>();
+        this.operators = new LinkedList<>();
     }
 
     /**
@@ -35,11 +37,11 @@ public abstract class Problem {
         return initialState;
     }
 
-    public Set<Operator> getOperators() {
+    public List<Operator> getOperators() {
         return operators;
     }
 
-    public void setOperators(Set<Operator> operators) {
+    public void setOperators(List<Operator> operators) {
         this.operators = operators;
     }
 

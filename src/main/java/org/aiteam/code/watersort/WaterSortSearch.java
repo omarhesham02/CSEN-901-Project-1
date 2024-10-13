@@ -1,6 +1,8 @@
 package org.aiteam.code.watersort;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.aiteam.code.generic.GenericSearch;
 import org.aiteam.code.generic.Node;
@@ -44,4 +46,15 @@ public class WaterSortSearch extends GenericSearch {
 
         return plan + ";" + pathCost + ";" + nodesExpanded;
     }
+
+    public static void main(String[] args) {
+        // test case in project desc
+
+        String init = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
+                "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
+
+        System.out.println(solve(init, "BF", true));
+
+    }
+
 }
