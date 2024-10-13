@@ -2,6 +2,7 @@ package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.FixedSizeStack;
 import org.aiteam.code.generic.SearchState;
+import java.util.Arrays;
 
 public class WaterSortState extends SearchState {
 
@@ -32,6 +33,13 @@ public class WaterSortState extends SearchState {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        // 2 states are equal if they contins the same bottles array
+        return Arrays.hashCode((Bottle[]) getValue());
+
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.aiteam.code.generic.QueueingFunctions.UCSQueueingFunction;
 public abstract class GenericSearch {
 
     public static int nodesExpanded = 0;
+    private static Set<SearchState> exploredStates = new HashSet<>();
 
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
 
@@ -30,7 +31,6 @@ public abstract class GenericSearch {
                 solutionNode = currentNode;
                 break;
             }
-
             nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
         }
         if (visualize)
@@ -72,6 +72,11 @@ public abstract class GenericSearch {
         for (Operator operator : operators) {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
+                // Avoid exploring the same state again
+                if (exploredStates.contains(operatorResult.getState())) {
+                    continue;
+                }
+
                 Node childNode = new Node(
                         operatorResult.getState(),
                         parentNode,
@@ -79,6 +84,7 @@ public abstract class GenericSearch {
                         parentNode.getDepth() + 1,
                         parentNode.getPathCost() + operatorResult.getOperatorCost());
                 nodes.add(childNode);
+                exploredStates.add(operatorResult.getState());
             }
         }
 
@@ -93,7 +99,7 @@ public abstract class GenericSearch {
     }
 
     private static void printTree(Node node, String prefix, boolean isTail) {
-        String stateText = "[" + node.getState().toString().replace(";", "    ") + "]";
+        String stateText = "[" + node.getState().toString().replace(";", "    ") + "]\n";
         String operatorText = node.getOperator() == null ? "" : node.getOperator().toString() + " --->  ";
         System.out.println(
                 prefix + (isTail ? "└── " : "├──") + operatorText + node.getName() + "   "

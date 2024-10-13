@@ -33,7 +33,7 @@ public class WaterSortSearch extends GenericSearch {
 
         while (solutionNode.getParent() != null) {
             Operator operator = solutionNode.getOperator();
-            planBuilder.addFirst(",");
+            // planBuilder.addFirst(",");
             planBuilder.addFirst(operator.toString());
             solutionNode = solutionNode.getParent();
         }
@@ -41,11 +41,20 @@ public class WaterSortSearch extends GenericSearch {
         if (planBuilder.size() > 0)
             planBuilder.removeLast();
 
-        String plan = planBuilder.toString();
+        String plan = formPlanString(planBuilder);
         String pathCost = solutionNode.getPathCost() + "";
         String nodesExpanded = GenericSearch.nodesExpanded + "";
 
         return plan + ";" + pathCost + ";" + nodesExpanded;
+    }
+
+    public static String formPlanString(List<String> list) {
+        String result = list.toString();
+        // alter the output of LinkedList.toString() to suit our desirable format;
+        result = result.substring(1, result.length() - 1);
+        result = result.replace(" ", "");
+        return result;
+
     }
 
     public static void main(String[] args) {
