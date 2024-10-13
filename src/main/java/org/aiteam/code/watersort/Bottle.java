@@ -90,4 +90,29 @@ public class Bottle implements Cloneable {
 
         return sb.toString();
     }
+
+    // test equality of 2 bottles
+    public static void main(String[] args) {
+        // Create FixedSizeStack<Color> layers for the first Bottle
+        FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
+        layers1.push(Color.r);
+        layers1.push(Color.g);
+        layers1.push(Color.b);
+
+        // Create the first Bottle with the layers
+        Bottle bottle1 = new Bottle(layers1);
+
+        // Create FixedSizeStack<Color> layers for the second Bottle
+        FixedSizeStack<Color> layers2 = new FixedSizeStack<>(3);
+        layers2.push(Color.r);
+        layers2.push(Color.g);
+        layers2.push(Color.b);
+
+        // Create the second Bottle with the layers
+        Bottle bottle2 = new Bottle(layers2);
+
+        // Test the equality of the two Bottle objects
+        boolean areEqual = bottle1.equals(bottle2);
+        System.out.println("The two Bottle objects are equal: " + areEqual);
+    }
 }
