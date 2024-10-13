@@ -9,24 +9,65 @@ public class Bottle implements Cloneable {
         this.layers = layers;
     }
 
+    // ---------------------------------------------------- single layer operations
+    public FixedSizeStack<Color> getLayers() {
+        return layers;
+    }
+
     public Color getTopLayer() {
         if (layers.isEmpty())
             throw new IllegalStateException("Cannot peek top layer from an empty bottle");
         return layers.peek();
     }
 
-    public Color removeTopLayer() {
+    public Color popTopLayer() {
         if (layers.isEmpty())
             throw new IllegalStateException("Cannot remove top layer from an empty bottle");
         return layers.pop();
     }
 
-    public int getCurrentCapacity() {
-        return layers.size();
+    // -------------------------------------------------------- LayerGroup
+    // operations
+    public LayerGroup peekTopLayerGroup() {
+        FixedSizeStack<Color> layersCopy = layers.clone();
+        Color topColor = layersCopy.peek();
+        int groupSize = 0;
+        while (!layersCopy.isEmpty()) {
+            Color curColor = layersCopy.pop();
+            if (curColor.equals(topColor))
+                groupSize++;
+            else
+                break;
+        }
+        if (groupSize == 0)
+            return null;
+        return new LayerGroup(topColor, groupSize);
     }
 
-    public FixedSizeStack<Color> getLayers() {
-        return layers;
+    public LayerGroup popTopLayerGroup() {
+        if (layers.isEmpty())
+            throw new IllegalStateException("Cannot remove top LayerGroup from an empty bottle");
+        LayerGroup topLayerGroup = peekTopLayerGroup();
+        int topLayerGroupSize = topLayerGroup.getSize();
+        while (topLayerGroupSize-- > 0) {
+            layers.pop();
+        }
+        return topLayerGroup;
+    }
+
+    public void addLayerGroup(LayerGroup layerGroup) {
+        int layerGroupSize = layerGroup.getSize();
+        int final_size = layers.size() + layerGroupSize;
+        if (final_size > WaterSortSearch.bottleCapacity)
+            throw new IllegalStateException("bottle will overflow if we added the layer !");
+        while (layerGroupSize-- > 0) {
+            layers.push(layerGroup.getColor());
+        }
+    }
+
+    // ------------------------------------------------------- common
+    public int getCurrentSize() {
+        return layers.size();
     }
 
     public void setLayers(FixedSizeStack<Color> layers) {
@@ -35,12 +76,6 @@ public class Bottle implements Cloneable {
 
     public boolean isEmpty() {
         return layers.isEmpty();
-    }
-
-    public void addTopLayer(Color sourceTopLayer) {
-        if (layers.isFull())
-            throw new IllegalStateException("Cannot add layer to a full bottle");
-        layers.push(sourceTopLayer);
     }
 
     @Override
@@ -93,26 +128,31 @@ public class Bottle implements Cloneable {
 
     // test equality of 2 bottles
     public static void main(String[] args) {
-        // Create FixedSizeStack<Color> layers for the first Bottle
+
+        // ----------------------------------- test equality of 2
+        // different bottles with same colors
+
         FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
         layers1.push(Color.r);
         layers1.push(Color.g);
         layers1.push(Color.b);
-
-        // Create the first Bottle with the layers
         Bottle bottle1 = new Bottle(layers1);
 
-        // Create FixedSizeStack<Color> layers for the second Bottle
         FixedSizeStack<Color> layers2 = new FixedSizeStack<>(3);
         layers2.push(Color.r);
         layers2.push(Color.g);
         layers2.push(Color.b);
-
-        // Create the second Bottle with the layers
         Bottle bottle2 = new Bottle(layers2);
 
-        // Test the equality of the two Bottle objects
-        boolean areEqual = bottle1.equals(bottle2);
-        System.out.println("The two Bottle objects are equal: " + areEqual);
+        System.out.println("The two different Bottles with same colors are equal: " + bottle1.equals(bottle2));
+
+        // ----------------------------------test equality with clone
+        Bottle bottle3 = bottle1.clone();
+        System.out.println("The bottle and its clone are equal: " + bottle1.equals(bottle3));
+
+        // --------------------------------- manipulate the clone and test equality
+        bottle3.popTopLayer();
+        System.out.println("Manipulating the clone makes it different from the original: " + !bottle1.equals(bottle3));
+
     }
 }
