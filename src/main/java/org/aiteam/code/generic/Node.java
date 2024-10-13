@@ -17,12 +17,18 @@ public class Node {
     /** The cost of the path from the initial state to this node. */
     private final int pathCost;
 
+    private final String name;
+
+    private static int objectsCreated = 0;
+
     public Node(SearchState state, Node parent, Operator operator, int depth, int pathCost) {
         this.state = state;
         this.parent = parent;
         this.operator = operator;
         this.depth = depth;
         this.pathCost = pathCost;
+        this.name = "Node " + objectsCreated;
+        objectsCreated++;
     }
 
     public Node(SearchState state) {
@@ -49,9 +55,20 @@ public class Node {
         return pathCost;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
-        return state.toString();
+        String result = "";
+        result += "Name: Node " + objectsCreated + "\n";
+        result += "State:  " + state.toString().replace(";", "     ") + "\n ";
+        result += "Parent: " + (parent == null ? "null" : parent.getName()) + "\n";
+        result += "Operator: " + (operator == null ? "null" : operator.toString()) + "\n";
+        result += "Depth: " + depth + "\n";
+        result += "Path cost: " + pathCost + "\n";
+        return result;
     }
 
 }
