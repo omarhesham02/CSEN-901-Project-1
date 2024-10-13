@@ -1,11 +1,13 @@
 package org.aiteam.code.generic;
 
+import java.util.HashSet;
 import java.util.List;
 import org.aiteam.code.generic.Operator;
+import java.util.Set;
 
 public abstract class Problem {
     private final SearchState initialState;
-    private List<Operator> operators;
+    private Set<Operator> operators;
 
     public Problem(SearchState initialState, List<Operator> operators) {
         this.initialState = initialState;
@@ -30,11 +32,16 @@ public abstract class Problem {
         return initialState;
     }
 
-    public List<Operator> getOperators() {
+    public Set<Operator> getOperators() {
         return operators;
     }
-
+=======
+    public void setOperators(Set<Operator> operators) {
+        this.operators = operators;
+  
     public void addOperator(Operator operator) {
-        operators.add(operator);
+      this.operators.add(operator);
+    }
+  
     }
 }

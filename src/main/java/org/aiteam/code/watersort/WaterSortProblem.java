@@ -49,7 +49,6 @@ public class WaterSortProblem extends Problem {
                 if (!topLayer.equals(bottle.getLayers().get(i)))
                     return false;
         }
-
         return true;
     }
 }
