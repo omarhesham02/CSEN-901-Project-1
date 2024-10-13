@@ -3,8 +3,11 @@ package org.aiteam.code.watersort;
 import org.aiteam.code.generic.Node;
 import org.aiteam.code.generic.Problem;
 import org.aiteam.code.generic.SearchState;
+import org.aiteam.code.generic.Operator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WaterSortProblem extends Problem {
 
@@ -15,11 +18,10 @@ public class WaterSortProblem extends Problem {
         // to the list of operators
         WaterSortState state = (WaterSortState) initialState;
         Bottle[] bottles = state.getBottles();
-        this.operators = new ArrayList<>();
         for (int i = 0; i < bottles.length; i++) {
             for (int j = 0; j < bottles.length; j++) {
                 if (i != j) {
-                    this.operators.add(new Pour(i, j));
+                    getOperators().add(new Pour(i, j));
                 }
             }
         }
@@ -27,7 +29,8 @@ public class WaterSortProblem extends Problem {
 
     /**
      * Check if the current state is the goal state.
-     * A state is a goal state if all the layers in every bottle in this state has the same color.
+     * A state is a goal state if all the layers in every bottle in this state has
+     * the same color.
      *
      * @return true if the current state is the goal state, false otherwise
      */

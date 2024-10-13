@@ -2,6 +2,7 @@ package org.aiteam.code.generic.QueueingFunctions;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import org.aiteam.code.generic.Node;
 
@@ -15,10 +16,10 @@ public class DFSQueueingFunction implements QueueingFunction {
     // return priorityQueue;
     // }
     @Override
-    public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
+    public Queue<Node> apply(Queue<Node> queue, Set<Node> nodes) {
         // Add the node to the front of the queue (DFS behavior)
-//        LinkedList<Node> linkedList = (LinkedList<Node>) queue;
-//        linkedList.addFirst(node);
+        // LinkedList<Node> linkedList = (LinkedList<Node>) queue;
+        // linkedList.addFirst(node);
         queue.addAll(nodes);
         return queue;
     }
