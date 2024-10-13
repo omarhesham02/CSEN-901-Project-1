@@ -12,7 +12,7 @@ import java.util.Set;
 public class WaterSortProblem extends Problem {
 
     public WaterSortProblem(SearchState initialState) {
-        super(initialState);
+        super(initialState, new ArrayList<>());
 
         // Add all possible combinations of operators between distinct bottles
         // to the list of operators
@@ -21,7 +21,7 @@ public class WaterSortProblem extends Problem {
         for (int i = 0; i < bottles.length; i++) {
             for (int j = 0; j < bottles.length; j++) {
                 if (i != j) {
-                    getOperators().add(new Pour(i, j));
+                    this.addOperator(new Pour(i, j));
                 }
             }
         }
@@ -49,7 +49,6 @@ public class WaterSortProblem extends Problem {
                 if (!topColor.equals(bottle.getLayers().get(i)))
                     return false;
         }
-
         return true;
     }
 }
