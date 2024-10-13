@@ -3,16 +3,12 @@ package org.aiteam.code.watersort;
 import org.aiteam.code.generic.Node;
 import org.aiteam.code.generic.Problem;
 import org.aiteam.code.generic.SearchState;
-import org.aiteam.code.generic.Operator;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class WaterSortProblem extends Problem {
 
     public WaterSortProblem(SearchState initialState) {
-        super(initialState, new ArrayList<>());
+        super(initialState, new HashSet<>());
 
         // Add all possible combinations of operators between distinct bottles
         // to the list of operators

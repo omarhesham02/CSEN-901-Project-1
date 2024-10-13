@@ -1,7 +1,6 @@
 package org.aiteam.code.watersort;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import org.aiteam.code.generic.GenericSearch;
 import org.aiteam.code.generic.Node;

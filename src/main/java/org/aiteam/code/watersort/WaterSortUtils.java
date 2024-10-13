@@ -2,8 +2,6 @@ package org.aiteam.code.watersort;
 
 import org.aiteam.code.generic.FixedSizeStack;
 
-import java.util.Stack;
-
 public class WaterSortUtils {
     /**
      * Parses the initial state of the Water Sort problem from a string
@@ -19,7 +17,8 @@ public class WaterSortUtils {
         // a part for the bottle capacity,
         // and a part for at least ONE bottle.
         if (parts.length < 3) {
-            throw new IllegalArgumentException("Invalid initial state format. Must have at least 3 parts separated by ';'");
+            throw new IllegalArgumentException(
+                    "Invalid initial state format. Must have at least 3 parts separated by ';'");
         }
 
         int numberOfBottles;
