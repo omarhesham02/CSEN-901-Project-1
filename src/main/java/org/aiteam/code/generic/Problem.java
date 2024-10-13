@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class Problem {
     private final SearchState initialState;
-    protected List<Operator> operators;
+    private List<Operator> operators;
 
     public Problem(SearchState initialState) {
         this.initialState = initialState;
@@ -18,12 +18,12 @@ public abstract class Problem {
     /**
      * Path cost function for a generic search problem.
      */
-//    public abstract int pathCostFn(Node node);
+    // public abstract int pathCostFn(Node node);
 
     /**
      * Transition function for a generic search problem.
      */
-//    public abstract Node transitionFn(Node node, Operator operator);
+    // public abstract Node transitionFn(Node node, Operator operator);
 
     public SearchState getInitialState() {
         return initialState;
