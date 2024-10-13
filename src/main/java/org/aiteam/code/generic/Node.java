@@ -1,5 +1,7 @@
 package org.aiteam.code.generic;
 
+import java.util.Stack;
+
 public class Node {
 
     /** The state this node corresponds to. */
@@ -53,4 +55,5 @@ public class Node {
     public String toString() {
         return state.toString();
     }
+
 }

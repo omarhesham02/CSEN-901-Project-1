@@ -1,5 +1,8 @@
 package org.aiteam.code.watersort;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.aiteam.code.generic.GenericSearch;
 import org.aiteam.code.generic.Node;
 import org.aiteam.code.generic.Operator;
@@ -24,16 +27,19 @@ public class WaterSortSearch extends GenericSearch {
 
         System.out.println("Solution: " + solutionNode);
 
-        StringBuilder planSb = new StringBuilder();
+        LinkedList<String> planBuilder = new LinkedList<String>();
 
         while (solutionNode.getParent() != null) {
             Operator operator = solutionNode.getOperator();
-            // TODO: Fix extra comma error
-            planSb.insert(0, operator.toString() + ",");
+            planBuilder.addFirst(",");
+            planBuilder.addFirst(operator.toString());
             solutionNode = solutionNode.getParent();
         }
+        // Remove the last comma
+        if (planBuilder.size() > 0)
+            planBuilder.removeLast();
 
-        String plan = planSb.toString();
+        String plan = planBuilder.toString();
         String pathCost = solutionNode.getPathCost() + "";
         String nodesExpanded = GenericSearch.nodesExpanded + "";
 
