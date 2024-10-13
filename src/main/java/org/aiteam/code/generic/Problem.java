@@ -1,13 +1,16 @@
 package org.aiteam.code.generic;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class Problem {
     private final SearchState initialState;
-    private List<Operator> operators;
+    private Set<Operator> operators;
 
     public Problem(SearchState initialState) {
         this.initialState = initialState;
+        this.operators = new HashSet<>();
     }
 
     /**
@@ -29,7 +32,11 @@ public abstract class Problem {
         return initialState;
     }
 
-    public List<Operator> getOperators() {
+    public Set<Operator> getOperators() {
         return operators;
+    }
+
+    public void setOperators(Set<Operator> operators) {
+        this.operators = operators;
     }
 }
