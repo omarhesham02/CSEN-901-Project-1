@@ -17,6 +17,9 @@ public abstract class GenericSearch {
     public static int nodesExpanded = 0;
 
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
+
+        int iteration = 1;
+
         Queue<Node> nodes = makeQ(makeNode(problem.getInitialState()));
 
         while (!nodes.isEmpty()) {
@@ -26,6 +29,11 @@ public abstract class GenericSearch {
                 return currentNode;
 
             nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
+
+            if (visualize) {
+                System.out.println("Iteration: " + iteration++ + "-------------------------------------");
+                System.out.println("Nodes: " + nodes);
+            }
         }
 
         return null;
@@ -59,8 +67,8 @@ public abstract class GenericSearch {
         };
     }
 
-    private static Set<Node> expand(Node parentNode, Set<Operator> operators) {
-        Set<Node> nodes = new HashSet<>();
+    private static List<Node> expand(Node parentNode, List<Operator> operators) {
+        List<Node> nodes = new LinkedList<>();
 
         for (Operator operator : operators) {
             if (operator.isApplicable(parentNode.getState())) {
@@ -79,4 +87,5 @@ public abstract class GenericSearch {
 
         return nodes;
     }
+
 }
