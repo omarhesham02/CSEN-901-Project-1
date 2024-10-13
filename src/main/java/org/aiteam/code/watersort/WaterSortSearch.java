@@ -16,6 +16,7 @@ public class WaterSortSearch extends GenericSearch {
 
     public static String solve(String initialState, String strategy, boolean visualize) {
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
+        System.err.println("Parsed initial state: " + parsedInitialState);
 
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState);
 
@@ -52,7 +53,7 @@ public class WaterSortSearch extends GenericSearch {
 
         String initState = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
                 "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
-        String strategy = "BF";
+        String strategy = "DF";
         boolean visualize = true;
 
         System.out.println(solve(initState, strategy, visualize));

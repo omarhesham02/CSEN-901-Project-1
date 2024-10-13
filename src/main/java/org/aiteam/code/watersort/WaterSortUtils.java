@@ -42,13 +42,17 @@ public class WaterSortUtils {
 
         for (int i = 2; i < parts.length; i++) {
             String[] strLayers = parts[i].split(",");
+            if (strLayers.length != bottleCapacity) {
+                throw new IllegalArgumentException(
+                        "Invalid bottle " + parts[i] + ". Must be of length " + bottleCapacity);
+            }
             FixedSizeStack<Color> colorLayers = new FixedSizeStack<>(bottleCapacity);
 
-            for (int j = 0; j < strLayers.length; j++) {
-                // We don't consider 'e' as a color to save space
-                if (strLayers[bottleCapacity - 1 - j].equals("e"))
-                    continue;
-                colorLayers.push(Color.valueOf(strLayers[bottleCapacity - 1 - j]));
+            for (int j = strLayers.length - 1; j >= 0; j--) {// reverse order (see note in Node.toString()) )
+                // We don't consider 'e' as a color to save spacce
+                String colorLetter = strLayers[j];
+                if (!colorLetter.equals("e"))
+                    colorLayers.push(Color.valueOf(colorLetter));
             }
 
             bottles[i - 2] = new Bottle(colorLayers);
