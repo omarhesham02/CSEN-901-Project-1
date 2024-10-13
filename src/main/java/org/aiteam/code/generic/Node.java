@@ -1,5 +1,8 @@
 package org.aiteam.code.generic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
 
     /** The state this node corresponds to. */
@@ -17,9 +20,12 @@ public class Node {
     /** The cost of the path from the initial state to this node. */
     private final int pathCost;
 
+    // next fields are for visualization purposes
     private final String name;
 
     private static int objectsCreated = 0;
+
+    private List<Node> children;
 
     public Node(SearchState state, Node parent, Operator operator, int depth, int pathCost) {
         this.state = state;
@@ -29,6 +35,7 @@ public class Node {
         this.pathCost = pathCost;
         this.name = "Node " + objectsCreated;
         objectsCreated++;
+        children = new ArrayList<>();
     }
 
     public Node(SearchState state) {
@@ -67,8 +74,16 @@ public class Node {
         result += "Parent: " + (parent == null ? "null" : parent.getName()) + "\n";
         result += "Operator: " + (operator == null ? "null" : operator.toString()) + "\n";
         result += "Depth: " + depth + "\n";
-        result += "Path cost: " + pathCost + "\n";
+        result += "Path cost: " + pathCost + "\n\n";
         return result;
+    }
+
+    public List<Node> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Node> children) {
+        this.children = children;
     }
 
 }
