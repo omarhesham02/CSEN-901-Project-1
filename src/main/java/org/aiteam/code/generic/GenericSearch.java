@@ -59,19 +59,18 @@ public abstract class GenericSearch {
         };
     }
 
-    private static List<Node> expand(Node parentNode, List<Operator> operators) {
-        List<Node> nodes = new ArrayList<>();
+    private static Set<Node> expand(Node parentNode, Set<Operator> operators) {
+        Set<Node> nodes = new HashSet<>();
 
         for (Operator operator : operators) {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
                 Node childNode = new Node(
-                    operatorResult.getState(),
-                    parentNode,
-                    operator,
-                    parentNode.getDepth() + 1,
-                    parentNode.getPathCost() + operatorResult.getOperatorCost()
-                );
+                        operatorResult.getState(),
+                        parentNode,
+                        operator,
+                        parentNode.getDepth() + 1,
+                        parentNode.getPathCost() + operatorResult.getOperatorCost());
                 nodes.add(childNode);
             }
         }

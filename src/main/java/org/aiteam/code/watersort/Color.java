@@ -5,6 +5,6 @@ public enum Color {
     g,
     b,
     y,
-    o
+    o;
     // We don't consider 'e' as a color to save space
 }
