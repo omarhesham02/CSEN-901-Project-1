@@ -57,6 +57,19 @@ public class FixedSizeStack<T> implements Cloneable {
         return top + 1;
     }
 
+    // used in other parts of the code, care !
+    public boolean equals(Object obj) {
+        if (!(obj instanceof FixedSizeStack other))
+            return false;
+        if (size() != other.size())
+            return false;
+        for (int i = 0; i < size(); i++) {
+            if (!stackArray[i].equals(other.stackArray[i]))
+                return false;
+        }
+        return true;
+    }
+
     @Override
     public FixedSizeStack<T> clone() {
         try {

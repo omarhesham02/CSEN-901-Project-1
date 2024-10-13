@@ -10,13 +10,15 @@ public class Bottle implements Cloneable {
     }
 
     public Color getTopLayer() {
+        if (layers.isEmpty())
+            throw new IllegalStateException("Cannot peek top layer from an empty bottle");
         return layers.peek();
     }
 
     public Color removeTopLayer() {
-        if (!layers.isEmpty())
-            return layers.pop();
-        return null;
+        if (layers.isEmpty())
+            throw new IllegalStateException("Cannot remove top layer from an empty bottle");
+        return layers.pop();
     }
 
     public int getCurrentCapacity() {
@@ -32,30 +34,9 @@ public class Bottle implements Cloneable {
     }
 
     public void addTopLayer(Color sourceTopLayer) {
-       if (layers.size() == WaterSortSearch.bottleCapacity)
-           return;
-
-       layers.push(sourceTopLayer);
-    }
-
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < WaterSortSearch.bottleCapacity - layers.size(); i++) {
-            sb.append("e");
-            if (i != WaterSortSearch.bottleCapacity - 1)
-                sb.append(",");
-        }
-
-        for (int i = layers.size() - 1; i >= 0; i--) {
-            sb.append(layers.get(i));
-            if (i != 0) {
-                sb.append(",");
-            }
-        }
-
-        return sb.toString();
+        if (layers.isFull())
+            throw new IllegalStateException("Cannot add layer to a full bottle");
+        layers.push(sourceTopLayer);
     }
 
     @Override
@@ -67,5 +48,42 @@ public class Bottle implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    // equals
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Bottle other))
+            return false;
+        return layers.equals(other.layers);
+    }
+
+    @Override
+    public String toString() {
+        /*
+         * remember the message from whatsapp :
+         * -
+         * e
+         * e
+         * b --------> [e, e, b, r, y]
+         * r
+         * y
+         * -
+         * 
+         */
+        StringBuilder sb = new StringBuilder();
+
+        int emptyColorsCount = WaterSortSearch.bottleCapacity - layers.size();
+        while (emptyColorsCount-- > 0) {
+            sb.append("e,");
+        }
+
+        for (int i = layers.size() - 1; i >= 0; i--) {
+            sb.append(layers.get(i) + ",");
+        }
+        // remove last comma
+        if (sb.length() > 0)
+            sb.setLength(sb.length() - 1);
+
+        return sb.toString();
     }
 }
