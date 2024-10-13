@@ -46,25 +46,19 @@ public class WaterSortState extends SearchState {
 
     // test equality of 2 watersort states
     public static void main(String[] args) {
-        // Create FixedSizeStack<Color> layers for the first WaterSortState
         FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
         layers1.push(Color.r);
         layers1.push(Color.g);
         layers1.push(Color.b);
+        Bottle bottle1 = new Bottle(layers1);
 
         FixedSizeStack<Color> layers2 = new FixedSizeStack<>(3);
         layers2.push(Color.y);
         layers2.push(Color.o);
-
-        // Create Bottle objects with the layers
-        Bottle bottle1 = new Bottle(layers1);
         Bottle bottle2 = new Bottle(layers2);
 
-        // Create the first WaterSortState with an array of bottles
-        Bottle[] bottles1 = { bottle1, bottle2 };
-        WaterSortState state1 = new WaterSortState(bottles1);
+        WaterSortState state1 = new WaterSortState(new Bottle[] { bottle1, bottle2 });
 
-        // Create FixedSizeStack<Color> layers for the second WaterSortState
         FixedSizeStack<Color> layers3 = new FixedSizeStack<>(3);
         layers3.push(Color.r);
         layers3.push(Color.g);
@@ -78,9 +72,7 @@ public class WaterSortState extends SearchState {
         Bottle bottle3 = new Bottle(layers3);
         Bottle bottle4 = new Bottle(layers4);
 
-        // Create the second WaterSortState with an array of bottles
-        Bottle[] bottles2 = { bottle3, bottle4 };
-        WaterSortState state2 = new WaterSortState(bottles2);
+        WaterSortState state2 = new WaterSortState(new Bottle[] { bottle3, bottle4 });
 
         // Test the equality of the two WaterSortState objects
         boolean areEqual = state1.equals(state2);

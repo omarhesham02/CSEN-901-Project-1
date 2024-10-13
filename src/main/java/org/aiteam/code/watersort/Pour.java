@@ -14,48 +14,41 @@ public class Pour implements WaterSortOperator {
 
     @Override
     public boolean isApplicable(SearchState state) {
-        if (state instanceof WaterSortState waterSortState) {
-            Bottle[] bottles = waterSortState.getBottles();
-            return bottles[from].getCurrentCapacity() > 0
-                    && bottles[to].getCurrentCapacity() < WaterSortSearch.bottleCapacity;
-        }
-        return false;
+        if (!(state instanceof WaterSortState waterSortState))
+            return false;
+
+        Bottle[] bottles = waterSortState.getBottles();
+        boolean src_not_empty = bottles[from].getCurrentSize() > 0;
+        int pouredAmount = bottles[from].peekTopLayerGroup().getSize();
+        boolean dest_wont_overflow = bottles[to].getCurrentSize() + pouredAmount <= WaterSortSearch.bottleCapacity;
+        boolean same_colour = bottles[from].getTopLayer().equals(bottles[to].getTopLayer());
+        return src_not_empty && dest_wont_overflow && (same_colour || bottles[to].isEmpty());
+
     }
 
     @Override
     public OperatorResult apply(SearchState state) {
-        if (state instanceof WaterSortState waterSortState) {
-            Bottle[] bottles = waterSortState.getBottles();
-            if (isApplicable(waterSortState))
-                return pour(bottles, from, to);
-            return null;
-        }
-        return null;
+        if (!(state instanceof WaterSortState waterSortState))
+            throw new IllegalArgumentException("input state is not a WaterSortState");
+
+        Bottle[] bottles = waterSortState.getBottles();
+        if (!isApplicable(waterSortState))
+            throw new IllegalArgumentException("Operator is not applicable to the given state.");
+
+        return pour(bottles, from, to);
+
     }
 
-    // TODO: Review the clone behavior for bugs
     private static OperatorResult pour(Bottle[] bottles, int from, int to) {
         // Clone the bottles to avoid changing the original state
-        Bottle [] bottleClones = bottles.clone();
-
-        Bottle source = bottleClones[from];
-        Bottle destination = bottleClones[to];
-
-        int layersPoured = 0;
-
-        while (source.getCurrentCapacity() > 0
-                && destination.getCurrentCapacity() < WaterSortSearch.bottleCapacity
-                && (destination.getCurrentCapacity() == 0 || source.getTopLayer().equals(destination.getTopLayer())
-        )) {
-            destination.addTopLayer(source.removeTopLayer());
-            layersPoured++;
-        }
-
-        return new OperatorResult(new WaterSortState(bottleClones), layersPoured);
+        Bottle[] bottleClones = bottles.clone();
+        LayerGroup groupToPour = bottleClones[from].peekTopLayerGroup();
+        bottleClones[to].addLayerGroup(groupToPour);
+        return new OperatorResult(new WaterSortState(bottleClones), groupToPour.getSize());
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "pour_" + from + "_" + to;
     }
 }
