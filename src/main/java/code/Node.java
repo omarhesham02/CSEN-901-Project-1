@@ -23,10 +23,9 @@ public class Node {
     /** The cost of the path from the initial state to this node. */
     private final int pathCost;
 
-    // next fields are for visualization purposes
+    // Next fields are for visualization purposes
     private int orderOfVisiting;
-
-    private List<Node> children;
+    private List<Node> children;     // TODO: Storing this is not efficient, but is used currently for visualization
 
     public Node(SearchState state, Node parent, Operator operator, int depth, int pathCost, int orderOfVisiting) {
         this.state = state;
@@ -78,16 +77,15 @@ public class Node {
         return orderOfVisiting;
     }
 
+    // TODO: Convert this method to use StringBuilder
     @Override
     public String toString() {
-        String result = "";
-        result += "Name:  " + getName() + "\n";
-        result += "State:  " + state.toString().replace(";", "     ") + "\n";
-        result += "Parent: " + (parent == null ? "null" : parent.getName()) + "\n";
-        result += "Operator: " + (operator == null ? "null" : operator.toString()) + "\n";
-        result += "Depth: " + depth + "\n";
-        result += "Path cost: " + pathCost + "\n\n";
-        return result;
+        return "Name:  " + getName() + "\n" +
+                "State:  " + state.toString().replace(";", "     ") + "\n" +
+                "Parent: " + (parent == null ? "null" : parent.getName()) + "\n" +
+                "Operator: " + (operator == null ? "null" : operator.toString()) + "\n" +
+                "Depth: " + depth + "\n" +
+                "Path cost: " + pathCost + "\n\n";
     }
 
     public List<Node> getChildren() {

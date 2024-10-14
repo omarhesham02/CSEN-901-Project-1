@@ -49,8 +49,8 @@ public class WaterSortUtils {
             }
             FixedSizeStack<Color> colorLayers = new FixedSizeStack<>(bottleCapacity);
 
-            for (int j = strLayers.length - 1; j >= 0; j--) {// reverse order (see note in Node.toString()) )
-                // We don't consider 'e' as a color to save spacce
+            for (int j = strLayers.length - 1; j >= 0; j--) {   // Reverse order (see note in Node.toString()) )
+                // We don't consider 'e' as a color to save space
                 String colorLetter = strLayers[j];
                 if (!colorLetter.equals("e"))
                     colorLayers.push(Color.valueOf(colorLetter));

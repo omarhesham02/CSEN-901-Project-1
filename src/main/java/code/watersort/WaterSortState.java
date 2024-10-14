@@ -27,33 +27,36 @@ public class WaterSortState extends SearchState {
 
         Bottle[] bottles = (Bottle[]) getValue();
         Bottle[] otherBottles = (Bottle[]) other.getValue();
+
         if (bottles.length != otherBottles.length)
             return false;
-        for (int i = 0; i < bottles.length; i++) {
+
+        for (int i = 0; i < bottles.length; i++)
             if (!bottles[i].equals(otherBottles[i]))
                 return false;
-        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        // 2 states are equal if they contins the same bottles array
+        // Two states are equal if they contain the same bottles array
         return Arrays.hashCode((Bottle[]) getValue());
-
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         Bottle[] bottles = (Bottle[]) getValue();
-        for (Bottle bottle : bottles) {
+        
+        for (Bottle bottle : bottles)
             sb.append(bottle.toString()).append(";");
-        }
+
         return sb.toString();
     }
 
-    // test equality of 2 watersort states
+    // TODO: Remove this main method
+    // Test equality of 2 water sort states
     public static void main(String[] args) {
         FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
         layers1.push(Color.r);
