@@ -50,10 +50,14 @@ public class WaterSortSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-        // test case in project desc
 
-        String initState = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
-                "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
+        // first test case in test file
+
+        String initState = "3;" +
+                "4;" +
+                "r,y,r,y;" +
+                "y,r,y,r;" +
+                "e,e,e,e;";
         String strategy = "BF";
         boolean visualize = true;
 

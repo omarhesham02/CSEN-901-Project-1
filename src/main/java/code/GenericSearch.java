@@ -38,7 +38,7 @@ public abstract class GenericSearch {
             nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
         }
         if (visualize)
-            showSolutionTree(initialNode);
+            showSolutionTree(initialNode, solutionNode);
         return solutionNode;
     }
 
@@ -97,23 +97,24 @@ public abstract class GenericSearch {
         return nodes;
     }
 
-    private static void showSolutionTree(Node node) {
-        printTree(node, "", true);
+    private static void showSolutionTree(Node node, Node solutionNode) {
+        printTree(node, "", true, solutionNode);
         System.out.println("Node numbers correspond to the order of creation.");
     }
 
-    private static void printTree(Node node, String prefix, boolean isTail) {
-        String stateText = "[" + node.getState().toString().replace(";", "    ") + "]\n";
+    private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode) {
+        String stateText = "[" + node.getState().toString().replace(";", "    ") + "]"
+                + (node == solutionNode ? " SOLUTION" : "") + "\n";
         String operatorText = node.getOperator() == null ? "" : node.getOperator().toString() + " --->  ";
         System.out.println(
                 prefix + (isTail ? "└── " : "├──") + operatorText + node.getName() + "   "
                         + stateText);
         List<Node> children = node.getChildren();
         for (int i = 0; i < children.size() - 1; i++) {
-            printTree(children.get(i), prefix + (isTail ? "    " : "│   "), false);
+            printTree(children.get(i), prefix + (isTail ? "    " : "│   "), false, solutionNode);
         }
         if (children.size() > 0) {
-            printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true);
+            printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode);
         }
     }
 
