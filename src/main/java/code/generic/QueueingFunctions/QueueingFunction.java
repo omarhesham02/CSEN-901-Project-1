@@ -1,6 +1,5 @@
 package code.generic.QueueingFunctions;
 
-import java.util.List;
 import java.util.PriorityQueue;
 
 import code.Node;
