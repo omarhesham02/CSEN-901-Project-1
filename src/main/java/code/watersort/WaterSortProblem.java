@@ -9,17 +9,7 @@ public class WaterSortProblem extends Problem {
     public WaterSortProblem(SearchState initialState, String strategy) {
         super(initialState, strategy);
 
-        // Add all possible combinations of operators between distinct bottles
-        // to the list of operators
-        WaterSortState state = (WaterSortState) initialState;
-        Bottle[] bottles = state.getBottles();
-        for (int i = 0; i < bottles.length; i++) {
-            for (int j = 0; j < bottles.length; j++) {
-                if (i != j) {
-                    this.addOperator(new Pour(i, j));
-                }
-            }
-        }
+        addAllOperatorPermutations(initialState);
     }
 
     /**
@@ -34,9 +24,8 @@ public class WaterSortProblem extends Problem {
         Bottle[] bottles = (Bottle[]) node.getState().getValue();
 
         for (Bottle bottle : bottles) {
-            if (bottle.isEmpty()) {
+            if (bottle.isEmpty())
                 continue;
-            }
 
             Color topColor = bottle.getTopLayer();
 
@@ -44,6 +33,17 @@ public class WaterSortProblem extends Problem {
                 if (!topColor.equals(bottle.getLayers().get(i)))
                     return false;
         }
+
         return true;
+    }
+
+    private void addAllOperatorPermutations(SearchState initialState) {
+        WaterSortState state = (WaterSortState) initialState;
+        Bottle[] bottles = state.getBottles();
+
+        for (int i = 0; i < bottles.length; i++)
+            for (int j = 0; j < bottles.length; j++)
+                if (i != j)
+                    this.addOperator(new Pour(i, j));
     }
 }
