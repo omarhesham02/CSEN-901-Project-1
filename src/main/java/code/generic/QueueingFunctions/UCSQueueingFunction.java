@@ -9,8 +9,7 @@ import code.Node;
 public class UCSQueueingFunction implements QueueingFunction {
 
     @Override
-    public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
-        queue.addAll(nodes);
-        return queue;
+    public PriorityQueue<Node> apply() {
+        return new PriorityQueue<>(Comparator.comparingInt(Node::getPathCost));
     }
 }

@@ -98,4 +98,12 @@ public class Node {
         this.children = children;
     }
 
+    public int getHeuristic1() {
+        return 0;
+    }
+
+    public int getHeuristic2() {
+        return 0;
+    }
+
 }

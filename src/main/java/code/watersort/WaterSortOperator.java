@@ -7,5 +7,5 @@ import code.generic.SearchState;
 public interface WaterSortOperator extends Operator {
     boolean isApplicable(SearchState state);
 
-    OperatorResult apply(SearchState state);
+    OperatorResult apply(SearchState state) throws CloneNotSupportedException;
 }

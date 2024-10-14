@@ -1,7 +1,10 @@
 package code;
-
-import java.util.*;
-
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
 import code.generic.Operator;
 import code.generic.OperatorResult;
 import code.generic.Problem;
@@ -19,17 +22,16 @@ import code.generic.QueueingFunctions.UCSQueueingFunction;
 public abstract class GenericSearch {
 
     public static int nodesExpanded;
-    private static int nodesVisited;
-    private static Set<SearchState> exploredStates = new HashSet<>();
+    private static final Set<SearchState> exploredStates = new HashSet<>();
 
-    public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
+    public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) throws CloneNotSupportedException {
         nodesExpanded = 0;
-        nodesVisited = 0;
+        int nodesVisited = 0;
         Node solutionNode = null;
         exploredStates.clear();
 
         Node initialNode = makeNode(problem.getInitialState());
-        Queue<Node> nodes = new PriorityQueue<>(getPriorityQueueComparator(problem.getStrategy()));
+        PriorityQueue<Node> nodes = queueingFunction.apply();
         nodes.add(initialNode);
 
         while (!nodes.isEmpty()) {
@@ -39,7 +41,8 @@ public abstract class GenericSearch {
                 solutionNode = currentNode;
                 break;
             }
-            nodes = queueingFunction.apply(nodes, expand(currentNode, problem.getOperators()));
+            List<Node> expandedNodes = expand(currentNode, problem.getOperators());
+            nodes.addAll(expandedNodes);
         }
         if (visualize)
             showSolutionTree(initialNode, solutionNode);
@@ -54,37 +57,22 @@ public abstract class GenericSearch {
         return nodes.poll();
     }
 
-    public static QueueingFunction getQueueingFunction(String strategy) {
-        return switch (strategy) {
-            case "BF" -> new BFSQueueingFunction();
-            case "DF" -> new DFSQueueingFunction();
-            case "ID" -> new IDSQueueingFunction();
-            case "UC" -> new UCSQueueingFunction();
-            case "GR1" -> new GREEDY1QueueingFunction();
-            case "GR2" -> new GREEDY2QueueingFunction();
-            case "AS1" -> new AStar1QueueingFunction();
-            case "AS2" -> new AStar2QueueingFunction();
-            default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
-        };
-    }
 
-    private static PriorityQueue<Node> getPriorityQueueComparator(String strategy) {
-        return switch (strategy) {
-            case "BF" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
-            case "DF" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
-            case "ID" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
-            case "UC" -> new PriorityQueue<>(Comparator.comparingInt(Node::getPathCost));
+public static QueueingFunction getQueueingFunction(String strategy) {
+    return switch (strategy) {
+        case "BF" -> new BFSQueueingFunction();
+        case "DF" -> new DFSQueueingFunction();
+        case "UC" -> new UCSQueueingFunction();
+        case "ID" -> new IDSQueueingFunction();
+        case "GR1" -> new GREEDY1QueueingFunction();
+        case "GR2" -> new GREEDY2QueueingFunction();
+        case "AS1" -> new AStar1QueueingFunction();
+        case "AS2" -> new AStar2QueueingFunction();
+        default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
+    };
+}
 
-            // TODO: Implement the comparators for the remaining strategies
-            case "GR1" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
-            case "GR2" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
-            case "AS1" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
-            case "AS2" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
-            default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
-        };
-    }
-
-    private static List<Node> expand(Node parentNode, List<Operator> operators) {
+    private static List<Node> expand(Node parentNode, List<Operator> operators) throws CloneNotSupportedException {
         List<Node> nodes = new LinkedList<>();
 
         for (Operator operator : operators) {
@@ -103,7 +91,7 @@ public abstract class GenericSearch {
                         parentNode.getPathCost() + operatorResult.getOperatorCost());
                 nodes.add(childNode);
                 exploredStates.add(operatorResult.getState());
-                nodesExpanded++;
+                ++nodesExpanded;
 
             }
         }
@@ -128,7 +116,7 @@ public abstract class GenericSearch {
         for (int i = 0; i < children.size() - 1; i++) {
             printTree(children.get(i), prefix + (isTail ? "    " : "│   "), false, solutionNode);
         }
-        if (children.size() > 0) {
+        if (!children.isEmpty()) {
             printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode);
         }
     }

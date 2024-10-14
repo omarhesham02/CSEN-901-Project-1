@@ -3,7 +3,7 @@ package code.watersort;
 import code.WaterSortSearch;
 import code.generic.FixedSizeStack;
 
-public class Bottle {
+public class Bottle implements Cloneable {
     private FixedSizeStack<Color> layers;
 
     public Bottle(FixedSizeStack<Color> layers) {
@@ -29,8 +29,10 @@ public class Bottle {
 
     // -------------------------------------------------------- LayerGroup
     // operations
-    public LayerGroup peekTopLayerGroup() {
-        FixedSizeStack<Color> layersCopy = (FixedSizeStack<Color>) layers.copy();
+    public LayerGroup peekTopLayerGroup() throws CloneNotSupportedException {
+        if (layers.isEmpty())
+            throw new IllegalStateException("Cannot peek top LayerGroup from an empty bottle");
+        FixedSizeStack<Color> layersCopy = layers.clone();
         Color topColor = layersCopy.peek();
         int groupSize = 0;
         while (!layersCopy.isEmpty()) {
@@ -45,7 +47,7 @@ public class Bottle {
         return new LayerGroup(topColor, groupSize);
     }
 
-    public LayerGroup popTopLayerGroup() {
+    public LayerGroup popTopLayerGroup() throws CloneNotSupportedException {
         if (layers.isEmpty())
             throw new IllegalStateException("Cannot remove top LayerGroup from an empty bottle");
         LayerGroup topLayerGroup = peekTopLayerGroup();
@@ -79,9 +81,8 @@ public class Bottle {
         return layers.isEmpty();
     }
 
-    public Bottle copy() {
-        return new Bottle(layers.copy());
-
+    public Bottle clone () throws CloneNotSupportedException {
+        return new Bottle(layers.clone());
     }
 
     // equals
@@ -98,17 +99,6 @@ public class Bottle {
 
     @Override
     public String toString() {
-        /*
-         * remember the message from whatsapp :
-         * -
-         * e
-         * e
-         * b --------> [e, e, b, r, y]
-         * r
-         * y
-         * -
-         * 
-         */
         StringBuilder sb = new StringBuilder();
 
         int emptyColorsCount = WaterSortSearch.bottleCapacity - layers.size();
@@ -124,35 +114,5 @@ public class Bottle {
             sb.setLength(sb.length() - 1);
 
         return sb.toString();
-    }
-
-    // test equality of 2 bottles
-    public static void main(String[] args) {
-
-        // ----------------------------------- test equality of 2
-        // different bottles with same colors
-
-        FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
-        layers1.push(Color.r);
-        layers1.push(Color.g);
-        layers1.push(Color.b);
-        Bottle bottle1 = new Bottle(layers1);
-
-        FixedSizeStack<Color> layers2 = new FixedSizeStack<>(3);
-        layers2.push(Color.r);
-        layers2.push(Color.g);
-        layers2.push(Color.b);
-        Bottle bottle2 = new Bottle(layers2);
-
-        System.out.println("The two different Bottles with same colors are equal: " + bottle1.equals(bottle2));
-
-        // ----------------------------------test equality with copy
-        Bottle bottle3 = bottle1.copy();
-        System.out.println("The bottle and its copy are equal: " + bottle1.equals(bottle3));
-
-        // --------------------------------- manipulate the clone and test equality
-        bottle3.popTopLayer();
-        System.out.println("Manipulating the clone makes it different from the original: " + !bottle1.equals(bottle3));
-
     }
 }

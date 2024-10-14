@@ -25,7 +25,7 @@ public class Pour implements WaterSortOperator {
         int pouredAmount = 0;
         try {
             pouredAmount = bottles[from].peekTopLayerGroup().getSize();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | CloneNotSupportedException e) {
             // happens when peekTopLayerGroup() is called on an empty bottle
             return false;
         }
@@ -48,7 +48,7 @@ public class Pour implements WaterSortOperator {
     }
 
     @Override
-    public OperatorResult apply(SearchState state) {
+    public OperatorResult apply(SearchState state) throws CloneNotSupportedException {
         if (!(state instanceof WaterSortState waterSortState))
             throw new IllegalArgumentException("input state is not a WaterSortState");
 
@@ -60,11 +60,11 @@ public class Pour implements WaterSortOperator {
 
     }
 
-    private static OperatorResult pour(Bottle[] bottles, int from, int to) {
+    private static OperatorResult pour(Bottle[] bottles, int from, int to) throws CloneNotSupportedException {
         // copy the bottles to avoid changing the original state
         Bottle[] bottleCopies = new Bottle[bottles.length];
         for (int i = 0; i < bottles.length; i++) {
-            bottleCopies[i] = (Bottle) bottles[i].copy();
+            bottleCopies[i] = bottles[i].clone();
         }
         LayerGroup groupToPour = bottleCopies[from].popTopLayerGroup();
         bottleCopies[to].addLayerGroup(groupToPour);
