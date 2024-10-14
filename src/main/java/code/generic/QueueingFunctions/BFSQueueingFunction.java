@@ -14,7 +14,7 @@ public class BFSQueueingFunction implements QueueingFunction {
     public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
         // Add the node to the end of the queue (BFS behavior)
         queue.addAll(nodes);
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
         priorityQueue.addAll(queue);
         return priorityQueue;
     }
