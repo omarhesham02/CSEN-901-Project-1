@@ -24,7 +24,7 @@ public class WaterSortSearch extends GenericSearch {
         if (solutionNode == null)
             return "NOSOLUTION";
 
-        System.out.println("Solution: " + solutionNode);
+        // System.out.println("Solution: " + solutionNode);
 
         LinkedList<String> planBuilder = new LinkedList<String>();
         while (solutionNode.getParent() != null) {

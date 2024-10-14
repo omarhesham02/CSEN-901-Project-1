@@ -89,10 +89,11 @@ public abstract class GenericSearch {
                         parentNode.getPathCost() + operatorResult.getOperatorCost());
                 nodes.add(childNode);
                 exploredStates.add(operatorResult.getState());
+                nodesExpanded++;
+
             }
         }
 
-        nodesExpanded++;
         parentNode.setChildren(nodes); // for visualization
         return nodes;
     }
