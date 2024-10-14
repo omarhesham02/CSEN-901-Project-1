@@ -23,14 +23,14 @@ import code.generic.QueueingFunctions.UCSQueueingFunction;
 public abstract class GenericSearch {
 
     public static int nodesExpanded;
-    private static final Set<SearchState> exploredStates = new HashSet<>();
+    private static final Set<SearchState> expandedStates = new HashSet<>();
 
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize)
             throws CloneNotSupportedException {
         nodesExpanded = 0;
         int nodesVisited = 0;
         Node solutionNode = null;
-        exploredStates.clear();
+        expandedStates.clear();
 
         Node initialNode = makeNode(problem.getInitialState());
         PriorityQueue<Node> nodes = queueingFunction.apply();
@@ -80,7 +80,7 @@ public abstract class GenericSearch {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
                 // Avoid exploring the same state again
-                if (exploredStates.contains(operatorResult.getState())) {
+                if (expandedStates.contains(operatorResult.getState())) {
                     continue;
                 }
 
@@ -91,7 +91,7 @@ public abstract class GenericSearch {
                         parentNode.getDepth() + 1,
                         parentNode.getPathCost() + operatorResult.getOperatorCost());
                 nodes.add(childNode);
-                exploredStates.add(operatorResult.getState());
+                expandedStates.add(operatorResult.getState());
                 ++nodesExpanded;
 
             }
@@ -103,7 +103,7 @@ public abstract class GenericSearch {
 
     private static void showSolutionTree(Node node, Node solutionNode) {
         printTree(node, "", true, solutionNode);
-        System.out.println("Node numbers correspond to the order of creation.");
+        System.out.println("Node numbers correspond to the order of visiting not creation.");
     }
 
     private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode) {
