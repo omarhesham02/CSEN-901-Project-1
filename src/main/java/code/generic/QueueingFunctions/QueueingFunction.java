@@ -1,9 +1,9 @@
 package code.generic.QueueingFunctions;
 import code.Node;
 import java.util.List;
-import java.util.Queue;
+import java.util.PriorityQueue;
 
 @FunctionalInterface
 public interface QueueingFunction {
-    Queue<Node> apply(Queue<Node> queue, List<Node> node);
+    PriorityQueue<Node> apply();
 }

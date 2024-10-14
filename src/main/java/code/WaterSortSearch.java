@@ -12,7 +12,7 @@ public class WaterSortSearch extends GenericSearch {
     public static int numberOfBottles;
     public static int bottleCapacity;
 
-    public static String solve(String initialState, String strategy, boolean visualize) {
+    public static String solve(String initialState, String strategy, boolean visualize) throws CloneNotSupportedException {
 
         numberOfBottles = 0;
         bottleCapacity = 0;

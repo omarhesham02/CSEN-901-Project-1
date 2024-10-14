@@ -82,31 +82,11 @@ public class FixedSizeStack<T> implements Cloneable {
         return result;
     }
 
-    public FixedSizeStack<T> copy() {
-        FixedSizeStack<T> copy = new FixedSizeStack<>(capacity);
-        for (int i = 0; i < size(); i++) {
-            copy.push(stackArray[i]);
-        }
-        return copy;
-    }
-
-    // test equality of 2 FixedSizeStacks
-    public static void main(String[] args) {
-        // Create the first FixedSizeStack<Color>
-        FixedSizeStack<Color> stack1 = new FixedSizeStack<>(3);
-        stack1.push(Color.r);
-        stack1.push(Color.g);
-        stack1.push(Color.b);
-
-        // Create the second FixedSizeStack<Color>
-        FixedSizeStack<Color> stack2 = new FixedSizeStack<>(3);
-        stack2.push(Color.r);
-        stack2.push(Color.g);
-        stack2.push(Color.b);
-
-        // Test the equality of the two FixedSizeStack objects
-        boolean areEqual = stack1.equals(stack2);
-        System.out.println("The two FixedSizeStack objects are equal: " + areEqual);
+    @Override
+    public FixedSizeStack<T> clone() throws CloneNotSupportedException {
+        FixedSizeStack<T> clone = (FixedSizeStack<T>) super.clone();
+        clone.stackArray = stackArray.clone();
+        return clone;
     }
 
 }
