@@ -1,4 +1,5 @@
 package code;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +25,8 @@ public abstract class GenericSearch {
     public static int nodesExpanded;
     private static final Set<SearchState> exploredStates = new HashSet<>();
 
-    public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) throws CloneNotSupportedException {
+    public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize)
+            throws CloneNotSupportedException {
         nodesExpanded = 0;
         int nodesVisited = 0;
         Node solutionNode = null;
@@ -57,20 +59,19 @@ public abstract class GenericSearch {
         return nodes.poll();
     }
 
-
-public static QueueingFunction getQueueingFunction(String strategy) {
-    return switch (strategy) {
-        case "BF" -> new BFSQueueingFunction();
-        case "DF" -> new DFSQueueingFunction();
-        case "UC" -> new UCSQueueingFunction();
-        case "ID" -> new IDSQueueingFunction();
-        case "GR1" -> new GREEDY1QueueingFunction();
-        case "GR2" -> new GREEDY2QueueingFunction();
-        case "AS1" -> new AStar1QueueingFunction();
-        case "AS2" -> new AStar2QueueingFunction();
-        default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
-    };
-}
+    public static QueueingFunction getQueueingFunction(String strategy) {
+        return switch (strategy) {
+            case "BF" -> new BFSQueueingFunction();
+            case "DF" -> new DFSQueueingFunction();
+            case "UC" -> new UCSQueueingFunction();
+            case "ID" -> new IDSQueueingFunction();
+            case "GR1" -> new GREEDY1QueueingFunction();
+            case "GR2" -> new GREEDY2QueueingFunction();
+            case "AS1" -> new AStar1QueueingFunction();
+            case "AS2" -> new AStar2QueueingFunction();
+            default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
+        };
+    }
 
     private static List<Node> expand(Node parentNode, List<Operator> operators) throws CloneNotSupportedException {
         List<Node> nodes = new LinkedList<>();
@@ -106,12 +107,19 @@ public static QueueingFunction getQueueingFunction(String strategy) {
     }
 
     private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode) {
-        String stateText = "[" + node.getState().toString().replace(";", "    ") + "]"
-                + (node == solutionNode ? " SOLUTION" : "") + "\n";
+
+        String stateText = node.getState().toString();
+        stateText = stateText.substring(0, stateText.length() - 1);
+        stateText = stateText.replaceAll(",", " ");
+        stateText = stateText.replaceAll(";", "     ");
+        stateText = "[" + stateText + "]";
+        stateText += node == solutionNode ? " SOLUTION" : "";
+
         String operatorText = node.getOperator() == null ? "" : node.getOperator().toString() + " --->  ";
-        System.out.println(
-                prefix + (isTail ? "└── " : "├──") + operatorText + "visited: " + node.getOrderOfVisiting() + " "
-                        + stateText);
+        String lineStart = isTail ? "└── " : "├── ";
+        String order = "visited: " + node.getOrderOfVisiting();
+        System.out.println(prefix + lineStart + operatorText + order + " " + stateText + "\n");
+
         List<Node> children = node.getChildren();
         for (int i = 0; i < children.size() - 1; i++) {
             printTree(children.get(i), prefix + (isTail ? "    " : "│   "), false, solutionNode);
@@ -120,6 +128,5 @@ public static QueueingFunction getQueueingFunction(String strategy) {
             printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode);
         }
     }
-
 
 }
