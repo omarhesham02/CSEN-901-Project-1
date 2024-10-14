@@ -1,7 +1,9 @@
 package code.generic.QueueingFunctions;
-import code.Node;
+
 import java.util.List;
 import java.util.Queue;
+
+import code.Node;
 
 @FunctionalInterface
 public interface QueueingFunction {
