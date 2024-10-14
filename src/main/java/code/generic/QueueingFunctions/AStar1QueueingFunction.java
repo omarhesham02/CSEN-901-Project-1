@@ -10,8 +10,6 @@ public class AStar1QueueingFunction implements QueueingFunction {
 
     @Override
     public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
-        // Implement the A* specific logic here
-        // For now, let's just add the node to the queue and return it
         queue.addAll(nodes);
         return queue;
     }

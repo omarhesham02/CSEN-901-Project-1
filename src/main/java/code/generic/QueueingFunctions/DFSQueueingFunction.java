@@ -11,10 +11,7 @@ public class DFSQueueingFunction implements QueueingFunction {
 
     @Override
     public Queue<Node> apply(Queue<Node> queue, List<Node> nodes) {
-        queue.addAll(nodes);
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
-        priorityQueue.addAll(queue);
-
-        return priorityQueue;
+    queue.addAll(nodes);
+    return queue;
     }
 }

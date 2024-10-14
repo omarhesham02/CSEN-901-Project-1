@@ -1,9 +1,6 @@
 package code;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import code.generic.Operator;
 import code.generic.QueueingFunctions.QueueingFunction;
 import code.watersort.WaterSortProblem;
@@ -16,8 +13,12 @@ public class WaterSortSearch extends GenericSearch {
     public static int bottleCapacity;
 
     public static String solve(String initialState, String strategy, boolean visualize) {
+
+        numberOfBottles = 0;
+        bottleCapacity = 0;
+
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
-        WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState);
+        WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState, strategy);
         QueueingFunction waterSortQueueingFunction = getQueueingFunction(strategy);
         Node solutionNode = GenericSearch.generalSearch(waterSortProblem, waterSortQueueingFunction, visualize);
 
