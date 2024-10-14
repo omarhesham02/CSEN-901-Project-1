@@ -58,7 +58,7 @@ public class WaterSortSearch extends GenericSearch {
                 "r,y,r,y;" +
                 "y,r,y,r;" +
                 "e,e,e,e;";
-        String strategy = "BF";
+        String strategy = "DF";
         boolean visualize = true;
 
         System.out.println(solve(initState, strategy, visualize));

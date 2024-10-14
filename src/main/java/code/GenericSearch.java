@@ -18,19 +18,22 @@ import code.generic.QueueingFunctions.UCSQueueingFunction;
 
 public abstract class GenericSearch {
 
-    public static int nodesExpanded = 0;
+    public static int nodesExpanded;
+    private static int nodesVisited;
     private static Set<SearchState> exploredStates = new HashSet<>();
 
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
-
+        // reset variables because the test cases rerun the general search in the same
+        // call (i read that in whasapp)
+        nodesExpanded = 0;
+        nodesVisited = 0;
         Node solutionNode = null;
+
         Node initialNode = makeNode(problem.getInitialState());
-
         Queue<Node> nodes = makeQ(initialNode);
-
         while (!nodes.isEmpty()) {
             Node currentNode = removeFront(nodes);
-
+            currentNode.setOrderOfVisiting(nodesVisited++);
             if (problem.goalTestFn(currentNode)) {
                 solutionNode = currentNode;
                 break;
@@ -108,7 +111,7 @@ public abstract class GenericSearch {
                 + (node == solutionNode ? " SOLUTION" : "") + "\n";
         String operatorText = node.getOperator() == null ? "" : node.getOperator().toString() + " --->  ";
         System.out.println(
-                prefix + (isTail ? "└── " : "├──") + operatorText + node.getName() + "   "
+                prefix + (isTail ? "└── " : "├──") + operatorText + "visited: " + node.getOrderOfVisiting() + " "
                         + stateText);
         List<Node> children = node.getChildren();
         for (int i = 0; i < children.size() - 1; i++) {
