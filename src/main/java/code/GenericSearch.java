@@ -23,14 +23,15 @@ public abstract class GenericSearch {
     private static Set<SearchState> exploredStates = new HashSet<>();
 
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize) {
-        // reset variables because the test cases rerun the general search in the same
-        // call (i read that in whasapp)
         nodesExpanded = 0;
         nodesVisited = 0;
         Node solutionNode = null;
+        exploredStates.clear();
 
         Node initialNode = makeNode(problem.getInitialState());
-        Queue<Node> nodes = makeQ(initialNode);
+        Queue<Node> nodes = new PriorityQueue<>(getPriorityQueueComparator(problem.getStrategy()));
+        nodes.add(initialNode);
+
         while (!nodes.isEmpty()) {
             Node currentNode = removeFront(nodes);
             currentNode.setOrderOfVisiting(nodesVisited++);
@@ -43,12 +44,6 @@ public abstract class GenericSearch {
         if (visualize)
             showSolutionTree(initialNode, solutionNode);
         return solutionNode;
-    }
-
-    private static ArrayDeque<Node> makeQ(Node node) {
-        ArrayDeque<Node> q = new ArrayDeque<>();
-        q.add(node);
-        return q;
     }
 
     private static Node makeNode(SearchState state) {
@@ -69,6 +64,22 @@ public abstract class GenericSearch {
             case "GR2" -> new GREEDY2QueueingFunction();
             case "AS1" -> new AStar1QueueingFunction();
             case "AS2" -> new AStar2QueueingFunction();
+            default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
+        };
+    }
+
+    private static PriorityQueue<Node> getPriorityQueueComparator(String strategy) {
+        return switch (strategy) {
+            case "BF" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
+            case "DF" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
+            case "ID" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
+            case "UC" -> new PriorityQueue<>(Comparator.comparingInt(Node::getPathCost));
+
+            // TODO: Implement the comparators for the remaining strategies
+            case "GR1" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
+            case "GR2" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
+            case "AS1" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
+            case "AS2" -> new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
             default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
         };
     }
@@ -121,5 +132,6 @@ public abstract class GenericSearch {
             printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode);
         }
     }
+
 
 }

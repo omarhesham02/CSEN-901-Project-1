@@ -6,8 +6,8 @@ import code.generic.SearchState;
 
 public class WaterSortProblem extends Problem {
 
-    public WaterSortProblem(SearchState initialState) {
-        super(initialState);
+    public WaterSortProblem(SearchState initialState, String strategy) {
+        super(initialState, strategy);
 
         // Add all possible combinations of operators between distinct bottles
         // to the list of operators

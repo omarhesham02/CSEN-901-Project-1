@@ -1,9 +1,6 @@
 // src/main/java/org/aiteam/code/generic/QueueingFunctions/IDSQueueingFunction.java
 package code.generic.QueueingFunctions;
-
-import java.util.Comparator;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import code.Node;
 
@@ -17,10 +14,8 @@ public class IDSQueueingFunction implements QueueingFunction {
                 queue.add(node);
             }
         }
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
-        priorityQueue.addAll(queue);
 
         ++depth;
-        return priorityQueue;
+        return queue;
     }
 }

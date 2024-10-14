@@ -9,15 +9,18 @@ import code.Node;
 
 public abstract class Problem {
     private final SearchState initialState;
-    private List<Operator> operators;
+    private final List<Operator> operators;
+    private final String strategy;
 
-    public Problem(SearchState initialState, List<Operator> operators) {
+    public Problem(SearchState initialState, List<Operator> operators, String strategy) {
         this.initialState = initialState;
         this.operators = operators;
+        this.strategy = strategy;
     }
 
-    public Problem(SearchState initialState) {
+    public Problem(SearchState initialState, String strategy) {
         this.initialState = initialState;
+        this.strategy = strategy;
         this.operators = new LinkedList<>();
     }
 
@@ -25,11 +28,6 @@ public abstract class Problem {
      * Goal test function for a generic search problem.
      */
     public abstract boolean goalTestFn(Node node);
-
-    /**
-     * Path cost function for a generic search problem.
-     */
-    // public abstract int pathCostFn(Node node);
 
     /**
      * Transition function for a generic search problem.
@@ -43,12 +41,12 @@ public abstract class Problem {
         return operators;
     }
 
-    public void setOperators(List<Operator> operators) {
-        this.operators = operators;
-    }
-
     public void addOperator(Operator operator) {
         this.operators.add(operator);
+    }
+
+    public String getStrategy() {
+        return strategy;
     }
 
 }
