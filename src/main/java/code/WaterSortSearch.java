@@ -1,6 +1,8 @@
 package code;
+
 import java.util.LinkedList;
 import java.util.List;
+
 import code.generic.Operator;
 import code.generic.QueueingFunctions.QueueingFunction;
 import code.watersort.WaterSortProblem;
@@ -20,12 +22,14 @@ public class WaterSortSearch extends GenericSearch {
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState, strategy);
         QueueingFunction waterSortQueueingFunction = getQueueingFunction(strategy);
+
         Node solutionNode = GenericSearch.generalSearch(waterSortProblem, waterSortQueueingFunction, visualize);
 
         if (solutionNode == null)
             return "NOSOLUTION";
 
-        LinkedList<String> planBuilder = new LinkedList<String>();
+        // TODO: Why is this done with a linked list?
+        LinkedList<String> planBuilder = new LinkedList<>();
 
         String pathCost = solutionNode.getPathCost() + "";
 
@@ -46,6 +50,5 @@ public class WaterSortSearch extends GenericSearch {
         result = result.substring(1, result.length() - 1);
         result = result.replace(" ", "");
         return result;
-
     }
 }
