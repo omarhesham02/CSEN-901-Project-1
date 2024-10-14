@@ -9,14 +9,6 @@ public class LayerGroup {
         this.size = size;
     }
 
-    public Color[] getComponents() {
-        Color[] components = new Color[size];
-        for (int i = 0; i < size; i++) {
-            components[i] = color;
-        }
-        return components;
-    }
-
     public Color getColor() {
         return color;
     }
