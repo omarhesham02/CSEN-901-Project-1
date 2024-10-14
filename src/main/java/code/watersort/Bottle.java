@@ -4,7 +4,7 @@ import code.WaterSortSearch;
 import code.generic.FixedSizeStack;
 
 public class Bottle implements Cloneable {
-    private FixedSizeStack<Color> layers;
+    private final FixedSizeStack<Color> layers;
 
     public Bottle(FixedSizeStack<Color> layers) {
         this.layers = layers;
@@ -28,8 +28,6 @@ public class Bottle implements Cloneable {
         return layers.pop();
     }
 
-    // -------------------------------------------------------- LayerGroup
-    // operations
     public LayerGroup peekTopLayerGroup() throws CloneNotSupportedException {
         if (layers.isEmpty())
             throw new IllegalStateException("Cannot peek top LayerGroup from an empty bottle");

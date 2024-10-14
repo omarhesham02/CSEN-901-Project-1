@@ -1,6 +1,8 @@
 package code.generic.QueueingFunctions;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
+
 import code.Node;
 
 public class BFSQueueingFunction implements QueueingFunction {
