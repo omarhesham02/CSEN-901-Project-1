@@ -1,7 +1,5 @@
 package code.generic;
 
-import code.watersort.Color;
-
 /**
  * A generic fixed-size stack implementation.
  *
@@ -59,9 +57,9 @@ public class FixedSizeStack<T> implements Cloneable {
         return top + 1;
     }
 
-    // used in other parts of the code, care !
+    /** Used in other parts of the code, care! */
     public boolean equals(Object obj) {
-        if (!(obj instanceof FixedSizeStack other))
+        if (!(obj instanceof FixedSizeStack<?> other))
             return false;
         if (size() != other.size())
             return false;
@@ -72,7 +70,6 @@ public class FixedSizeStack<T> implements Cloneable {
         return true;
     }
 
-    // hashCode
     @Override
     public int hashCode() {
         int result = 1;
