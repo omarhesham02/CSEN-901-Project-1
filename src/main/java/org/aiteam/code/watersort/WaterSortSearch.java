@@ -16,12 +16,8 @@ public class WaterSortSearch extends GenericSearch {
 
     public static String solve(String initialState, String strategy, boolean visualize) {
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
-        System.err.println("Parsed initial state: " + parsedInitialState);
-
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState);
-
         QueueingFunction waterSortQueueingFunction = getQueueingFunction(strategy);
-
         Node solutionNode = GenericSearch.generalSearch(waterSortProblem, waterSortQueueingFunction, visualize);
 
         if (solutionNode == null)
@@ -30,16 +26,11 @@ public class WaterSortSearch extends GenericSearch {
         System.out.println("Solution: " + solutionNode);
 
         LinkedList<String> planBuilder = new LinkedList<String>();
-
         while (solutionNode.getParent() != null) {
             Operator operator = solutionNode.getOperator();
-            // planBuilder.addFirst(",");
             planBuilder.addFirst(operator.toString());
             solutionNode = solutionNode.getParent();
         }
-        // Remove the last comma
-        if (planBuilder.size() > 0)
-            planBuilder.removeLast();
 
         String plan = formPlanString(planBuilder);
         String pathCost = solutionNode.getPathCost() + "";
