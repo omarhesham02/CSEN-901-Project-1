@@ -12,3 +12,6 @@ public class AStar1QueueingFunction implements QueueingFunction {
         return new PriorityQueue<>(Comparator.comparingInt(node -> node.getPathCost() + WaterSortProblem.getHeuristicOne(node)));
     }
 }
+
+//function that reorders only new nodes and original queue
+//all other search strategies calles the general search and pass their own queing function

@@ -11,6 +11,8 @@ import code.watersort.WaterSortProblem;
 import code.watersort.WaterSortState;
 import code.watersort.WaterSortUtils;
 
+import static code.generic.SearchStrategies.executeSearchStrategy;
+
 public class WaterSortSearch extends GenericSearch {
 
     public static int numberOfBottles;
@@ -29,9 +31,8 @@ public class WaterSortSearch extends GenericSearch {
 
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState, strategy);
-        QueueingFunction waterSortQueueingFunction = getQueueingFunction(strategy);
 
-        Node solutionNode = GenericSearch.generalSearch(waterSortProblem, waterSortQueueingFunction, visualize);
+        Node solutionNode = executeSearchStrategy(waterSortProblem,strategy, visualize);
 
         if (solutionNode == null)
             return "NOSOLUTION";
