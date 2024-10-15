@@ -130,6 +130,7 @@ public abstract class GenericSearch {
     }
 
     private static void reportOptimality(Node solutionNode) {
+        System.out.println("There are " + candidateSolutions.size() + " candidate solutions.\n");
         if (solutionNode == null)
             return;
 
@@ -144,12 +145,12 @@ public abstract class GenericSearch {
             }
         }
         if (isOptimal)
-            System.out.println("Optimal solution :) ! depth " + solutionNode.getDepth() + " cost "
+            System.out.println("Your solution is an optimal one :) ! depth " + solutionNode.getDepth() + " cost "
                     + solutionNode.getPathCost());
         else {
             System.out.println("Solution node: " + solutionNode.toString());
             System.out.println("Best node: " + bestNode.toString());
-            System.out.println("Not optimal :(");
+            System.out.println("Your solution is not optimal :(");
 
         }
 
