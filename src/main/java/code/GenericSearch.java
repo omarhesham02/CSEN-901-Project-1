@@ -13,11 +13,14 @@ import code.generic.Problem;
 import code.generic.SearchState;
 import code.generic.QueueingFunctions.QueueingFunction;
 import code.watersort.WaterSortState;
+import java.util.Comparator;
 
 public abstract class GenericSearch {
 
     public static int nodesExpanded;
     private static final Set<SearchState> expandedStates = new HashSet<>();
+    private static final PriorityQueue<Node> candidateSolutions = new PriorityQueue<>(
+            Comparator.comparingInt(Node::getPathCost).reversed());
 
     public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize)
             throws CloneNotSupportedException {
@@ -25,6 +28,7 @@ public abstract class GenericSearch {
         int nodesVisited = 0;
         Node solutionNode = null;
         expandedStates.clear();
+        candidateSolutions.clear();
 
         Node initialNode = makeNode(problem.getInitialState());
         PriorityQueue<Node> nodes = queueingFunction.apply();
@@ -37,11 +41,12 @@ public abstract class GenericSearch {
                 solutionNode = currentNode;
                 break;
             }
-            List<Node> expandedNodes = expand(currentNode, problem.getOperators());
+            List<Node> expandedNodes = expand(currentNode, problem.getOperators(), problem);
             nodes.addAll(expandedNodes);
         }
         if (visualize)
             showSolutionTree(initialNode, solutionNode, problem);
+        reportOptimality(solutionNode);
         return solutionNode;
     }
 
@@ -53,7 +58,8 @@ public abstract class GenericSearch {
         return nodes.poll();
     }
 
-    private static List<Node> expand(Node parentNode, List<Operator> operators) throws CloneNotSupportedException {
+    private static List<Node> expand(Node parentNode, List<Operator> operators, Problem problem)
+            throws CloneNotSupportedException {
         List<Node> nodes = new LinkedList<>();
 
         for (Operator operator : operators) {
@@ -73,6 +79,9 @@ public abstract class GenericSearch {
                 nodes.add(childNode);
                 expandedStates.add(operatorResult.getState());
                 ++nodesExpanded;
+                if (problem.goalTestFn(childNode)) {
+                    candidateSolutions.add(childNode);
+                }
 
             }
         }
@@ -84,7 +93,9 @@ public abstract class GenericSearch {
     private static void showSolutionTree(Node node, Node solutionNode, Problem problem)
             throws CloneNotSupportedException {
         printTree(node, "", true, solutionNode, problem);
-        System.out.println("Node numbers correspond to the order of visiting not creation.");
+        System.out
+                .println(
+                        "Nodes numbers correspond to the order of visiting, NOT creation. -1 means not visited yet.\n");
     }
 
     private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode, Problem problem)
@@ -97,16 +108,16 @@ public abstract class GenericSearch {
         stateText = "[" + stateText + "]";
         if (problem.goalTestFn(node)) {
             if (node == solutionNode)
-                stateText += " SOLUTION";
+                stateText += " ---> SOLUTION";
             else
-                stateText += " Candidate";
+                stateText += " ---> Candidate";
             stateText += ", " + "Depth: " + node.getDepth() + ", Path Cost: " + node.getPathCost();
         }
 
         String operatorText = node.getOperator() == null ? "" : node.getOperator().toString() + " --->  ";
         String lineStart = isTail ? "└──> " : "├──> ";
-        String order = "visited: " + node.getOrderOfVisiting();
-        System.out.println(prefix + lineStart + operatorText + order + " " + stateText + "\n");
+        String visitingOrder = "  visited: " + node.getOrderOfVisiting();
+        System.out.println(prefix + lineStart + operatorText + visitingOrder + " " + stateText + "\n");
 
         List<Node> children = node.getChildren();
         for (int i = 0; i < children.size() - 1; i++) {
@@ -116,6 +127,32 @@ public abstract class GenericSearch {
             printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode,
                     problem);
         }
+    }
+
+    private static void reportOptimality(Node solutionNode) {
+        if (solutionNode == null)
+            return;
+
+        boolean isOptimal = true;
+        Node bestNode = null;
+        while (!candidateSolutions.isEmpty()) {
+            Node candidate = candidateSolutions.poll();
+            if (candidate.getPathCost() < solutionNode.getPathCost()) {
+                isOptimal = false;
+                bestNode = candidate;
+                break;
+            }
+        }
+        if (isOptimal)
+            System.out.println("Optimal solution :) ! depth " + solutionNode.getDepth() + " cost "
+                    + solutionNode.getPathCost());
+        else {
+            System.out.println("Solution node: " + solutionNode.toString());
+            System.out.println("Best node: " + bestNode.toString());
+            System.out.println("Not optimal :(");
+
+        }
+
     }
 
 }
