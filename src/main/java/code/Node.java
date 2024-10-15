@@ -25,7 +25,7 @@ public class Node {
 
     // Next fields are for visualization purposes
     private int orderOfVisiting;
-    private List<Node> children;     // TODO: Storing this is not efficient, but is used currently for visualization
+    private List<Node> children; // TODO: Storing this is not efficient, but is used currently for visualization
 
     public Node(SearchState state, Node parent, Operator operator, int depth, int pathCost, int orderOfVisiting) {
         this.state = state;
@@ -69,10 +69,6 @@ public class Node {
         this.orderOfVisiting = orderOfVisiting;
     }
 
-    public String getName() {
-        return "Node " + orderOfVisiting;
-    }
-
     public int getOrderOfVisiting() {
         return orderOfVisiting;
     }
@@ -80,9 +76,8 @@ public class Node {
     // TODO: Convert this method to use StringBuilder
     @Override
     public String toString() {
-        return "Name:  " + getName() + "\n" +
-                "State:  " + state.toString().replace(";", "     ") + "\n" +
-                "Parent: " + (parent == null ? "null" : parent.getName()) + "\n" +
+        return "State:  " + state.toString().replace(";", "     ") + "\n" +
+                "Parent: " + (parent == null ? "null" : (" visited " + parent.getOrderOfVisiting())) + "\n" +
                 "Operator: " + (operator == null ? "null" : operator.toString()) + "\n" +
                 "Depth: " + depth + "\n" +
                 "Path cost: " + pathCost + "\n\n";

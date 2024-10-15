@@ -10,8 +10,12 @@ import code.generic.QueueingFunctions.QueueingFunction;
 import code.watersort.WaterSortProblem;
 import code.watersort.WaterSortState;
 import code.watersort.WaterSortUtils;
-
 import static code.generic.SearchStrategies.executeSearchStrategy;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.FileOutputStream;
 
 public class WaterSortSearch extends GenericSearch {
 
@@ -99,32 +103,45 @@ public class WaterSortSearch extends GenericSearch {
         return runTime + " | " + memory + " | " + cpuTime;
     }
 
+    // Please dont delete this main method until the last moment
     public static void main(String[] args) {
+        String state = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
+                "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
+        String strategy = "AS2";
+
+        // ------------------------- below part is to print to BOTH the console and the
+        // visualization.txt file -------------------------
+
         try {
-            String state = "3;" +
-                    "4;" +
-                    "r,y,r,y;" +
-                    "y,r,y,r;" +
-                    "e,e,e,e;";
-            String strategy = "BF";
-            System.out.println(solve(state, strategy, true));
-        } catch (CloneNotSupportedException e) {
+            PrintStream originalOut = System.out;
+            PrintStream fileOut = new PrintStream(new FileOutputStream("src/main/java/code/visualization.txt"));
+            PrintStream dualOut = new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+                    originalOut.write(b);
+                    fileOut.write(b);
+                }
+
+                @Override
+                public void flush() throws IOException {
+                    originalOut.flush();
+                    fileOut.flush();
+                }
+
+                @Override
+                public void close() throws IOException {
+                    originalOut.close();
+                    fileOut.close();
+                }
+            });
+            System.setOut(dualOut);
+            String solution = solve(state, strategy, true);
+            System.out.println(solution);
+            System.setOut(originalOut);
+            System.out.println(solution);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // loop to test performance
-        // int iterations = (int) 10e7;
-        // Long startTime = System.currentTimeMillis();
-        // Long startMemory = Runtime.getRuntime().totalMemory() -
-        // Runtime.getRuntime().freeMemory();
-
-        // while (iterations-- > 0) {
-        // int[] arr = new int[10];
-        // }
-        // System.out.println("Performance test: " +
-        // reportPerformance_SimpleVersion(startTime, startMemory, 0L));
-        // System.out.println("Performance test: " +
-        // reportPerformance_ComplexVersion(startTime, startMemory, 0L));
 
     }
 }
