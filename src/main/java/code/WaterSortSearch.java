@@ -107,7 +107,7 @@ public class WaterSortSearch extends GenericSearch {
     public static void main(String[] args) {
         String state = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
                 "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
-        String strategy = "AS2";
+        String strategy = "BF";
 
         // ------------------------- below part is to print to BOTH the console and the
         // visualization.txt file -------------------------
@@ -138,7 +138,6 @@ public class WaterSortSearch extends GenericSearch {
             String solution = solve(state, strategy, true);
             System.out.println(solution);
             System.setOut(originalOut);
-            System.out.println(solution);
         } catch (Exception e) {
             e.printStackTrace();
         }
