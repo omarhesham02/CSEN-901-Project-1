@@ -86,4 +86,8 @@ public class FixedSizeStack<T> implements Cloneable {
         return clone;
     }
 
+    public int getMaxCapacity() {
+        return capacity;
+    }
+
 }

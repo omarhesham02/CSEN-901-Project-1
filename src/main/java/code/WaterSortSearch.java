@@ -32,7 +32,7 @@ public class WaterSortSearch extends GenericSearch {
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState, strategy);
 
-        Node solutionNode = executeSearchStrategy(waterSortProblem,strategy, visualize);
+        Node solutionNode = executeSearchStrategy(waterSortProblem, strategy, visualize);
 
         if (solutionNode == null)
             return "NOSOLUTION";
