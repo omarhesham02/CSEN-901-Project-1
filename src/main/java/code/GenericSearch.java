@@ -12,6 +12,7 @@ import code.generic.OperatorResult;
 import code.generic.Problem;
 import code.generic.SearchState;
 import code.generic.QueueingFunctions.QueueingFunction;
+import code.watersort.WaterSortState;
 
 public abstract class GenericSearch {
 
@@ -40,7 +41,7 @@ public abstract class GenericSearch {
             nodes.addAll(expandedNodes);
         }
         if (visualize)
-            showSolutionTree(initialNode, solutionNode);
+            showSolutionTree(initialNode, solutionNode, problem);
         return solutionNode;
     }
 
@@ -80,31 +81,40 @@ public abstract class GenericSearch {
         return nodes;
     }
 
-    private static void showSolutionTree(Node node, Node solutionNode) {
-        printTree(node, "", true, solutionNode);
+    private static void showSolutionTree(Node node, Node solutionNode, Problem problem)
+            throws CloneNotSupportedException {
+        printTree(node, "", true, solutionNode, problem);
         System.out.println("Node numbers correspond to the order of visiting not creation.");
     }
 
-    private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode) {
+    private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode, Problem problem)
+            throws CloneNotSupportedException {
 
-        String stateText = node.getState().toString();
+        String stateText = ((WaterSortState) (node.getState())).toString();
         stateText = stateText.substring(0, stateText.length() - 1);
         stateText = stateText.replaceAll(",", " ");
         stateText = stateText.replaceAll(";", "     ");
         stateText = "[" + stateText + "]";
-        stateText += node == solutionNode ? " SOLUTION" : "";
+        if (problem.goalTestFn(node)) {
+            if (node == solutionNode)
+                stateText += " SOLUTION";
+            else
+                stateText += " Candidate";
+            stateText += ", " + "Depth: " + node.getDepth() + ", Path Cost: " + node.getPathCost();
+        }
 
         String operatorText = node.getOperator() == null ? "" : node.getOperator().toString() + " --->  ";
-        String lineStart = isTail ? "└── " : "├── ";
+        String lineStart = isTail ? "└──> " : "├──> ";
         String order = "visited: " + node.getOrderOfVisiting();
         System.out.println(prefix + lineStart + operatorText + order + " " + stateText + "\n");
 
         List<Node> children = node.getChildren();
         for (int i = 0; i < children.size() - 1; i++) {
-            printTree(children.get(i), prefix + (isTail ? "    " : "│   "), false, solutionNode);
+            printTree(children.get(i), prefix + (isTail ? "    " : "│   "), false, solutionNode, problem);
         }
         if (!children.isEmpty()) {
-            printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode);
+            printTree(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true, solutionNode,
+                    problem);
         }
     }
 

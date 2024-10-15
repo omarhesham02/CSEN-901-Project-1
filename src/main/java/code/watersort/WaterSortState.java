@@ -48,16 +48,43 @@ public class WaterSortState extends SearchState {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         Bottle[] bottles = (Bottle[]) getValue();
-        
+
         for (Bottle bottle : bottles)
             sb.append(bottle.toString()).append(";");
 
         return sb.toString();
     }
 
+    public String toString2() throws CloneNotSupportedException {
+        String result = "\n";
+        Bottle[] bottles = (Bottle[]) getValue();
+        Bottle[] bottlesCopy = new Bottle[bottles.length];
+        for (int i = 0; i < bottles.length; i++) {
+            bottlesCopy[i] = bottles[i].clone();
+            while (!bottlesCopy[i].getLayers().isFull()) {
+                bottlesCopy[i].getLayers().push(null);
+            }
+        }
+        int bottleMaxSize = bottlesCopy[0].getLayers().getMaxCapacity();
+        for (int i = 0; i < bottleMaxSize; i++) {
+            for (int j = 0; j < bottlesCopy.length; j++) {
+                Color color = bottlesCopy[j].getLayers().pop();
+                result += " [ ";
+                result += color == null ? " " : color.toString().toUpperCase();
+                result += " ]";
+                result += "   ";
+            }
+            result += "\n";
+
+        }
+
+        return result;
+
+    }
+
     // TODO: Remove this main method
     // Test equality of 2 water sort states
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
         layers1.push(Color.r);
         layers1.push(Color.g);
@@ -69,25 +96,10 @@ public class WaterSortState extends SearchState {
         layers2.push(Color.o);
         Bottle bottle2 = new Bottle(layers2);
 
-        WaterSortState state1 = new WaterSortState(new Bottle[] { bottle1, bottle2 });
+        Bottle[] bottles = { bottle1, bottle2 };
+        WaterSortState state1 = new WaterSortState(bottles);
 
-        FixedSizeStack<Color> layers3 = new FixedSizeStack<>(3);
-        layers3.push(Color.r);
-        layers3.push(Color.g);
-        layers3.push(Color.b);
+        System.out.println(state1.toString2());
 
-        FixedSizeStack<Color> layers4 = new FixedSizeStack<>(3);
-        layers4.push(Color.y);
-        layers4.push(Color.o);
-
-        // Create Bottle objects with the layers
-        Bottle bottle3 = new Bottle(layers3);
-        Bottle bottle4 = new Bottle(layers4);
-
-        WaterSortState state2 = new WaterSortState(new Bottle[] { bottle3, bottle4 });
-
-        // Test the equality of the two WaterSortState objects
-        boolean areEqual = state1.equals(state2);
-        System.out.println("The 2 states are: " + (areEqual ? "Equal" : "Not equal"));
     }
 }
