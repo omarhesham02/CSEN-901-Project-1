@@ -11,15 +11,7 @@ import code.generic.Operator;
 import code.generic.OperatorResult;
 import code.generic.Problem;
 import code.generic.SearchState;
-import code.generic.QueueingFunctions.AStar1QueueingFunction;
-import code.generic.QueueingFunctions.AStar2QueueingFunction;
-import code.generic.QueueingFunctions.BFSQueueingFunction;
-import code.generic.QueueingFunctions.DFSQueueingFunction;
-import code.generic.QueueingFunctions.GREEDY1QueueingFunction;
-import code.generic.QueueingFunctions.GREEDY2QueueingFunction;
-import code.generic.QueueingFunctions.IDSQueueingFunction;
 import code.generic.QueueingFunctions.QueueingFunction;
-import code.generic.QueueingFunctions.UCSQueueingFunction;
 
 public abstract class GenericSearch {
 
@@ -58,20 +50,6 @@ public abstract class GenericSearch {
 
     private static Node removeFront(Queue<Node> nodes) {
         return nodes.poll();
-    }
-
-    public static QueueingFunction getQueueingFunction(String strategy) {
-        return switch (strategy) {
-            case "BF" -> new BFSQueueingFunction();
-            case "DF" -> new DFSQueueingFunction();
-            case "UC" -> new UCSQueueingFunction();
-            case "ID" -> new IDSQueueingFunction();
-            case "GR1" -> new GREEDY1QueueingFunction();
-            case "GR2" -> new GREEDY2QueueingFunction();
-            case "AS1" -> new AStar1QueueingFunction();
-            case "AS2" -> new AStar2QueueingFunction();
-            default -> throw new IllegalArgumentException("Invalid strategy: " + strategy);
-        };
     }
 
     private static List<Node> expand(Node parentNode, List<Operator> operators) throws CloneNotSupportedException {
