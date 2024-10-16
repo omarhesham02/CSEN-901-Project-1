@@ -69,8 +69,10 @@ public class WaterSortState extends SearchState {
         for (int i = 0; i < bottleMaxSize; i++) {
             for (int j = 0; j < bottlesCopy.length; j++) {
                 Color color = bottlesCopy[j].getLayers().pop();
-                result += " [ ";
-                result += color == null ? " " : color.toString().toUpperCase();
+                result += "[ ";
+                // result += color == null ? " " : color.toString().toUpperCase();
+                result += color == null ? " ".repeat(6) : color.getName();
+
                 result += " ]";
                 result += "   ";
             }
