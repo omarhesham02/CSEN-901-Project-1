@@ -55,7 +55,7 @@ public class WaterSortState extends SearchState {
         return sb.toString();
     }
 
-    public String toString2() throws CloneNotSupportedException {
+    public String toString2(String middleText) throws CloneNotSupportedException {
         String result = "\n";
         Bottle[] bottles = (Bottle[]) getValue();
         Bottle[] bottlesCopy = new Bottle[bottles.length];
@@ -74,11 +74,19 @@ public class WaterSortState extends SearchState {
                 result += " ]";
                 result += "   ";
             }
+            if (i == bottleMaxSize / 2) {
+                result += "  " + middleText;
+            }
             result += "\n";
 
         }
 
         return result;
+
+    }
+
+    public String toString2() throws CloneNotSupportedException {
+        return toString2("");
 
     }
 
@@ -99,7 +107,7 @@ public class WaterSortState extends SearchState {
         Bottle[] bottles = { bottle1, bottle2 };
         WaterSortState state1 = new WaterSortState(bottles);
 
-        System.out.println(state1.toString2());
+        // System.out.println(state1.toString2());
 
     }
 }
