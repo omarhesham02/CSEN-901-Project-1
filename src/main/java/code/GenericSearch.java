@@ -60,7 +60,7 @@ public abstract class GenericSearch {
         reportOptimality(solutionNode);
         System.out.println(
                 problem.getStrategy() + " ----> "
-                        + Methods.reportPerformance_Complex(startTime, startMemory, startCpuTime));
+                        + Methods.reportPerformance_Simple(startTime, startMemory, startCpuTime));
 
         return solutionNode;
     }
