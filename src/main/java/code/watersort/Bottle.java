@@ -82,7 +82,7 @@ public class Bottle implements Cloneable {
         return layers.isEmpty();
     }
 
-    public Bottle clone () throws CloneNotSupportedException {
+    public Bottle clone() throws CloneNotSupportedException {
         return new Bottle(layers.clone());
     }
 
@@ -98,7 +98,8 @@ public class Bottle implements Cloneable {
     }
 
     /**
-     * The bottle is represented as a comma-separated list of colors from top to bottom.
+     * The bottle is represented as a comma-separated list of colors from top to
+     * bottom.
      * For example:
      * e
      * e
@@ -109,6 +110,10 @@ public class Bottle implements Cloneable {
      */
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    public String toString(boolean colored) {
         StringBuilder sb = new StringBuilder();
 
         int emptyColorsCount = WaterSortSearch.bottleCapacity - layers.size();
@@ -116,9 +121,11 @@ public class Bottle implements Cloneable {
         while (emptyColorsCount-- > 0)
             sb.append("e,");
 
-        for (int i = layers.size() - 1; i >= 0; i--)
-            sb.append(layers.get(i)).append(",");
-
+        for (int i = layers.size() - 1; i >= 0; i--) {
+            Color color = layers.get(i);
+            String colorText = color.toString(colored);
+            sb.append(colorText).append(",");
+        }
         // Remove last comma
         if (!sb.isEmpty())
             sb.setLength(sb.length() - 1);

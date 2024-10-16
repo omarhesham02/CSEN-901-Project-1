@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.FileOutputStream;
+import code.utils.ConditionalPrintStream;
 
 public class WaterSortSearch extends GenericSearch {
 
@@ -63,8 +64,8 @@ public class WaterSortSearch extends GenericSearch {
 
     // Please dont delete this main method until the last moment
     public static void main(String[] args) {
-        String state = "5;4;" + "b,y,r,b;" + "b,y,r,r;" +
-                "y,r,b,y;" + "e,e,e,e;" + "e,e,e,e;";
+        String state = "5;4;" + "o,b,r,o;" + "o,b,r,r;" +
+                "b,r,o,b;" + "e,e,e,e;" + "e,e,e,e;";
         String strategy = "BF";
 
         // ------------------------- below part is to print to BOTH the console and the
@@ -73,25 +74,8 @@ public class WaterSortSearch extends GenericSearch {
         try {
             PrintStream originalOut = System.out;
             PrintStream fileOut = new PrintStream(new FileOutputStream("src/main/java/code/visualization.txt"));
-            PrintStream dualOut = new PrintStream(new OutputStream() {
-                @Override
-                public void write(int b) throws IOException {
-                    originalOut.write(b);
-                    fileOut.write(b);
-                }
+            ConditionalPrintStream dualOut = new ConditionalPrintStream(originalOut, fileOut);
 
-                @Override
-                public void flush() throws IOException {
-                    originalOut.flush();
-                    fileOut.flush();
-                }
-
-                @Override
-                public void close() throws IOException {
-                    originalOut.close();
-                    fileOut.close();
-                }
-            });
             System.setOut(dualOut);
             String solution = solve(state, strategy, true);
             System.out.println(
@@ -101,6 +85,5 @@ public class WaterSortSearch extends GenericSearch {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
