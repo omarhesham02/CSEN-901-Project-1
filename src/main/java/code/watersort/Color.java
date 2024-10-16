@@ -1,29 +1,34 @@
 package code.watersort;
 
+import code.utils.Methods;
+
 public enum Color {
-    r,
-    g,
-    b,
-    y,
-    o;
-    // We don't consider 'e' as a color to save space
+    r, g, b, y, o;
 
-    public String getName() {
-        switch (this) {
-            case r:
-                return "RED   ";
-            case g:
-                return "GREEN ";
-            case b:
-                return "BLUE  ";
-            case y:
-                return "YELLOW";
-            case o:
-                return "ORANGE";
-            default:
-                return "Unknown color value ! ";
-        }
-
+    public String toString(boolean colored) {
+        if (colored)
+            return Methods.getColoredCopy(this.toString(), this);
+        return this.toString();
     }
 
+    public String getFullName() {
+        return switch (this) {
+            case r -> "RED   ";
+            case g -> "GREEN ";
+            case b -> "BLUE  ";
+            case y -> "YELLOW";
+            case o -> "ORANGE";
+            default -> throw new IllegalStateException("Unexpected color value: " + this);
+        };
+    }
+
+    public String getFullName(boolean colored) {
+        return Methods.getColoredCopy(getFullName(), this);
+    }
+
+    public static void main(String[] args) {
+        Color yellow = Color.y;
+        System.out.println("e " + yellow.toString(true) + " e");
+        System.out.println("e " + yellow.toString(false));
+    }
 }

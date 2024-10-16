@@ -46,16 +46,19 @@ public class WaterSortState extends SearchState {
 
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    public String toString(boolean colored) {
         StringBuilder sb = new StringBuilder();
         Bottle[] bottles = (Bottle[]) getValue();
 
         for (Bottle bottle : bottles)
-            sb.append(bottle.toString()).append(";");
-
+            sb.append(bottle.toString(colored)).append(";");
         return sb.toString();
     }
 
-    public String toString2(String middleText) throws CloneNotSupportedException {
+    public String getVerticalView(String middleText, boolean colored) throws CloneNotSupportedException {
         String result = "\n";
         Bottle[] bottles = (Bottle[]) getValue();
         Bottle[] bottlesCopy = new Bottle[bottles.length];
@@ -71,24 +74,18 @@ public class WaterSortState extends SearchState {
                 Color color = bottlesCopy[j].getLayers().pop();
                 result += "[ ";
                 // result += color == null ? " " : color.toString().toUpperCase();
-                result += color == null ? " ".repeat(6) : color.getName();
-
+                result += color == null ? " ".repeat(6) : color.getFullName(true);
                 result += " ]";
                 result += "   ";
             }
             if (i == bottleMaxSize / 2) {
-                result += "  " + middleText;
+                result += middleText;
             }
             result += "\n";
 
         }
 
         return result;
-
-    }
-
-    public String toString2() throws CloneNotSupportedException {
-        return toString2("");
 
     }
 
@@ -108,8 +105,6 @@ public class WaterSortState extends SearchState {
 
         Bottle[] bottles = { bottle1, bottle2 };
         WaterSortState state1 = new WaterSortState(bottles);
-
-        // System.out.println(state1.toString2());
 
     }
 }

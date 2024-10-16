@@ -12,6 +12,7 @@ import code.generic.OperatorResult;
 import code.generic.Problem;
 import code.generic.SearchState;
 import code.generic.QueueingFunctions.QueueingFunction;
+import code.utils.Methods;
 import code.watersort.WaterSortState;
 
 import java.lang.management.ManagementFactory;
@@ -58,7 +59,8 @@ public abstract class GenericSearch {
         }
         reportOptimality(solutionNode);
         System.out.println(
-                problem.getStrategy() + " ----> " + reportPerformance_Complex(startTime, startMemory, startCpuTime));
+                problem.getStrategy() + " ----> "
+                        + Methods.reportPerformance_Complex(startTime, startMemory, startCpuTime));
 
         return solutionNode;
     }
@@ -188,8 +190,9 @@ public abstract class GenericSearch {
         System.out.println("Path to the solution:");
         for (Object obj : path) {
             if (obj instanceof Node) {
+                WaterSortState state = (WaterSortState) ((Node) obj).getState();
                 String costToRoot = "Path cost to root : " + ((Node) obj).getPathCost();
-                System.out.println(((WaterSortState) ((Node) obj).getState()).toString2(costToRoot));
+                System.out.println(state.getVerticalView(costToRoot, true));
             } else {
                 String operator = ((Operator) (obj)).toString();
                 System.out.println(
@@ -201,45 +204,6 @@ public abstract class GenericSearch {
             }
         }
 
-    }
-
-    private static String reportPerformance_Simple(Long startTime, long startMemory, long startCpuTime) {
-
-        System.out.println("\n---------------------------------------------------------- Performance Report - Simple");
-        Long endTime = System.currentTimeMillis();
-        long endMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long endCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-        String runTime = "Runtime: " + (endTime - startTime) + " ms";
-        String memory = "RAM: " + (endMemory - startMemory) / 1024 + " KB";
-        String cpuTime = "CPU Time: " + (endCpuTime - startCpuTime) / 1000000 + " ms";
-        return runTime + " | " + memory + " | " + cpuTime;
-    }
-
-    private static String reportPerformance_Complex(long startTime, long startMemory, long startCpuTime) {
-        System.out.println("\n---------------------------------------------------------- Performance Report - Complex");
-        long endTime = System.currentTimeMillis();
-        long endMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long endCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-
-        // Calculate used resources
-        long runtimeDuration = endTime - startTime;
-        long memoryUsed = endMemory - startMemory;
-        long cpuTimeUsed = endCpuTime - startCpuTime;
-
-        // Calculate total available resources
-        long totalMemory = Runtime.getRuntime().totalMemory();
-        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        int availableProcessors = osBean.getAvailableProcessors();
-
-        // Calculate utilization percentages
-        double memoryUtilization = (double) memoryUsed / totalMemory * 100;
-        double cpuUtilization = (double) cpuTimeUsed / (runtimeDuration * availableProcessors * 1000000) * 100;
-
-        // Format the results
-        String runTime = "Runtime: " + runtimeDuration + " ms";
-        String memory = "RAM: " + memoryUsed / 1024 + " KB (" + String.format("%.2f", memoryUtilization) + "%)";
-        String cpuTime = "CPU Time: " + cpuTimeUsed / 1000000 + " ms (" + String.format("%.2f", cpuUtilization) + "%)";
-        return runTime + " | " + memory + " | " + cpuTime;
     }
 
 }
