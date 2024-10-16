@@ -25,11 +25,6 @@ public class WaterSortSearch extends GenericSearch {
     public static String solve(String initialState, String strategy, boolean visualize)
             throws CloneNotSupportedException {
 
-        // performance metrics
-        Long startTime = System.currentTimeMillis();
-        long startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long startCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-
         numberOfBottles = 0;
         bottleCapacity = 0;
 
@@ -56,7 +51,6 @@ public class WaterSortSearch extends GenericSearch {
         String plan = formPlanString(planBuilder);
         String nodesExpanded = GenericSearch.nodesExpanded + "";
 
-        System.out.println(strategy + " ----> " + reportPerformance_Complex(startTime, startMemory, startCpuTime));
         return plan + ";" + pathCost + ";" + nodesExpanded;
     }
 
@@ -65,42 +59,6 @@ public class WaterSortSearch extends GenericSearch {
         result = result.substring(1, result.length() - 1);
         result = result.replace(" ", "");
         return result;
-    }
-
-    private static String reportPerformance_Simple(Long startTime, long startMemory, long startCpuTime) {
-        Long endTime = System.currentTimeMillis();
-        long endMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long endCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-        String runTime = "Runtime: " + (endTime - startTime) + " ms";
-        String memory = "RAM: " + (endMemory - startMemory) / 1024 + " KB";
-        String cpuTime = "CPU Time: " + (endCpuTime - startCpuTime) / 1000000 + " ms";
-        return runTime + " | " + memory + " | " + cpuTime;
-    }
-
-    private static String reportPerformance_Complex(long startTime, long startMemory, long startCpuTime) {
-        long endTime = System.currentTimeMillis();
-        long endMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long endCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-
-        // Calculate used resources
-        long runtimeDuration = endTime - startTime;
-        long memoryUsed = endMemory - startMemory;
-        long cpuTimeUsed = endCpuTime - startCpuTime;
-
-        // Calculate total available resources
-        long totalMemory = Runtime.getRuntime().totalMemory();
-        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        int availableProcessors = osBean.getAvailableProcessors();
-
-        // Calculate utilization percentages
-        double memoryUtilization = (double) memoryUsed / totalMemory * 100;
-        double cpuUtilization = (double) cpuTimeUsed / (runtimeDuration * availableProcessors * 1000000) * 100;
-
-        // Format the results
-        String runTime = "Runtime: " + runtimeDuration + " ms";
-        String memory = "RAM: " + memoryUsed / 1024 + " KB (" + String.format("%.2f", memoryUtilization) + "%)";
-        String cpuTime = "CPU Time: " + cpuTimeUsed / 1000000 + " ms (" + String.format("%.2f", cpuUtilization) + "%)";
-        return runTime + " | " + memory + " | " + cpuTime;
     }
 
     // Please dont delete this main method until the last moment
@@ -136,6 +94,8 @@ public class WaterSortSearch extends GenericSearch {
             });
             System.setOut(dualOut);
             String solution = solve(state, strategy, true);
+            System.out.println(
+                    "\n-------------------------------------------------------------- Solution text required :");
             System.out.println(solution);
             System.setOut(originalOut);
         } catch (Exception e) {
