@@ -162,7 +162,8 @@ public abstract class GenericSearch {
             }
         }
         if (isOptimal)
-            System.out.println("Your solution is an optimal one :) ! depth " + solutionNode.getDepth() + " cost "
+            System.out.println("Your solution has the least cost among all created nodes ! depth "
+                    + solutionNode.getDepth() + " cost "
                     + solutionNode.getPathCost());
         else {
             System.out.println("Solution node: \n" + solutionNode.toString());
