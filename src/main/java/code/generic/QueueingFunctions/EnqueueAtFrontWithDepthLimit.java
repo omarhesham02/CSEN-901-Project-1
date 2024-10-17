@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class EnqueueAtFrontWithDepthLimit implements QueuingFunction {
-  public int depthLimit = 0;
+  public int depthLimit;
 
   public EnqueueAtFrontWithDepthLimit(int depthLimit){
     this.depthLimit = depthLimit;
