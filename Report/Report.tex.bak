@@ -94,20 +94,81 @@ Our implementation for all search algorithms closely follows the description of 
 \end{algorithmic}
 \end{algorithm}
 
-All the algorithms use a Java \texttt{PriorityQueue} as their queue. The \texttt{PriorityQueue} in Java orders objects based on a given \texttt{Comparator}. The classes in the \texttt{QueueingFunctions} package return a \texttt{Comparator}, which, according to the search strategy being used, orders the elements in the queue in a certain manner. This  \texttt{Comparator} is then used to initialize a queue. \\
+All the algorithms use a Java \texttt{PriorityQueue} as their queue. The \texttt{PriorityQueue} in Java orders objects based on a given \texttt{Comparator}. The classes in the \texttt{QueueingFunctions} package create and return a \texttt{PriorityQueue} with the appropriate \texttt{Comparator}, which will then be used to hold and order all the nodes during the search. \\
 
 \newpage
 
 For example, here is the queuing function for Breadth-First Search: 
 
 \begin{verbatim}
-public class BFSQueuingFunction implements QueuingFunction {
+public class EnqueueAtEnd implements QueuingFunction {
   @Override
-  public Comparator apply() {
-    return new Comparator.comparingInt(Node::getDepth);
+  public PriorityQueue<Node> apply() {
+    return new PriorityQueue<>(Comparator.comparingInt(Node::getDepth));
   }
 }
 \end{verbatim}
 
-In this case, when a \texttt{PriorityQueue} is created using the returned \texttt{Comparator}, all the nodes in the queue will be ordered in ascending order of depth.
+In this case, a \texttt{PriorityQueue} is created using a comparator that says to order the nodes by depth in ascending order. Consequently, all the nodes in this queue will be ordered in ascending order of depth. \\
+
+Here is a comprehensive list of the way by which the \texttt{PriorityQueue} orders nodes within it for every search algorithm we have implemented:
+
+\begin{enumerate}
+\item Breadth-First Search (BFS): Depth (ascending, i.e from \textit{shallowest} to \textit{deepest})
+\item Depth-First Search (DFS): Depth (descending, i.e from \textit{deepest} to \textit{shallowest})
+\item Iterative Deepening Search (IDS): Same as DFS
+\item Uniform-Cost Search (UCS): Path cost from the root to the node \texttt{(f(n) = g(n))}(ascending)
+\item Greedy Best-First Search: The value of the heuristic function \texttt{(f(n) = h(n))}(we have two \textbf{admissible} heuristics we can use)
+\item A* Search: The value of the path from the root plus the heuristic value for the current node (\texttt{f(n) = g(n) + h(n)})
+\end{enumerate}
+
+\newpage
+
+Here is the main body of how searching is done (in the \texttt{GenericSearch} class):
+\begin{verbatim}
+public static Node generalSearch(Problem problem, QueuingFunction queuingFunction, boolean visualize)
+            throws CloneNotSupportedException {
+        nodesExpanded = 0;
+        int nodesVisited = 0;
+        Node solutionNode = null;
+        expandedStates.clear();
+        candidateSolutions.clear();
+
+        Node initialNode = makeNode(problem.getInitialState());
+        PriorityQueue<Node> nodes = queuingFunction.apply();
+        nodes.add(initialNode);
+
+        while (!nodes.isEmpty()) {
+            Node currentNode = removeFront(nodes);
+            currentNode.setOrderOfVisiting(nodesVisited++);
+            if (problem.goalTestFn(currentNode)) {
+                solutionNode = currentNode;
+                break;
+            }
+            List<Node> expandedNodes = expand(currentNode, problem.getOperators(), problem);
+            nodes.addAll(expandedNodes);
+        }
+
+        return solutionNode;
+    }
+\end{verbatim}
+
+\subsubsection{Goal Test}
+One important thing to mention is that the goal test is applied to a node first when it is selected for expansion, not when it is created. This has the unfortunate side-effect of increasing the time complexity of DFS from $O(b^{d})$ to $O(b^{d+1})$, because an extra level (at least in the worst case) will be created beyond the goal node before the goal node is selected for expansion and discovered to be a goal, as well as perhaps increasing the time complexity of the rest of the search algorithms (by a factor I am not sure I can calculate), but has the fortunate side-effect of making UCS optimal (if the goal test was applied to a node when it is first created, UCS would not be optimal). If you are curious, you can find a small discussion of why this may be the case in Russel \& Norvig, section 3.4.2
+
+\subsection{Heuristic Functions}
+
+We have mentioned earlier that we have two heuristic functions available for use. In this section, we will examine those two heuristic functions and argue why they may be admissible. \\
+
+\textbf{Heuristic 1: } The number of bottles where the layers are not all the same color
+
+It is easy to show that this heuristic is admissible. For any state not to be a goal state, there must be at least 1 bottle where all the layers are not the same color. To make this state a goal state, you must pour at least 1 layer from one bottle to another. Therefore, this heuristic can never overestimate the cost (which is the number of layers poured) of the solution. \\
+
+\newpage
+
+\textbf{Heuristic 2: } The difference between the current filled capacity of the bottle and the highest number of layers with the same color, all added up together.
+
+For example, consider the following state with 3 bottles: \texttt{[e,e,r,g,r], [b,r,b,b,y], [e,e,e,e,e]}. The value of the heuristic function for this state will be: $(5 - 2) + (5 - 3) + (0) = 5$ \\
+
+It is also not too difficult to show that this heuristic is admissible. If the node is a goal state (either all the bottles are empty, or all the bottles have layers of the same color), its value is 0. For a state that is only one layer away from a goal state, such as \texttt{[y,y,y,y,y], [b,b,b,g], [g,g,g,g]}, the value of the heuristic is $(0) + (1) + (0) = 1$. And this is in the "best-case" scenario where the layer to be poured is directly on top. If the layer(s) was/were anywhere other than on top, it would certainly take more than 1 pour operation to reach a goal state. Notice that we only calculate the difference between the filled capacity of the bottle and the number of the most repeated color layer. The value of this heuristic for an empty bottle is therefore 0 (current capacity = 0 - number of most repeated color, 0, = 0.)
 \end{document}
