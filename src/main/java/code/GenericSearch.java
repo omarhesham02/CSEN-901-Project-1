@@ -113,10 +113,9 @@ public abstract class GenericSearch {
                         "Nodes numbers correspond to the order of visiting, NOT creation. -1 means not visited yet.\n");
     }
 
-    private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode, Problem problem)
-            throws CloneNotSupportedException {
+    private static void printTree(Node node, String prefix, boolean isTail, Node solutionNode, Problem problem) {
 
-        String stateText = ((WaterSortState) (node.getState())).toString();
+        String stateText = node.getState().toString();
         stateText = stateText.substring(0, stateText.length() - 1);
         stateText = stateText.replaceAll(",", " ");
         stateText = stateText.replaceAll(";", "     ");
@@ -165,8 +164,8 @@ public abstract class GenericSearch {
                     + solutionNode.getDepth() + " cost "
                     + solutionNode.getPathCost());
         else {
-            System.out.println("Solution node: \n" + solutionNode.toString());
-            System.out.println("Best node: \n" + bestNode.toString());
+            System.out.println("Solution node: \n" + solutionNode);
+            System.out.println("Best node: \n" + bestNode);
             System.out.println("Your solution is not optimal :(");
 
         }
@@ -194,7 +193,7 @@ public abstract class GenericSearch {
                 String costToRoot = "Path cost to root : " + ((Node) obj).getPathCost();
                 System.out.println(state.getVerticalView(costToRoot, true));
             } else {
-                String operator = ((Operator) (obj)).toString();
+                String operator = obj.toString();
                 System.out.println(
                         "                |\n" +
                                 "                |  " + operator + "\n" +
