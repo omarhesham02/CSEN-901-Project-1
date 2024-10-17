@@ -5,7 +5,7 @@ import code.Node;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class EnqueueAtFront implements QueueingFunction {
+public class EnqueueAtFront implements QueuingFunction {
 
   public EnqueueAtFront(){}
 

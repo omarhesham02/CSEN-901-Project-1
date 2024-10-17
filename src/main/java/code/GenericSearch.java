@@ -11,12 +11,11 @@ import code.generic.Operator;
 import code.generic.OperatorResult;
 import code.generic.Problem;
 import code.generic.SearchState;
-import code.generic.QueueingFunctions.QueueingFunction;
+import code.generic.QueueingFunctions.QueuingFunction;
 import code.utils.Methods;
 import code.watersort.WaterSortState;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
 import java.util.Comparator;
 
 public abstract class GenericSearch {
@@ -26,7 +25,7 @@ public abstract class GenericSearch {
     private static final PriorityQueue<Node> candidateSolutions = new PriorityQueue<>(
             Comparator.comparingInt(Node::getPathCost).reversed());
 
-    public static Node generalSearch(Problem problem, QueueingFunction queueingFunction, boolean visualize)
+    public static Node generalSearch(Problem problem, QueuingFunction queuingFunction, boolean visualize)
             throws CloneNotSupportedException {
         nodesExpanded = 0;
         int nodesVisited = 0;
@@ -40,7 +39,7 @@ public abstract class GenericSearch {
         long startCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
 
         Node initialNode = makeNode(problem.getInitialState());
-        PriorityQueue<Node> nodes = queueingFunction.apply();
+        PriorityQueue<Node> nodes = queuingFunction.apply();
         nodes.add(initialNode);
 
         while (!nodes.isEmpty()) {

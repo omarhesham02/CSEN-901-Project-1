@@ -6,10 +6,10 @@ import java.util.PriorityQueue;
 import code.Node;
 import code.watersort.WaterSortProblem;
 
-public class GREEDY2QueueingFunction implements QueueingFunction {
+public class GREEDY1QueuingFunction implements QueuingFunction {
 
     @Override
     public PriorityQueue<Node> apply() {
-        return new PriorityQueue<>(Comparator.comparingInt(WaterSortProblem::getHeuristicTwo));
+        return new PriorityQueue<>(Comparator.comparingInt(WaterSortProblem::getHeuristicOne));
     }
 }
