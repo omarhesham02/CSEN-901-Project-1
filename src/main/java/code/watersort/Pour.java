@@ -1,10 +1,11 @@
 package code.watersort;
 
 import code.WaterSortSearch;
+import code.generic.Operator;
 import code.generic.OperatorResult;
 import code.generic.SearchState;
 
-public class Pour implements WaterSortOperator {
+public class Pour implements Operator {
     private final int from;
     private final int to;
 
@@ -23,7 +24,7 @@ public class Pour implements WaterSortOperator {
 
         Bottle[] bottles = waterSortState.getBottles();
         // ---------------------------- src not empty
-        int pouredAmount = 0;
+        int pouredAmount;
         try {
             pouredAmount = bottles[from].peekTopLayerGroup().getSize();
         } catch (IllegalStateException | CloneNotSupportedException e) {
