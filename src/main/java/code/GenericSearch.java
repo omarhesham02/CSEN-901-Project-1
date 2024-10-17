@@ -104,8 +104,7 @@ public abstract class GenericSearch {
         return nodes;
     }
 
-    private static void showSolutionTree(Node node, Node solutionNode, Problem problem)
-            throws CloneNotSupportedException {
+    private static void showSolutionTree(Node node, Node solutionNode, Problem problem) {
         System.out.println("---------------------------------------------------------- Solution Tree");
         printTree(node, "", true, solutionNode, problem);
         System.out
