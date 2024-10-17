@@ -1,19 +1,14 @@
 package code;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
 import java.util.LinkedList;
 import java.util.List;
 
 import code.generic.Operator;
-import code.generic.QueueingFunctions.QueueingFunction;
 import code.watersort.WaterSortProblem;
 import code.watersort.WaterSortState;
 import code.watersort.WaterSortUtils;
 import static code.generic.SearchStrategies.executeSearchStrategy;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStream;
+
 import java.io.PrintStream;
 import java.io.FileOutputStream;
 import code.utils.ConditionalPrintStream;

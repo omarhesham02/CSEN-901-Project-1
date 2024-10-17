@@ -3,10 +3,6 @@ package code.generic;
 import code.GenericSearch;
 import code.Node;
 import code.generic.QueueingFunctions.*;
-import code.watersort.WaterSortProblem;
-
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
 public class SearchStrategies {
 
@@ -56,19 +52,19 @@ public class SearchStrategies {
   }
 
   public static Node Greedy1Search(Problem problem, boolean visualize) throws CloneNotSupportedException{
-    return GenericSearch.generalSearch(problem,new GREEDY1QueueingFunction(), visualize);
+    return GenericSearch.generalSearch(problem,new GREEDY1QueuingFunction(), visualize);
   }
 
   public static Node Greedy2Search(Problem problem, boolean visualize) throws CloneNotSupportedException{
-    return GenericSearch.generalSearch(problem,new GREEDY2QueueingFunction(), visualize);
+    return GenericSearch.generalSearch(problem,new GREEDY2QueuingFunction(), visualize);
   }
 
   public static Node AStar1Search(Problem problem, boolean visualize) throws CloneNotSupportedException {
-    return GenericSearch.generalSearch(problem,new AStar1QueueingFunction(), visualize);
+    return GenericSearch.generalSearch(problem,new AStar1QueuingFunction(), visualize);
   }
 
   public static Node AStar2Search(Problem problem, boolean visualize) throws CloneNotSupportedException {
-    return GenericSearch.generalSearch(problem,new AStar2QueueingFunction(), visualize);
+    return GenericSearch.generalSearch(problem,new AStar2QueuingFunction(), visualize);
   }
 
 

@@ -5,6 +5,6 @@ import java.util.PriorityQueue;
 import code.Node;
 
 @FunctionalInterface
-public interface QueueingFunction {
+public interface QueuingFunction {
     PriorityQueue<Node> apply();
 }
