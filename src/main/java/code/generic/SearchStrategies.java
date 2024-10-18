@@ -34,7 +34,7 @@ public class SearchStrategies {
     return GenericSearch.generalSearch(problem,new OrderedInsert(), visualize);
   }
 
-  public static Node LimitedDepthSearch(Problem problem, int depth, boolean visualize) throws CloneNotSupportedException{
+  public static Node DepthLimitedSearch(Problem problem, int depth, boolean visualize) throws CloneNotSupportedException{
     return GenericSearch.generalSearch(problem, new EnqueueAtFrontWithDepthLimit(depth), visualize);
   }
 
@@ -42,7 +42,7 @@ public class SearchStrategies {
     int infinity  = Integer.MAX_VALUE;
 
     for(int depth = 0; depth < infinity;depth++){
-      Node solution = LimitedDepthSearch(problem, depth, visualize);
+      Node solution = DepthLimitedSearch(problem, depth, visualize);
       if(solution != null){
         return solution;
       }
