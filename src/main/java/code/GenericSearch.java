@@ -13,6 +13,7 @@ import code.generic.Problem;
 import code.generic.SearchState;
 import code.generic.QueueingFunctions.QueuingFunction;
 import code.utils.Methods;
+import code.watersort.Bottle;
 import code.watersort.WaterSortState;
 
 import java.lang.management.ManagementFactory;
@@ -186,6 +187,8 @@ public abstract class GenericSearch {
             curNode = curNode.getParent();
         }
         System.out.println("Path to the solution:");
+        int numberOfBottles = ((WaterSortState) curNode.getState()).getBottles().length;
+        String identation = " ".repeat(12 * numberOfBottles / 2);
         for (Object obj : path) {
             if (obj instanceof Node) {
                 WaterSortState state = (WaterSortState) ((Node) obj).getState();
@@ -194,11 +197,11 @@ public abstract class GenericSearch {
             } else {
                 String operator = obj.toString();
                 System.out.println(
-                        "                |\n" +
-                                "                |  " + operator + "\n" +
-                                "                |\n" +
-                                "               \\ /\n" +
-                                "                V");
+                        identation + " |\n" +
+                                identation + " |  " + operator + "\n" +
+                                identation + " |\n" +
+                                identation + "\\ /\n" +
+                                identation + " V");
             }
         }
 
