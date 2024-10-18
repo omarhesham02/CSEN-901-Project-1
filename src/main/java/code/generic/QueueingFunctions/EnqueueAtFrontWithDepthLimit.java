@@ -15,6 +15,6 @@ public class EnqueueAtFrontWithDepthLimit implements QueuingFunction {
 
   @Override
   public PriorityQueue<Node> apply() {
-    return new PriorityQueueWithDepthLimit(Comparator.comparingInt(Node::getDepth).reversed(),depthLimit);
+    return new PriorityQueueWithDepthLimit(Comparator.comparingInt(Node::getDepth).reversed(), depthLimit);
   }
 }

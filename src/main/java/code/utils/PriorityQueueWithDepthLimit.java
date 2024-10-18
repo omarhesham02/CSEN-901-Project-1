@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class PriorityQueueWithDepthLimit extends PriorityQueue<Node> {
-  private int depthLimit;
+  private final int depthLimit;
 
   // Constructor with depth limit and default ordering
   public PriorityQueueWithDepthLimit(int depthLimit) {
