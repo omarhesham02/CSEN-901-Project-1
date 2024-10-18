@@ -270,5 +270,71 @@ public class PriorityQueueWithDepthLimit extends PriorityQueue<Node> {
   You can view the full code in the corresponding class file in the project.
 \end{verbatim}
 
+\section{Comparisons between the Search Algorithms}
+
+In this section, we compare the completeness, optimality, and performance of the different search algorithms implemented in terms of RAM usage, CPU utilization, and the number of expanded nodes. We will also comment on the differences in RAM usage, CPU utilization, and expanded nodes between the search strategies.
+
+\subsection{Completeness and Optimality}
+\begin{itemize}
+    \item \textbf{Breadth-First Search (BFS)}: BFS is complete, and is optimal if the path cost of all nodes at a level d is no more than at d + 1 and the costs increase from left to right, assuming we enqueue left nodes first in the queue. However, its memory usage grows exponentially with the depth of the shallowest solution.
+
+    \item \textbf{Depth-First Search (DFS)}: DFS is not complete, and it is not optimal. DFS explores as deep as possible before backtracking, making it prone to getting stuck in deep branches if no solution exists within the depth limit.
+
+    \item \textbf{Iterative Deepening Search (IDS)}: IDS is complete, but generally not optimal, due to the redundant searches since it explores the same nodes multiple times as it iterates over increasing depth limits.
+
+    \item \textbf{Uniform-Cost Search (UCS)}: UCS is complete, and it is optimal provided that the cost of a node is less than or equal to the cost of its successors.
+
+    \item \textbf{Greedy Search}: Greedy search is neither complete nor optimal. It chooses nodes based solely on the heuristic value, which can lead to suboptimal solutions or failure if the heuristic is misleading.
+
+    \item \textbf{A* Search}: A* is both complete and optimal when using an admissible heuristic. In fact, it is also optimally efficient, where no other optimal search strategy will expand less nodes than A*.
+\end{itemize}
+
+\subsection{Performance Metrics (RAM Usage, CPU Utilization, Number of Expanded Nodes)}
+
+For a given test case 0, the following was the initial state.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{TestCase1.png}
+    \caption{Test Case}
+    \label{fig:testcase1}
+\end{figure}
+
+We ran the following test case on all of the aforementioned algorithms and recorded the average results. The results were produced on a machine running 16 gigabytes of RAM and an Intel i7-8700 CPU.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Algorithm} & \textbf{Memory Usage (RAM)} & \textbf{CPU Utilization} & \textbf{Number of Expanded Nodes} \\ \hline
+        \textbf{BFS} & 4548 KB & 8.31\% & 789 \\ \hline
+        \textbf{DFS} & 1106 KB & 7.89\% & 44 \\ \hline
+        \textbf{IDS} & 5566 KB & 32.55\% & 1306 \\ \hline
+        \textbf{UCS} & 3571 KB & 7.44\% & 676 \\ \hline
+        \textbf{Greedy} & 491 KB & 5.92\% & 35 \\ \hline
+        \textbf{A*} & 617 KB & 4.82\% & 58 \\ \hline
+    \end{tabular}
+    \caption{Comparison of Search Algorithms}
+\end{table}
+
+Note that the IDS results were obtained by aggregating the results from the iterations of Depth-Limited Search.
+
+\subsection{Comparison Notes}
+
+1. \textbf{Memory Usage (RAM)}:
+\begin{itemize}
+    \item \textbf{Best:} \textbf{Greedy Search} utilizes the least memory at \textbf{491 KB}, indicating a low memory footprint.
+    \item \textbf{Worst:} \textbf{IDS (Iterative Deepening Search)} has the highest memory usage at \textbf{5566 KB}. This is because although it reduces the depth of recursion, it does so at the cost of significantly higher memory consumption.
+\end{itemize}
+2. \textbf{CPU Utilization}:
+\begin{itemize}
+    \item \textbf{Best:} \textbf{A*} shows the lowest CPU utilization at \textbf{4.82\%}, which could be attributed to its nature of taking into consideration the previous path cost and the future cost of the heuristic.
+    \item \textbf{Worst:} \textbf{IDS} has the highest CPU utilization at \textbf{32.55\%}, due to the iterative deepening process which incurs a higher computational overhead.
+\end{itemize}
+3. \textbf{Number of Expanded Nodes}:
+\begin{itemize}
+    \item \textbf{Best:} \textbf{Greedy Search} also excels here with the fewest expanded nodes, only \textbf{35}, indicating that a well-designed heuristic in this case could result in good performance of greedy.
+    \item \textbf{Worst:} \textbf{IDS} has the most expanded nodes at \textbf{1306}, consistent with its high memory and CPU usage.
+\end{itemize}
+
 
 \end{document}
