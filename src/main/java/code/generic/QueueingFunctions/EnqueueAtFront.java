@@ -7,8 +7,6 @@ import java.util.PriorityQueue;
 
 public class EnqueueAtFront implements QueuingFunction {
 
-  public EnqueueAtFront(){}
-
   @Override
   public PriorityQueue<Node> apply() {
     return new PriorityQueue<>(Comparator.comparingInt(Node::getDepth).reversed());
