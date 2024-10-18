@@ -11,6 +11,8 @@
 \usepackage{dirtree}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{hyperref}
+
 
 \begin{document}
 
@@ -22,7 +24,7 @@ This project is the implementation of a search agent to solve the water sort puz
 
 \section{Program Running Cycle}
 
-For the Water Sort Problem, running begins in the \texttt{WaterSortSearch} class. The class has a method \texttt{solve} that takes as an input a String \texttt{initialState}, which contains the initial configuration of the bottles and the layers within them, as well as the number of bottles and their capacities, encoded in a specified string format. It also takes a \texttt{strategy} specifying the search algorithm to use, and a boolean \texttt{visualize} that enables or disables printing various information about the run to the console. From there, the initial state is pares into our \texttt{WaterSortState} structure using a parsing method in \texttt{WaterSortUtils}, a new \texttt{WaterSortProblem} is created using the initial state and the search strategy, and \texttt{executeSearchStrategy(WaterSortProblem waterSortProblem, String strategy, boolean visualize}. \\
+For the water sort problem, running begins in the \texttt{WaterSortSearch} class. The class has a method \texttt{solve} that takes as an input a String \texttt{initialState}, which contains the initial configuration of the bottles and the layers within them, as well as the number of bottles and their capacities, encoded in a specified string format. It also takes a \texttt{strategy} specifying the search algorithm to use, and a boolean \texttt{visualize} that enables or disables printing various information about the run to the console. From there, the initial state is pares into our \texttt{WaterSortState} structure using a parsing method in \texttt{WaterSortUtils}, a new \texttt{WaterSortProblem} is created using the initial state and the search strategy, and \texttt{executeSearchStrategy(WaterSortProblem waterSortProblem, String strategy, boolean visualize}. \\
 
 \texttt{executeSearchStrategy()} is a method in the \texttt{SearchStrategy} class that:
 
@@ -47,13 +49,11 @@ Here is a hierarchy of all the project files:
 
 \dirtree{%
 .1 src.
-.2 main.
-.3 java.
-.4 code.
-.4 generic.
-.5 QueueingFunctions.
-.6 QueueingFunction <<Interface>>.
-.6 AStar1QueueingFunction.
+.2 code.
+.3 generic.
+.4 QueueingFunctions.
+.5 QueueingFunction <<Interface>>.
+.5 AStar1QueueingFunction.
 .6 AStar2QueueingFunction.
 .6 EnqueueAtEnd.
 .6 EnqueueAtFront.
@@ -81,6 +81,8 @@ Here is a hierarchy of all the project files:
 .4 GenericSearch.
 .4 Node.
 .4 WaterSortSearch.
+.2 tests.
+.3 PublicTests.
 }
 
 \newpage
@@ -270,5 +272,104 @@ public class PriorityQueueWithDepthLimit extends PriorityQueue<Node> {
   You can view the full code in the corresponding class file in the project.
 \end{verbatim}
 
+\newpage
+
+\section{Comparison between the Search Algorithms}
+
+In this section, we compare the completeness, optimality, and performance of the different search algorithms implemented in terms of RAM usage, CPU utilization, and the number of expanded nodes. We will also comment on the differences in RAM usage, CPU utilization, and expanded nodes between the search strategies.
+
+\subsection{Completeness and Optimality}
+\begin{itemize}
+    \item \textbf{Breadth-First Search (BFS)}: BFS is complete assuming the branching factor is finite, and is optimal if the cost is a monotnoically nondecreasing function of the depth (i.e the cost at depth $d+1$ is equal to or higher than the cost at level $d$, and the cost increases in the direction of enqueuing (in our case, from left to right.) \\
+    
+    For the water sort problem, since all the operators have a positive cost (namely the only operator, \texttt{Pour}), the first condition holds. However, the cost does not necessarily increase as we go from left to right, because it depends on how many layers every operator will pour, depending on the state. Because of this, DFS is \textbf{correct} but \textbf{not optimal} for the water sort problem.
+
+    \item \textbf{Depth-First Search (DFS)}: DFS is not complete, and it is not optimal. DFS explores as deep as possible before backtracking, making it prone to getting stuck in deep branches if no solution exists within the depth limit.
+
+    \item \textbf{Iterative Deepening Search (IDS)}: IDS is complete, but generally not optimal, due to the redundant searches since it explores the same nodes multiple times as it iterates over increasing depth limits.
+
+    \item \textbf{Uniform-Cost Search (UCS)}: UCS is complete, and it is optimal provided that the cost of a node is less than or equal to the cost of its successors.
+
+    \item \textbf{Greedy Search}: Greedy search is neither complete nor optimal. It chooses nodes based solely on the heuristic value, which can lead to suboptimal solutions or failure if the heuristic is misleading.
+
+    \item \textbf{A* Search}: A* is both complete and optimal when using an admissible heuristic. In fact, it is also optimally efficient, where no other optimal search strategy will expand less nodes than A*.
+\end{itemize}
+
+\subsection{Performance Metrics (RAM Usage, CPU Utilization, Number of Expanded Nodes)}
+
+For a given test case 0, the following was the initial state.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{TestCase1.png}
+    \caption{Test Case}
+    \label{fig:testcase1}
+\end{figure}
+
+We ran the following test case on all of the aforementioned algorithms and recorded the average results. The results were produced on a machine running 16 gigabytes of RAM and an Intel i7-8700 CPU.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Algorithm} & \textbf{Memory Usage (RAM)} & \textbf{CPU Utilization} & \textbf{Number of Expanded Nodes} \\ \hline
+        \textbf{BFS} & 4548 KB & 8.31\% & 789 \\ \hline
+        \textbf{DFS} & 1106 KB & 7.89\% & 44 \\ \hline
+        \textbf{IDS} & 5566 KB & 32.55\% & 1306 \\ \hline
+        \textbf{UCS} & 3571 KB & 7.44\% & 676 \\ \hline
+        \textbf{Greedy} & 491 KB & 5.92\% & 35 \\ \hline
+        \textbf{A*} & 617 KB & 4.82\% & 58 \\ \hline
+    \end{tabular}
+    \caption{Comparison of Search Algorithms}
+\end{table}
+
+Note that the IDS results were obtained by aggregating the results from the iterations of Depth-Limited Search.
+
+\subsection{Comparison Notes}
+
+1. \textbf{Memory Usage (RAM)}:
+\begin{itemize}
+    \item \textbf{Best:} \textbf{Greedy Search} utilizes the least memory at \textbf{491 KB}, indicating a low memory footprint.
+    \item \textbf{Worst:} \textbf{IDS (Iterative Deepening Search)} has the highest memory usage at \textbf{5566 KB}. This is because although it reduces the depth of recursion, it does so at the cost of significantly higher memory consumption.
+\end{itemize}
+2. \textbf{CPU Utilization}:
+\begin{itemize}
+    \item \textbf{Best:} \textbf{A*} shows the lowest CPU utilization at \textbf{4.82\%}, which could be attributed to its nature of taking into consideration the previous path cost and the future cost of the heuristic.
+    \item \textbf{Worst:} \textbf{IDS} has the highest CPU utilization at \textbf{32.55\%}, due to the iterative deepening process which incurs a higher computational overhead.
+\end{itemize}
+3. \textbf{Number of Expanded Nodes}:
+\begin{itemize}
+    \item \textbf{Best:} \textbf{Greedy Search} also excels here with the fewest expanded nodes, only \textbf{35}, indicating that a well-designed heuristic in this case could result in good performance of greedy.
+    \item \textbf{Worst:} \textbf{IDS} has the most expanded nodes at \textbf{1306}, consistent with its high memory and CPU usage.
+\end{itemize}
+
+\newpage
+
+\section{Using the Agent to Implement and Solve Another Search Problem}
+
+The primary goal of this project was to implement a search agent to solve the water sort puzzle, but another goal was also to have this agent be able to solve any generic search problem that the user defines. If you would like to use our agent to define and solve your own search problem, you have to do the following: 
+
+\begin{enumerate}
+\item Define a class for your problem that extends the \texttt{Problem} class
+\item Define the operators for your problem. Each operator should be a class that implements the \texttt{Operator} interface.
+\item If you would like to use another queuing function than the ones already defined (i.e you would like to use some other search algorithm than the 6 we have), define a queuing function for your problem. Your queuing function should implement the \texttt{QueuingFunction} interface.
+\begin{itemize}
+\item If you chose to define a new search strategy, go to the \texttt{SearchStrategy} class, give your new search strategy a \texttt{String} name, and add it to the switch case in the \texttt{executeSearchStrategy()} method.
+\end{itemize}
+\item Create a search class for your problem that extends the \texttt{GenericSearch} class. In this class, you will initialize an instance of your problem, the priority queue by using the queuing function, and call \texttt{executeSearchStrategy()}
+\end{enumerate}
+
+There is currently an unfortunate limitation regarding how heuristic functions are implemented. Because of this, if you would like to use greedy best-first search or A* search for your problem, you will not be able to use the provided ones. You will have to define new \texttt{QueueingFunction}s for them that order the nodes by \texttt{yourProblem.getHeuristicN()} in the case of greedy best-first and \texttt{Node.getPathCost()} + \texttt{yourProblem.getHeuristicN(Node node)} in the case of A* search, and implement any number of heuristic functions you would like in the class of your problem that you were asked to implement in item number \textbf{1}. You will need a \texttt{QueueingFunction} for every heuristic function you implement, unless you would like to order a single queue by the combination of more than one heuristic at the same time (e.g ordering by \texttt{getHeuristic1() + getHeuristic2()})
+
+\section{References}
+The main references we used to implement our project were: 
+
+\begin{itemize}
+
+\item The lecture slides of the CSEN 901: Introduction to Artificial Intelligence course taught at the GUC by Dr. Nourhan Ehab
+\item Russell, S.J. and Norvig, P. (2016) Artificial Intelligence: A Modern Approach
+\item The Java JDK 18 documentation (\url{https://docs.oracle.com/en/java/javase/18/})
+\end{itemize}
+
+We have not made use of any code from any external libraries. We have only made use of classes available in the java standard libraries.
 
 \end{document}
