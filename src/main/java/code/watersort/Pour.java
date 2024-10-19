@@ -1,6 +1,5 @@
 package code.watersort;
 
-import code.WaterSortSearch;
 import code.generic.Operator;
 import code.generic.OperatorResult;
 import code.generic.SearchState;

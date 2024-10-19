@@ -20,12 +20,14 @@ import java.util.Comparator;
 
 public abstract class GenericSearch {
 
+    public static final int INFINITY = Integer.MAX_VALUE;
+
     public static int nodesExpanded;
     private static final Set<SearchState> expandedStates = new HashSet<>();
     private static final PriorityQueue<Node> candidateSolutions = new PriorityQueue<>(
             Comparator.comparingInt(Node::getPathCost).reversed());
 
-    public static Node generalSearch(Problem problem, QueuingFunction queuingFunction, boolean visualize)
+    public static Node generalSearch(Problem problem, QueuingFunction queuingFunction, int depth, boolean visualize)
             throws CloneNotSupportedException {
         nodesExpanded = 0;
         int nodesVisited = 0;
@@ -34,12 +36,12 @@ public abstract class GenericSearch {
         candidateSolutions.clear();
 
         // performance metrics
-        Long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         long startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long startCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
 
         Node initialNode = makeNode(problem.getInitialState());
-        PriorityQueue<Node> nodes = queuingFunction.apply();
+        PriorityQueue<Node> nodes = new PriorityQueue<>(queuingFunction.apply(depth));
         nodes.add(initialNode);
 
         while (!nodes.isEmpty()) {
@@ -192,7 +194,7 @@ public abstract class GenericSearch {
             if (obj instanceof Node) {
                 WaterSortState state = (WaterSortState) ((Node) obj).getState();
                 String costToRoot = "Path cost to root : " + ((Node) obj).getPathCost();
-                System.out.println(state.getVerticalView(costToRoot, true));
+                System.out.println(state.getVerticalView(costToRoot));
             } else {
                 String operator = obj.toString();
                 System.out.println(

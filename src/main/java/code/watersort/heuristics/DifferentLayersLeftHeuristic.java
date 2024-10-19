@@ -40,7 +40,6 @@ public class DifferentLayersLeftHeuristic implements HeuristicFunction {
                                 maxIndex = 0;
                                 maxColorCount = colorLayersCount[0];
                             }
-                            break;
                         }
                         case b -> {
                             colorLayersCount[1]++;
@@ -48,7 +47,6 @@ public class DifferentLayersLeftHeuristic implements HeuristicFunction {
                                 maxIndex = 1;
                                 maxColorCount = colorLayersCount[1];
                             }
-                            break;
                         }
                         case g -> {
                             colorLayersCount[2]++;
@@ -56,7 +54,6 @@ public class DifferentLayersLeftHeuristic implements HeuristicFunction {
                                 maxIndex = 2;
                                 maxColorCount = colorLayersCount[2];
                             }
-                            break;
                         }
                         case o -> {
                             colorLayersCount[3]++;
@@ -64,20 +61,19 @@ public class DifferentLayersLeftHeuristic implements HeuristicFunction {
                                 maxIndex = 3;
                                 maxColorCount = colorLayersCount[3];
                             }
-                            break;
                         }
                         case y -> {
-                            colorLayersCount[0]++;
-                            if (colorLayersCount[0] > maxColorCount) {
-                                maxIndex = 0;
-                                maxColorCount = colorLayersCount[0];
+                            colorLayersCount[4]++;
+                            if (colorLayersCount[4] > maxColorCount) {
+                                maxIndex = 4;
+                                maxColorCount = colorLayersCount[4];
                             }
                         }
                     }
                 }
 
                 for(int i = 0; i < 5; i++){
-                    if(i!=maxIndex){
+                    if( i != maxIndex ){
                         cost+=colorLayersCount[i];
                     }
                 }

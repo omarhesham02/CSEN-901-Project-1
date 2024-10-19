@@ -1,11 +1,11 @@
 package code.generic.QueueingFunctions;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
 import code.Node;
 import code.generic.HeuristicFunction;
-import code.generic.Problem;
+import code.generic.QueueUtils;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class AStarQueuingFunction implements QueuingFunction {
     private final HeuristicFunction heuristicFunction;
@@ -15,7 +15,8 @@ public class AStarQueuingFunction implements QueuingFunction {
     }
 
     @Override
-    public PriorityQueue<Node> apply() {
-        return new PriorityQueue<>(Comparator.comparingInt(node -> node.getPathCost() + heuristicFunction.apply(node)));
+    public PriorityQueue<Node> apply(int depth) {
+        Comparator<Node> comparator = Comparator.comparingInt(node -> node.getPathCost() + heuristicFunction.apply(node));
+        return QueueUtils.createQueueWithDepthLimit(comparator, depth);
     }
 }
