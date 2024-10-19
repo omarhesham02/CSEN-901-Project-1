@@ -1,9 +1,9 @@
 package code.generic;
 
+import code.Node;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import code.Node;
 
 public abstract class Problem {
     public static List<HeuristicFunction> heuristicFunctions;
@@ -35,15 +35,4 @@ public abstract class Problem {
         this.operators.add(operator);
     }
 
-    public static void addHeuristicFunction(HeuristicFunction heuristicFunction) {
-        heuristicFunctions.add(heuristicFunction);
-    }
-
-    public static List<HeuristicFunction> getHeuristicFunctions() {
-        return heuristicFunctions;
-    }
-
-    public static HeuristicFunction getHeuristicFunction(int index) {
-        return heuristicFunctions.get(index);
-    }
 }

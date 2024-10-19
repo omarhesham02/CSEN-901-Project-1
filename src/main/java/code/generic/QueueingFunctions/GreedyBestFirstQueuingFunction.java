@@ -2,7 +2,6 @@ package code.generic.QueueingFunctions;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 import code.Node;
 import code.generic.HeuristicFunction;

@@ -1,9 +1,8 @@
 package code.watersort;
 
-import java.util.Arrays;
-
-import code.generic.FixedSizeStack;
 import code.generic.SearchState;
+
+import java.util.Arrays;
 
 public class WaterSortState extends SearchState {
 
