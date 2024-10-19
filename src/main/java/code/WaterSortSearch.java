@@ -20,8 +20,7 @@ public class WaterSortSearch extends GenericSearch {
     public static int numberOfBottles;
     public static int bottleCapacity;
 
-    public static String solve(String initialState, String strategy, boolean visualize)
-            throws CloneNotSupportedException {
+    public static String solve(String initialState, String strategy, boolean visualize) throws CloneNotSupportedException {
 
         numberOfBottles = 0;
         bottleCapacity = 0;
@@ -33,9 +32,9 @@ public class WaterSortSearch extends GenericSearch {
         HeuristicFunction heuristic2 = new DifferentLayersLeftHeuristic();
 
         Node solutionNode = switch(strategy) {
-            case "AS1", "GR1" -> executeSearchStrategy(waterSortProblem, strategy, heuristic1, visualize);
-            case "AS2", "GR2" -> executeSearchStrategy(waterSortProblem, strategy, heuristic2, visualize);
-            default -> executeSearchStrategy(waterSortProblem, strategy, null, visualize);
+            case "AS1", "GR1" -> executeSearchStrategy(waterSortProblem, strategy, GenericSearch.INFINITY, heuristic1, visualize);
+            case "AS2", "GR2" -> executeSearchStrategy(waterSortProblem, strategy, GenericSearch.INFINITY, heuristic2, visualize);
+            default -> executeSearchStrategy(waterSortProblem, strategy, GenericSearch.INFINITY, null, visualize);
 };
 
 
