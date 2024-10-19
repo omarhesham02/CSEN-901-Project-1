@@ -21,7 +21,7 @@ public enum Color {
         };
     }
 
-    public String getFullName(boolean colored) {
+    public String getFullName(boolean ignoredColored) {
         return Methods.getColoredCopy(getFullName(), this);
     }
 
