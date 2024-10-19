@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Problem {
-    public static List<HeuristicFunction> heuristicFunctions;
     private final SearchState initialState;
     private final List<Operator> operators;
     private final String strategy;
