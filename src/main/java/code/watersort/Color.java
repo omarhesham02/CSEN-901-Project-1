@@ -18,7 +18,6 @@ public enum Color {
             case b -> "BLUE  ";
             case y -> "YELLOW";
             case o -> "ORANGE";
-            default -> throw new IllegalStateException("Unexpected color value: " + this);
         };
     }
 

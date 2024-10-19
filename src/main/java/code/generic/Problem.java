@@ -6,6 +6,7 @@ import java.util.List;
 import code.Node;
 
 public abstract class Problem {
+    public static List<HeuristicFunction> heuristicFunctions;
     private final SearchState initialState;
     private final List<Operator> operators;
     private final String strategy;
@@ -16,7 +17,7 @@ public abstract class Problem {
         this.operators = new LinkedList<>();
     }
 
-    public abstract boolean goalTestFn(Node node);
+    public abstract boolean isGoalState(Node node);
 
     public SearchState getInitialState() {
         return initialState;
@@ -32,5 +33,17 @@ public abstract class Problem {
 
     public void addOperator(Operator operator) {
         this.operators.add(operator);
+    }
+
+    public static void addHeuristicFunction(HeuristicFunction heuristicFunction) {
+        heuristicFunctions.add(heuristicFunction);
+    }
+
+    public static List<HeuristicFunction> getHeuristicFunctions() {
+        return heuristicFunctions;
+    }
+
+    public static HeuristicFunction getHeuristicFunction(int index) {
+        return heuristicFunctions.get(index);
     }
 }

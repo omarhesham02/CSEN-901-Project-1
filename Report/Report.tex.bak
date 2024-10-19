@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=3cm]{geometry}
-\title{CSEN 901: Introduction to Artificial Intelligence \\Projct 1: Water Sort}
+\title{CSEN 901: Introduction to Artificial Intelligence \\Project 1: Water Sort}
 \author{Project Report \vspace{24pt} \\ Abdelrahman Aboelkehir, Hossain Ghoraba, \\ Mahmoud Aboelenein, Omar Hesham}
 \date{18.10.2024}
 
@@ -24,7 +24,7 @@ This project is the implementation of a search agent to solve the water sort puz
 
 \section{Program Running Cycle}
 
-For the water sort problem, running begins in the \texttt{WaterSortSearch} class. The class has a method \texttt{solve} that takes as an input a String \texttt{initialState}, which contains the initial configuration of the bottles and the layers within them, as well as the number of bottles and their capacities, encoded in a specified string format. It also takes a \texttt{strategy} specifying the search algorithm to use, and a boolean \texttt{visualize} that enables or disables printing various information about the run to the console. From there, the initial state is pares into our \texttt{WaterSortState} structure using a parsing method in \texttt{WaterSortUtils}, a new \texttt{WaterSortProblem} is created using the initial state and the search strategy, and \texttt{executeSearchStrategy(WaterSortProblem waterSortProblem, String strategy, boolean visualize}. \\
+For the water sort problem, running begins in the \texttt{WaterSortSearch} class. The class has a method \texttt{solve} that takes as an input a String \texttt{initialState}, which contains the initial configuration of the bottles and the layers within them, as well as the number of bottles and their capacities, encoded in a specified string format. It also takes a \texttt{strategy} specifying the search algorithm to use, and a boolean \texttt{visualize} that enables or disables printing various information about the run to the console. From there, the initial state is parsed into our \texttt{WaterSortState} structure using a parsing method in \texttt{WaterSortUtils}, a new \texttt{WaterSortProblem} is created using the initial state and the search strategy, and \texttt{executeSearchStrategy(WaterSortProblem waterSortProblem, String strategy, boolean visualize)}. \\
 
 \texttt{executeSearchStrategy()} is a method in the \texttt{SearchStrategy} class that:
 
@@ -51,15 +51,15 @@ Here is a hierarchy of all the project files:
 .1 src.
 .2 code.
 .3 generic.
-.4 QueueingFunctions.
-.5 QueueingFunction <<Interface>>.
-.5 AStar1QueueingFunction.
-.6 AStar2QueueingFunction.
+.4 QueuingFunctions.
+.5 QueuingFunction <<Interface>>.
+.5 AStar1QueuingFunctions.
+.6 AStar2QueuingFunction.
 .6 EnqueueAtEnd.
 .6 EnqueueAtFront.
 .6 EnqueueAtFrontWithDepthLimit.
-.6 GREEDY1QueueingFunction.
-.6 GREEDY2QueueingFunction.
+.6 GREEDY1QueuingFunction.
+.6 GREEDY2QueuingFunction.
 .5 FixedSizeStack.
 .5 Operator <<Interface>>.
 .5 OperatorResult.
@@ -178,6 +178,9 @@ public static Node generalSearch(Problem problem, QueuingFunction queuingFunctio
 \subsubsection{Goal Test}
 One important thing to mention is that the goal test is applied to a node first when it is selected for expansion, not when it is created. This has the unfortunate side-effect of increasing the time complexity of DFS from $O(b^{d})$ to $O(b^{d+1})$, because an extra level (at least in the worst case) will be created beyond the goal node before the goal node is selected for expansion and discovered to be a goal, as well as perhaps increasing the time complexity of the rest of the search algorithms (by a factor I am not entirely sure about), but has the fortunate side-effect of making UCS optimal (if the goal test was applied to a node when it is first created, UCS would not be optimal). If you are curious, you can find a small discussion of why this may be the case in Russel \& Norvig, section 3.4.2
 
+\subsection{Eliminating Repeated States}
+
+One important feature of any search algorithm is to minimize or eliminate repeated states that appear during the search. There are various degrees to which this can be done, each with its time and space efficiency trade-offs. We have chosen to go with the most extreme degree, which is to keep track of \textit{all} visited states during the search.
 \subsection{Heuristic Functions}
 
 We have mentioned earlier that we have two heuristic functions available for use. In this section, we will examine those two heuristic functions and argue why they may be admissible. \\
@@ -207,7 +210,7 @@ Iterative-Deepening Search is special in that it is the only search algorithm th
 
     for(int depth = 0; depth < infinity; depth++){
       Node solution = DepthLimitedSearch(problem, depth, visualize);
-      if(solution != null){
+      if(solution != null) {
         return solution;
       }
     }
@@ -216,7 +219,9 @@ Iterative-Deepening Search is special in that it is the only search algorithm th
   }
 \end{verbatim}
 
-Our method for IDS runs DFS up to "infinity" (in Java, \texttt{Integer.MAX\_VALUE} is equal to 2,147,483,647 which we will assume is good enough for our purposes.) up to the specified \texttt{depth}, staring from 0 and incrementing the depth by 1 every iteration. Every time \texttt{DepthLimitedSearch} is called, it starts a new search problem, unrelated to the search in the previous iteration. \\
+Our method for IDS runs DLS up to "infinity" (in Java, \texttt{Integer.MAX\_VALUE} is equal to 2,147,483,647 which we will assume is good enough for our purposes.) up to the specified \texttt{depth}, staring from 0 and incrementing the depth by 1 every iteration. Every time \texttt{DepthLimitedSearch} is called, it starts a new search problem, unrelated to the search in the previous iteration. 
+
+\newpage
 
 \texttt{LimitedDepthSearch} is just DFS that runs up to a specified depth limit. 
 
@@ -229,7 +234,6 @@ throws CloneNotSupportedException {
 
 Its queuing function \texttt{EnqueueAtFrontWithDepthLimit} uses a custom data type that is a priority queue that only allows the addition of elements within a specified depth limit.
 
-\newpage
 
 \begin{verbatim}
 public class EnqueueAtFrontWithDepthLimit implements QueuingFunction {
@@ -268,6 +272,7 @@ public class PriorityQueueWithDepthLimit extends PriorityQueue<Node> {
     return modified;
   }
 }
+
   NOTE: Some code has been trimmed from this class for simplicity. 
   You can view the full code in the corresponding class file in the project.
 \end{verbatim}
@@ -282,26 +287,26 @@ In this section, we compare the completeness, optimality, and performance of the
 \begin{itemize}
     \item \textbf{Breadth-First Search (BFS)}: BFS is complete assuming the branching factor is finite, and is optimal if the cost is a monotnoically nondecreasing function of the depth (i.e the cost at depth $d+1$ is equal to or higher than the cost at level $d$, and the cost increases in the direction of enqueuing (in our case, from left to right.) \\
     
-    For the water sort problem, since all the operators have a positive cost (namely the only operator, \texttt{Pour}), the first condition holds. However, the cost does not necessarily increase as we go from left to right, because it depends on how many layers every operator will pour, depending on the state. Because of this, DFS is \textbf{correct} but \textbf{not optimal} for the water sort problem.
+    For the water sort problem, since there is a finite number of operators, the branching factor is finite, and therefore it is complete. Since all the operators have a positive cost (namely the only operator, \texttt{Pour}), the first condition for optimality holds. However, the cost does not necessarily increase as we go from left to right, because it depends on how many layers every operator will pour, depending on the state. Because of this, DFS is \textbf{complete} but \textbf{not optimal} for the water sort problem.
 
-    \item \textbf{Depth-First Search (DFS)}: DFS is not complete, and it is not optimal. DFS explores as deep as possible before backtracking, making it prone to getting stuck in deep branches if no solution exists within the depth limit.
+    \item \textbf{Depth-First Search (DFS)}: DFS is generally not complete, and it is not optimal. DFS explores as deep as possible before backtracking, making it prone to getting stuck in deep branches if no solution exists within the depth limit.
 
-    \item \textbf{Iterative Deepening Search (IDS)}: IDS is complete, but generally not optimal, due to the redundant searches since it explores the same nodes multiple times as it iterates over increasing depth limits.
+    \item \textbf{Iterative Deepening Search (IDS)}: IDS is complete, but generally not optimal. For the water sort problem, it is complete but not optimal for a similar reason to DFS.
 
-    \item \textbf{Uniform-Cost Search (UCS)}: UCS is complete, and it is optimal provided that the cost of a node is less than or equal to the cost of its successors.
+    \item \textbf{Uniform-Cost Search (UCS)}: UCS is both complete and optimal for any search problem. Therefore, it is both complete and optimal for the water sort problem.
 
-    \item \textbf{Greedy Search}: Greedy search is neither complete nor optimal. It chooses nodes based solely on the heuristic value, which can lead to suboptimal solutions or failure if the heuristic is misleading.
+    \item \textbf{Greedy Best-First Search}: Greedy search is neither complete nor optimal. It chooses nodes based solely on the heuristic value, which can lead to suboptimal solutions or failure if the heuristic is misleading.
 
-    \item \textbf{A* Search}: A* is both complete and optimal when using an admissible heuristic. In fact, it is also optimally efficient, where no other optimal search strategy will expand less nodes than A*.
+    \item \textbf{A* Search}: A* is both complete and optimal when using an admissible heuristic. In fact, it is also optimally efficient, where no other optimal search strategy will expand less nodes than A*. Since the two heuristics we are using for the water sort problem in this project are admissible (as we have already argued), A* is optimal for the water sort problem.
 \end{itemize}
 
 \subsection{Performance Metrics (RAM Usage, CPU Utilization, Number of Expanded Nodes)}
 
-For a given test case 0, the following was the initial state.
+We've used the problem with the following initial state as our test case:
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{TestCase1.png}
-    \caption{Test Case}
+    \caption{Initial State}
     \label{fig:testcase1}
 \end{figure}
 
@@ -352,9 +357,11 @@ The primary goal of this project was to implement a search agent to solve the wa
 \item Define a class for your problem that extends the \texttt{Problem} class
 \item Define the operators for your problem. Each operator should be a class that implements the \texttt{Operator} interface.
 \item If you would like to use another queuing function than the ones already defined (i.e you would like to use some other search algorithm than the 6 we have), define a queuing function for your problem. Your queuing function should implement the \texttt{QueuingFunction} interface.
+
 \begin{itemize}
 \item If you chose to define a new search strategy, go to the \texttt{SearchStrategy} class, give your new search strategy a \texttt{String} name, and add it to the switch case in the \texttt{executeSearchStrategy()} method.
 \end{itemize}
+
 \item Create a search class for your problem that extends the \texttt{GenericSearch} class. In this class, you will initialize an instance of your problem, the priority queue by using the queuing function, and call \texttt{executeSearchStrategy()}
 \end{enumerate}
 
