@@ -13,7 +13,6 @@ import code.generic.Problem;
 import code.generic.SearchState;
 import code.generic.QueueingFunctions.QueuingFunction;
 import code.utils.Methods;
-import code.watersort.Bottle;
 import code.watersort.WaterSortState;
 
 import java.lang.management.ManagementFactory;
@@ -46,7 +45,7 @@ public abstract class GenericSearch {
         while (!nodes.isEmpty()) {
             Node currentNode = removeFront(nodes);
             currentNode.setOrderOfVisiting(nodesVisited++);
-            if (problem.goalTestFn(currentNode)) {
+            if (problem.isGoalState(currentNode)) {
                 solutionNode = currentNode;
                 break;
             }
@@ -81,20 +80,20 @@ public abstract class GenericSearch {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
                 // Avoid exploring the same state again
-                if (expandedStates.contains(operatorResult.getState())) {
+                if (expandedStates.contains(operatorResult.state())) {
                     continue;
                 }
 
                 Node childNode = new Node(
-                        operatorResult.getState(),
+                        operatorResult.state(),
                         parentNode,
                         operator,
                         parentNode.getDepth() + 1,
-                        parentNode.getPathCost() + operatorResult.getOperatorCost());
+                        parentNode.getPathCost() + operatorResult.operatorCost());
                 nodes.add(childNode);
-                expandedStates.add(operatorResult.getState());
+                expandedStates.add(operatorResult.state());
                 ++nodesExpanded;
-                if (problem.goalTestFn(childNode)) {
+                if (problem.isGoalState(childNode)) {
                     candidateSolutions.add(childNode);
                 }
 
@@ -120,7 +119,7 @@ public abstract class GenericSearch {
         stateText = stateText.replaceAll(",", " ");
         stateText = stateText.replaceAll(";", "     ");
         stateText = "[" + stateText + "]";
-        if (problem.goalTestFn(node)) {
+        if (problem.isGoalState(node)) {
             if (node == solutionNode)
                 stateText += " ---> SOLUTION";
             else

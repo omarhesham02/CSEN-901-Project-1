@@ -3,15 +3,17 @@ package code;
 import java.util.LinkedList;
 import java.util.List;
 
+import code.generic.HeuristicFunction;
 import code.generic.Operator;
-import code.watersort.WaterSortProblem;
-import code.watersort.WaterSortState;
-import code.watersort.WaterSortUtils;
+import code.watersort.*;
+
 import static code.generic.SearchStrategies.executeSearchStrategy;
 
 import java.io.PrintStream;
 import java.io.FileOutputStream;
 import code.utils.ConditionalPrintStream;
+import code.watersort.heuristics.DifferentBottlesLeftHeuristic;
+import code.watersort.heuristics.DifferentLayersLeftHeuristic;
 
 public class WaterSortSearch extends GenericSearch {
 
@@ -27,7 +29,15 @@ public class WaterSortSearch extends GenericSearch {
         WaterSortState parsedInitialState = WaterSortUtils.parseInitialState(initialState);
         WaterSortProblem waterSortProblem = new WaterSortProblem(parsedInitialState, strategy);
 
-        Node solutionNode = executeSearchStrategy(waterSortProblem, strategy, visualize);
+        HeuristicFunction heuristic1 = new DifferentBottlesLeftHeuristic();
+        HeuristicFunction heuristic2 = new DifferentLayersLeftHeuristic();
+
+        Node solutionNode = switch(strategy) {
+            case "AS1", "GR1" -> executeSearchStrategy(waterSortProblem, strategy, heuristic1, visualize);
+            case "AS2", "GR2" -> executeSearchStrategy(waterSortProblem, strategy, heuristic2, visualize);
+            default -> executeSearchStrategy(waterSortProblem, strategy, null, visualize);
+};
+
 
         if (solutionNode == null)
             return "NOSOLUTION";

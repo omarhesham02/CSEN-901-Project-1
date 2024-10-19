@@ -19,34 +19,24 @@ public class Pour implements Operator {
 
     @Override
     public boolean isApplicable(SearchState state) {
+        // Check if the state is a WaterSortState
         if (!(state instanceof WaterSortState waterSortState))
             return false;
 
-        Bottle[] bottles = waterSortState.getBottles();
-        // ---------------------------- src not empty
-        int pouredAmount;
-        try {
-            pouredAmount = bottles[from].peekTopLayerGroup().getSize();
-        } catch (IllegalStateException | CloneNotSupportedException e) {
-            // happens when peekTopLayerGroup() is called on an empty bottle
+        // Check if the source bottle is empty or the destination bottle is full
+        if (waterSortState.getBottles()[from].isEmpty() || waterSortState.getBottles()[to].isFull())
             return false;
-        }
 
-        // ---------------------------- dest wont overflow
-        boolean dest_wont_overflow = bottles[to].getCurrentSize() + pouredAmount <= WaterSortSearch.bottleCapacity;
+        // Check if the top layers of the source and destination bottles have the same color or if the destination bottle is empty
+        Color topColor = waterSortState.getBottles()[from].getTopLayer();
+        Color destTopColor = waterSortState.getBottles()[to].isEmpty() ? null : waterSortState.getBottles()[to].getTopLayer();
 
-        // ---------------------------- src top & dest top have same color
-        Color src_layer = bottles[from].getTopLayer();
-        Color dest_layer;
-        try {
-            dest_layer = bottles[to].getTopLayer();
-        } catch (IllegalStateException e) {
-            dest_layer = null;
-        }
-        boolean same_colour = src_layer == dest_layer;
-        // ----------------------------- final check
-        return dest_wont_overflow && (same_colour || bottles[to].isEmpty());
+        return waterSortState.getBottles()[to].isEmpty() || topColor.equals(destTopColor);
+    }
 
+    @Override
+    public int getCost() {
+        return 0;
     }
 
     @Override
@@ -54,25 +44,41 @@ public class Pour implements Operator {
         if (!(state instanceof WaterSortState waterSortState))
             throw new IllegalArgumentException("Input state is not a WaterSortState");
 
-        Bottle[] bottles = waterSortState.getBottles();
-
         if (!isApplicable(waterSortState))
             throw new IllegalArgumentException("Operator is not applicable to the given state");
 
-        return pour(bottles, from, to);
+        return pour((WaterSortState) state, from, to);
 
     }
 
-    private static OperatorResult pour(Bottle[] bottles, int from, int to) throws CloneNotSupportedException {
-        // copy the bottles to avoid changing the original state
+ private static OperatorResult pour(WaterSortState state, int from, int to) throws CloneNotSupportedException {
+    // Check if the source bottle is empty or the destination bottle is full
+    Bottle[] bottles = state.getBottles();
+    if (bottles[from].isEmpty() || bottles[to].isFull()) {
+        return new OperatorResult(null, 0);
+    }
+
+    // Check if the top layers of the source and destination bottles have the same color or if the destination bottle is empty
+    Color topColor = bottles[from].getTopLayer();
+    Color destTopColor = bottles[to].isEmpty() ? null : bottles[to].getTopLayer();
+    if (!bottles[to].isEmpty() && !topColor.equals(destTopColor)) {
+        return new OperatorResult(null, 0);
+    }
+
+    // Copy the bottles to avoid changing the original state
         Bottle[] bottleCopies = new Bottle[bottles.length];
         for (int i = 0; i < bottles.length; i++) {
             bottleCopies[i] = bottles[i].clone();
         }
-        LayerGroup groupToPour = bottleCopies[from].popTopLayerGroup();
-        bottleCopies[to].addLayerGroup(groupToPour);
+    // Pop the top layer from the source bottle
+    int pouredLayers = 0;
+    while (!bottleCopies[from].isEmpty() && bottleCopies[from].getTopLayer().equals(topColor) && !bottleCopies[to].isFull()) {
+        Color color = bottleCopies[from].layers().pop();
+        bottleCopies[to].layers().push(color);
+        pouredLayers++;
+    }
 
-        return new OperatorResult(new WaterSortState(bottleCopies), groupToPour.getSize());
+    return new OperatorResult(new WaterSortState(bottleCopies), pouredLayers);
     }
 
     @Override

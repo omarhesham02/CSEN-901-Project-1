@@ -64,14 +64,14 @@ public class WaterSortState extends SearchState {
         Bottle[] bottlesCopy = new Bottle[bottles.length];
         for (int i = 0; i < bottles.length; i++) {
             bottlesCopy[i] = bottles[i].clone();
-            while (!bottlesCopy[i].getLayers().isFull()) {
-                bottlesCopy[i].getLayers().push(null);
+            while (!bottlesCopy[i].layers().isFull()) {
+                bottlesCopy[i].layers().push(null);
             }
         }
-        int bottleMaxSize = bottlesCopy[0].getLayers().getMaxCapacity();
+        int bottleMaxSize = bottlesCopy[0].layers().getMaxCapacity();
         for (int i = 0; i < bottleMaxSize; i++) {
             for (int j = 0; j < bottlesCopy.length; j++) {
-                Color color = bottlesCopy[j].getLayers().pop();
+                Color color = bottlesCopy[j].layers().pop();
                 result += "[ ";
                 // result += color == null ? " " : color.toString().toUpperCase();
                 result += color == null ? " ".repeat(6) : color.getFullName(true);
