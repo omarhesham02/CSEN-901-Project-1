@@ -1,19 +1,17 @@
 package code;
 
+import code.generic.HeuristicFunction;
+import code.generic.Operator;
+import code.watersort.WaterSortProblem;
+import code.watersort.WaterSortState;
+import code.watersort.WaterSortUtils;
+import code.watersort.heuristics.DifferentBottlesLeftHeuristic;
+import code.watersort.heuristics.DifferentLayersLeftHeuristic;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import code.generic.HeuristicFunction;
-import code.generic.Operator;
-import code.watersort.*;
-
 import static code.generic.SearchStrategies.executeSearchStrategy;
-
-import java.io.PrintStream;
-import java.io.FileOutputStream;
-import code.utils.ConditionalPrintStream;
-import code.watersort.heuristics.DifferentBottlesLeftHeuristic;
-import code.watersort.heuristics.DifferentLayersLeftHeuristic;
 
 public class WaterSortSearch extends GenericSearch {
 
@@ -64,30 +62,5 @@ public class WaterSortSearch extends GenericSearch {
         result = result.substring(1, result.length() - 1);
         result = result.replace(" ", "");
         return result;
-    }
-
-    // Please dont delete this main method until the last moment
-    public static void main(String[] args) {
-        String state = "5;4;" + "o,b,r,o;" + "o,b,r,r;" +
-                "b,r,o,b;" + "e,e,e,e;" + "e,e,e,e;";
-        String strategy = "BF";
-
-        // ------------------------- below part is to print to BOTH the console and the
-        // visualization.txt file -------------------------
-
-        try {
-            PrintStream originalOut = System.out;
-            PrintStream fileOut = new PrintStream(new FileOutputStream("src/main/java/code/visualization.txt"));
-            ConditionalPrintStream dualOut = new ConditionalPrintStream(originalOut, fileOut);
-
-            System.setOut(dualOut);
-            String solution = solve(state, strategy, true);
-            System.out.println(
-                    "\n-------------------------------------------------------------- Solution text required :");
-            System.out.println(solution);
-            System.setOut(originalOut);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
