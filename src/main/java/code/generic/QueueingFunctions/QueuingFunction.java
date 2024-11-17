@@ -6,5 +6,5 @@ import code.Node;
 
 @FunctionalInterface
 public interface QueuingFunction {
-    PriorityQueue<Node> apply();
+    PriorityQueue<Node> apply(int depth);
 }

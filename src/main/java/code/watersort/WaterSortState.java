@@ -1,9 +1,8 @@
 package code.watersort;
 
-import java.util.Arrays;
-
-import code.generic.FixedSizeStack;
 import code.generic.SearchState;
+
+import java.util.Arrays;
 
 public class WaterSortState extends SearchState {
 
@@ -58,53 +57,34 @@ public class WaterSortState extends SearchState {
         return sb.toString();
     }
 
-    public String getVerticalView(String middleText, boolean colored) throws CloneNotSupportedException {
-        String result = "\n";
+    public String getVerticalView(String middleText) throws CloneNotSupportedException {
+        StringBuilder result = new StringBuilder("\n");
         Bottle[] bottles = (Bottle[]) getValue();
         Bottle[] bottlesCopy = new Bottle[bottles.length];
         for (int i = 0; i < bottles.length; i++) {
             bottlesCopy[i] = bottles[i].clone();
-            while (!bottlesCopy[i].getLayers().isFull()) {
-                bottlesCopy[i].getLayers().push(null);
+            while (!bottlesCopy[i].layers().isFull()) {
+                bottlesCopy[i].layers().push(null);
             }
         }
-        int bottleMaxSize = bottlesCopy[0].getLayers().getMaxCapacity();
+        int bottleMaxSize = bottlesCopy[0].layers().getMaxCapacity();
         for (int i = 0; i < bottleMaxSize; i++) {
-            for (int j = 0; j < bottlesCopy.length; j++) {
-                Color color = bottlesCopy[j].getLayers().pop();
-                result += "[ ";
+            for (Bottle bottle : bottlesCopy) {
+                Color color = bottle.layers().pop();
+                result.append("[ ");
                 // result += color == null ? " " : color.toString().toUpperCase();
-                result += color == null ? " ".repeat(6) : color.getFullName(true);
-                result += " ]";
-                result += "   ";
+                result.append(color == null ? " ".repeat(6) : color.getFullName(true));
+                result.append(" ]");
+                result.append("   ");
             }
             if (i == bottleMaxSize / 2) {
-                result += middleText;
+                result.append(middleText);
             }
-            result += "\n";
+            result.append("\n");
 
         }
 
-        return result;
-
-    }
-
-    // TODO: Remove this main method
-    // Test equality of 2 water sort states
-    public static void main(String[] args) throws CloneNotSupportedException {
-        FixedSizeStack<Color> layers1 = new FixedSizeStack<>(3);
-        layers1.push(Color.r);
-        layers1.push(Color.g);
-        layers1.push(Color.b);
-        Bottle bottle1 = new Bottle(layers1);
-
-        FixedSizeStack<Color> layers2 = new FixedSizeStack<>(3);
-        layers2.push(Color.y);
-        layers2.push(Color.o);
-        Bottle bottle2 = new Bottle(layers2);
-
-        Bottle[] bottles = { bottle1, bottle2 };
-        WaterSortState state1 = new WaterSortState(bottles);
+        return result.toString();
 
     }
 }

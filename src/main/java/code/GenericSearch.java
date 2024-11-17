@@ -13,7 +13,6 @@ import code.generic.Problem;
 import code.generic.SearchState;
 import code.generic.QueueingFunctions.QueuingFunction;
 import code.utils.Methods;
-import code.watersort.Bottle;
 import code.watersort.WaterSortState;
 
 import java.lang.management.ManagementFactory;
@@ -21,12 +20,14 @@ import java.util.Comparator;
 
 public abstract class GenericSearch {
 
+    public static final int INFINITY = Integer.MAX_VALUE;
+
     public static int nodesExpanded;
     private static final Set<SearchState> expandedStates = new HashSet<>();
     private static final PriorityQueue<Node> candidateSolutions = new PriorityQueue<>(
             Comparator.comparingInt(Node::getPathCost).reversed());
 
-    public static Node generalSearch(Problem problem, QueuingFunction queuingFunction, boolean visualize)
+    public static Node generalSearch(Problem problem, QueuingFunction queuingFunction, int depth, boolean visualize)
             throws CloneNotSupportedException {
         nodesExpanded = 0;
         int nodesVisited = 0;
@@ -35,18 +36,18 @@ public abstract class GenericSearch {
         candidateSolutions.clear();
 
         // performance metrics
-        Long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         long startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long startCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
 
         Node initialNode = makeNode(problem.getInitialState());
-        PriorityQueue<Node> nodes = queuingFunction.apply();
+        PriorityQueue<Node> nodes = new PriorityQueue<>(queuingFunction.apply(depth));
         nodes.add(initialNode);
 
         while (!nodes.isEmpty()) {
             Node currentNode = removeFront(nodes);
             currentNode.setOrderOfVisiting(nodesVisited++);
-            if (problem.goalTestFn(currentNode)) {
+            if (problem.isGoalState(currentNode)) {
                 solutionNode = currentNode;
                 break;
             }
@@ -81,20 +82,20 @@ public abstract class GenericSearch {
             if (operator.isApplicable(parentNode.getState())) {
                 OperatorResult operatorResult = operator.apply(parentNode.getState());
                 // Avoid exploring the same state again
-                if (expandedStates.contains(operatorResult.getState())) {
+                if (expandedStates.contains(operatorResult.state())) {
                     continue;
                 }
 
                 Node childNode = new Node(
-                        operatorResult.getState(),
+                        operatorResult.state(),
                         parentNode,
                         operator,
                         parentNode.getDepth() + 1,
-                        parentNode.getPathCost() + operatorResult.getOperatorCost());
+                        parentNode.getPathCost() + operatorResult.operatorCost());
                 nodes.add(childNode);
-                expandedStates.add(operatorResult.getState());
+                expandedStates.add(operatorResult.state());
                 ++nodesExpanded;
-                if (problem.goalTestFn(childNode)) {
+                if (problem.isGoalState(childNode)) {
                     candidateSolutions.add(childNode);
                 }
 
@@ -120,7 +121,7 @@ public abstract class GenericSearch {
         stateText = stateText.replaceAll(",", " ");
         stateText = stateText.replaceAll(";", "     ");
         stateText = "[" + stateText + "]";
-        if (problem.goalTestFn(node)) {
+        if (problem.isGoalState(node)) {
             if (node == solutionNode)
                 stateText += " ---> SOLUTION";
             else
@@ -193,7 +194,7 @@ public abstract class GenericSearch {
             if (obj instanceof Node) {
                 WaterSortState state = (WaterSortState) ((Node) obj).getState();
                 String costToRoot = "Path cost to root : " + ((Node) obj).getPathCost();
-                System.out.println(state.getVerticalView(costToRoot, true));
+                System.out.println(state.getVerticalView(costToRoot));
             } else {
                 String operator = obj.toString();
                 System.out.println(

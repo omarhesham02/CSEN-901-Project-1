@@ -1,19 +1,6 @@
 package code.generic;
 
-public class OperatorResult {
-    private final SearchState state;
-    private final int operatorCost;
+import code.watersort.WaterSortState;
 
-    public OperatorResult(SearchState state, int operatorCost) {
-        this.state = state;
-        this.operatorCost = operatorCost;
-    }
-
-    public SearchState getState() {
-        return state;
-    }
-
-    public int getOperatorCost() {
-        return operatorCost;
-    }
+public record OperatorResult(WaterSortState state, int operatorCost) {
 }

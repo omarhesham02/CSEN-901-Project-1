@@ -1,9 +1,9 @@
 package code.generic;
 
+import code.Node;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import code.Node;
 
 public abstract class Problem {
     private final SearchState initialState;
@@ -16,7 +16,7 @@ public abstract class Problem {
         this.operators = new LinkedList<>();
     }
 
-    public abstract boolean goalTestFn(Node node);
+    public abstract boolean isGoalState(Node node);
 
     public SearchState getInitialState() {
         return initialState;
@@ -33,4 +33,5 @@ public abstract class Problem {
     public void addOperator(Operator operator) {
         this.operators.add(operator);
     }
+
 }

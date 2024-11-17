@@ -3,16 +3,7 @@ package code.watersort;
 import code.WaterSortSearch;
 import code.generic.FixedSizeStack;
 
-public class Bottle implements Cloneable {
-    private final FixedSizeStack<Color> layers;
-
-    public Bottle(FixedSizeStack<Color> layers) {
-        this.layers = layers;
-    }
-
-    public FixedSizeStack<Color> getLayers() {
-        return layers;
-    }
+public record Bottle(FixedSizeStack<Color> layers) {
 
     public Color getTopLayer() {
         if (layers.isEmpty())
@@ -21,67 +12,11 @@ public class Bottle implements Cloneable {
         return layers.peek();
     }
 
-    public Color popTopLayer() {
-        if (layers.isEmpty())
-            throw new IllegalStateException("Cannot remove top layer from an empty bottle");
-
-        return layers.pop();
-    }
-
-    public LayerGroup peekTopLayerGroup() throws CloneNotSupportedException {
-        if (layers.isEmpty())
-            throw new IllegalStateException("Cannot peek top LayerGroup from an empty bottle");
-        FixedSizeStack<Color> layersCopy = layers.clone();
-        Color topColor = layersCopy.peek();
-        int groupSize = 0;
-
-        while (!layersCopy.isEmpty()) {
-            Color curColor = layersCopy.pop();
-
-            if (curColor.equals(topColor))
-                groupSize++;
-            else
-                break;
-        }
-
-        if (groupSize == 0)
-            return null;
-
-        return new LayerGroup(topColor, groupSize);
-    }
-
-    public LayerGroup popTopLayerGroup() throws CloneNotSupportedException {
-        if (layers.isEmpty())
-            throw new IllegalStateException("Cannot remove top LayerGroup from an empty bottle");
-
-        LayerGroup topLayerGroup = peekTopLayerGroup();
-        int topLayerGroupSize = topLayerGroup.getSize();
-
-        while (topLayerGroupSize-- > 0)
-            layers.pop();
-
-        return topLayerGroup;
-    }
-
-    public void addLayerGroup(LayerGroup layerGroup) {
-        int layerGroupSize = layerGroup.getSize();
-        int final_size = layers.size() + layerGroupSize;
-
-        if (final_size > WaterSortSearch.bottleCapacity)
-            throw new IllegalStateException("bottle will overflow if we added the layer !");
-
-        while (layerGroupSize-- > 0)
-            layers.push(layerGroup.getColor());
-    }
-
-    public int getCurrentSize() {
-        return layers.size();
-    }
-
     public boolean isEmpty() {
         return layers.isEmpty();
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public Bottle clone() throws CloneNotSupportedException {
         return new Bottle(layers.clone());
     }
@@ -91,10 +26,6 @@ public class Bottle implements Cloneable {
             return false;
 
         return layers.equals(other.layers);
-    }
-
-    public int hashCode() {
-        return layers.hashCode();
     }
 
     /**
@@ -131,5 +62,9 @@ public class Bottle implements Cloneable {
             sb.setLength(sb.length() - 1);
 
         return sb.toString();
+    }
+
+    public boolean isFull() {
+        return layers.size() == WaterSortSearch.bottleCapacity;
     }
 }
