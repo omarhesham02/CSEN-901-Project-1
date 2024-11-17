@@ -18,11 +18,10 @@ public enum Color {
             case b -> "BLUE  ";
             case y -> "YELLOW";
             case o -> "ORANGE";
-            default -> throw new IllegalStateException("Unexpected color value: " + this);
         };
     }
 
-    public String getFullName(boolean colored) {
+    public String getFullName(boolean ignoredColored) {
         return Methods.getColoredCopy(getFullName(), this);
     }
 
