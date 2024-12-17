@@ -62,3 +62,6 @@ build/
 hs_err_pid*
 replay_pid*
 /src/main/java/code/visualization.txt
+
+# Custom
+Report/
