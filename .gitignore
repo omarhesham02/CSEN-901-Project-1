@@ -64,4 +64,4 @@ replay_pid*
 /src/main/java/code/visualization.txt
 
 # Custom
-Report/
+Report/*
